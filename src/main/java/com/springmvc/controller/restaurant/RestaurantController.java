@@ -139,25 +139,6 @@ public class RestaurantController {
 
         return "restaurant/detail";
     }
-    
-// // 맛집 상세 페이지
-//    @GetMapping("/restaurants/{restaurantId}")
-//    public String restaurantDetail(@PathVariable("restaurantId") Long restaurantId,
-//                                   Model model,
-//                                   HttpSession session) {
-//
-//        Restaurant restaurant = restaurantService.getRestaurantById(restaurantId);
-//
-//        Long memberId = (Long) session.getAttribute("memberId");
-//
-//        if (memberId != null) {
-//            restaurantService.insertRecentlyRestaurant(memberId, restaurantId);
-//        }
-//
-//        model.addAttribute("restaurant", restaurant);
-//
-//        return "restaurant/detail";
-//    }
 
     // 지도 전체보기 페이지
     @GetMapping("/restaurants/map")
@@ -187,22 +168,4 @@ public class RestaurantController {
 
         return "restaurant/recent";
     }
-    
-// // 최근 본 맛집 페이지
-//    @GetMapping("/restaurants/recent")
-//    public String recentRestaurant(Model model, HttpSession session) {
-//
-//        Long memberId = (Long) session.getAttribute("memberId");
-//
-//        if (memberId == null) {
-//            return "redirect:/login";
-//        }
-//
-//        List<RestaurantDTO> recentList =
-//            restaurantService.getRecentlyRestaurantList(memberId);
-//
-//        model.addAttribute("recentList", recentList);
-//
-//        return "restaurant/recent";
-//    }
 }

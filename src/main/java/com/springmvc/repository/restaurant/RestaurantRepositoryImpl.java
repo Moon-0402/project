@@ -477,7 +477,7 @@ public class RestaurantRepositoryImpl implements RestaurantRepository {
 	    sql.append("r.longitude ");
 
 	    sql.append("HAVING distance <= 3 ");
-	    sql.append("ORDER BY distance ASC ");
+	    sql.append("ORDER BY RAND() ");
 	    sql.append("LIMIT ? ");
 
 	    String keywordLike = "%" + keyword + "%";
