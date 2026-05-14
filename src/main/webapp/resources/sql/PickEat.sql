@@ -1,0 +1,243 @@
+create database PickEat;
+
+use PickEat;
+
+-- MEMBER
+CREATE TABLE MEMBER (
+    member_id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    login_id VARCHAR(50) UNIQUE NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    name VARCHAR(50) NOT NULL,
+    email VARCHAR(100) UNIQUE NOT NULL,
+    phone VARCHAR(20),
+    role ENUM('USER', 'ADMIN') NOT NULL,
+    status ENUM('ACTIVE', 'BLOCKED', 'DELETED') NOT NULL,
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+-- PREFERENCE
+CREATE TABLE PREFERENCE (
+    preference_id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    member_id BIGINT NOT NULL,
+    favorite_category VARCHAR(50),
+    spicy_level VARCHAR(20),
+    price_preference VARCHAR(20),
+    situation_preference VARCHAR(50),
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (member_id) REFERENCES MEMBER(member_id)
+        ON DELETE CASCADE
+);
+
+-- CATEGORY
+CREATE TABLE CATEGORY (
+    category_id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    category_name VARCHAR(50) UNIQUE NOT NULL
+);
+
+-- RESTAURANT
+CREATE TABLE RESTAURANT (
+    restaurant_id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    api_place_id VARCHAR(100) UNIQUE,
+    category_id BIGINT,
+    name VARCHAR(100) NOT NULL,
+    address VARCHAR(255) NOT NULL,
+    latitude DECIMAL(10, 7),
+    longitude DECIMAL(10, 7),
+    phone VARCHAR(20),
+    opening_hours TEXT,
+    price_range VARCHAR(20),
+    description TEXT,
+    status ENUM('ACTIVE', 'INACTIVE') NOT NULL,
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (category_id) REFERENCES CATEGORY(category_id)
+        ON DELETE SET NULL
+);
+
+-- REVIEW
+CREATE TABLE REVIEW (
+    review_id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    member_id BIGINT NOT NULL,
+    restaurant_id BIGINT NOT NULL,
+    rating INT NOT NULL,
+    content TEXT NOT NULL,
+    image VARCHAR(255),
+    status ENUM('VISIBLE', 'HIDDEN') NOT NULL,
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME,
+    FOREIGN KEY (member_id) REFERENCES MEMBER(member_id)
+        ON DELETE CASCADE,
+    FOREIGN KEY (restaurant_id) REFERENCES RESTAURANT(restaurant_id)
+        ON DELETE CASCADE
+);
+
+-- BOOKMARK
+CREATE TABLE BOOKMARK (
+    bookmark_id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    member_id BIGINT NOT NULL,
+    restaurant_id BIGINT NOT NULL,
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE (member_id, restaurant_id),
+    FOREIGN KEY (member_id) REFERENCES MEMBER(member_id)
+        ON DELETE CASCADE,
+    FOREIGN KEY (restaurant_id) REFERENCES RESTAURANT(restaurant_id)
+        ON DELETE CASCADE
+);
+
+-- RECENTLY_RESTAURANT
+CREATE TABLE RECENTLY_RESTAURANT (
+    recently_id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    member_id BIGINT NOT NULL,
+    restaurant_id BIGINT NOT NULL,
+    viewed_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (member_id) REFERENCES MEMBER(member_id)
+        ON DELETE CASCADE,
+    FOREIGN KEY (restaurant_id) REFERENCES RESTAURANT(restaurant_id)
+        ON DELETE CASCADE
+);
+
+-- RECOMMEND_HISTORY
+CREATE TABLE RECOMMEND_HISTORY (
+    recommend_id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    member_id BIGINT NOT NULL,
+    situation VARCHAR(50),
+    weather VARCHAR(20),
+    price_range VARCHAR(20),
+    spicy_level VARCHAR(20),
+    selected_food VARCHAR(100),
+    result_restaurant_id BIGINT,
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (member_id) REFERENCES MEMBER(member_id)
+        ON DELETE CASCADE,
+    FOREIGN KEY (result_restaurant_id) REFERENCES RESTAURANT(restaurant_id)
+        ON DELETE SET NULL
+);
+
+-- ALERT
+CREATE TABLE ALERT (
+    alert_id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    member_id BIGINT NOT NULL,
+    title VARCHAR(100) NOT NULL,
+    content TEXT NOT NULL,
+    is_read BOOLEAN NOT NULL DEFAULT FALSE,
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (member_id) REFERENCES MEMBER(member_id)
+        ON DELETE CASCADE
+);
+
+-- INQUIRY
+CREATE TABLE INQUIRY (
+    inquiry_id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    member_id BIGINT NOT NULL,
+    title VARCHAR(100) NOT NULL,
+    content TEXT NOT NULL,
+    status ENUM('WAITING', 'ANSWERED') NOT NULL,
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (member_id) REFERENCES MEMBER(member_id)
+        ON DELETE CASCADE
+);
+
+-- INQUIRY_REPLY
+CREATE TABLE INQUIRY_REPLY (
+    reply_id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    inquiry_id BIGINT NOT NULL,
+    admin_id BIGINT NOT NULL,
+    content TEXT NOT NULL,
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (inquiry_id) REFERENCES INQUIRY(inquiry_id)
+        ON DELETE CASCADE,
+    FOREIGN KEY (admin_id) REFERENCES MEMBER(member_id)
+        ON DELETE CASCADE
+);
+
+-- NOTICE
+CREATE TABLE NOTICE (
+    notice_id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    admin_id BIGINT NOT NULL,
+    title VARCHAR(100) NOT NULL,
+    content TEXT NOT NULL,
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (admin_id) REFERENCES MEMBER(member_id)
+        ON DELETE CASCADE
+);
+
+-- COMPLAINT
+CREATE TABLE COMPLAINT (
+    complaint_id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    review_id BIGINT NOT NULL,
+    reporter_id BIGINT NOT NULL,
+    reason TEXT NOT NULL,
+    status ENUM('WAITING', 'ACCEPTED', 'REJECTED') NOT NULL,
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (review_id) REFERENCES REVIEW(review_id)
+        ON DELETE CASCADE,
+    FOREIGN KEY (reporter_id) REFERENCES MEMBER(member_id)
+        ON DELETE CASCADE
+);
+
+-- REVIEW_LIKE
+CREATE TABLE REVIEW_LIKE (
+    review_like_id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    review_id BIGINT NOT NULL,
+    member_id BIGINT NOT NULL,
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    UNIQUE (review_id, member_id),
+
+    FOREIGN KEY (review_id) REFERENCES REVIEW(review_id)
+        ON DELETE CASCADE,
+
+    FOREIGN KEY (member_id) REFERENCES MEMBER(member_id)
+        ON DELETE CASCADE
+);
+
+-- REVIEW_COMMENT
+CREATE TABLE REVIEW_COMMENT (
+    comment_id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    review_id BIGINT NOT NULL,
+    member_id BIGINT NOT NULL,
+    content TEXT NOT NULL,
+    status ENUM('ACTIVE', 'DELETED') NOT NULL,
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME,
+
+    FOREIGN KEY (review_id) REFERENCES REVIEW(review_id)
+        ON DELETE CASCADE,
+
+    FOREIGN KEY (member_id) REFERENCES MEMBER(member_id)
+        ON DELETE CASCADE
+);
+
+-- REVIEW_IMAGE
+CREATE TABLE REVIEW_IMAGE (
+    image_id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    review_id BIGINT NOT NULL,
+    image_url VARCHAR(255) NOT NULL,
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    FOREIGN KEY (review_id) REFERENCES REVIEW(review_id)
+        ON DELETE CASCADE
+);
+
+-- RESTAURANT_IMAGE
+CREATE TABLE RESTAURANT_IMAGE (
+    image_id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    restaurant_id BIGINT NOT NULL,
+    image_url VARCHAR(255) NOT NULL,
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    FOREIGN KEY (restaurant_id) REFERENCES RESTAURANT(restaurant_id)
+        ON DELETE CASCADE
+);
+
+INSERT INTO CATEGORY (category_name) VALUES 
+('한식'),
+('중식'),
+('일식'),
+('양식'),
+('치킨'),
+('분식'),
+('카페/디저트'),
+('술집');
+
+INSERT INTO MEMBER (login_id, password, name, email, phone, role, status, created_at) VALUES
+('user1', '1234', '지훈', 'jihun@test.com', '010-1234-5678', 'USER', 'ACTIVE', NOW());

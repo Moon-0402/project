@@ -1,0 +1,123 @@
+<!--  
+========================================================================
+  servlet-context.xml 
+  : DispatcherServlet이 사용하는 Spring 설정 파일
+  : 컨트롤러, 뷰, DB 연결, 메시지 등 웹 관련 모든 설정을 담당
+========================================================================
+ -->
+<beans:beans xmlns="http://www.springframework.org/schema/mvc" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:beans="http://www.springframework.org/schema/beans" xmlns:context="http://www.springframework.org/schema/context" xsi:schemaLocation=" http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+<!--  ====================================================================
+       [1] @Controller, @RequestMapping 같은 어노테이션 사용 활성화
+       : 이거 없으면 컨트롤러 어노테이션이 동작 안 함
+       : enable-matrix-variables="true" → URL에서 ;key=value 형식 사용 가능
+       ====================================================================  -->
+<annotation-driven enable-matrix-variables="true"/>
+<!--  ====================================================================
+       [2] 정적 리소스 매핑 (CSS, JS, 이미지 등)
+       : /resources/** 로 들어오는 요청은 webapp/resources/ 폴더에서 찾음
+       : JSP에서 <link href="/resources/css/style.css"> 식으로 사용
+       ====================================================================  -->
+<resources mapping="/resources/**" location="/resources/"/>
+<!--  파일 업로드 폴더 매핑
+       : /upload/** 로 들어오는 요청은 C:/upload/ 에서 파일 가져옴
+       : 사용자가 업로드한 파일을 보여줄 때 사용  -->
+<resources mapping="/upload/**" location="file:///C:/upload/"/>
+<!--  ====================================================================
+       [3] ViewResolver 설정 (어떤 JSP를 보여줄지 결정)
+       : Controller가 return "index"; 하면
+       :   /WEB-INF/views/ + index + .jsp = /WEB-INF/views/index.jsp 찾음
+       : prefix(앞에 붙일 경로) + 컨트롤러 리턴값 + suffix(뒤에 붙일 확장자)
+       ====================================================================  -->
+<beans:bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+<beans:property name="prefix" value="/WEB-INF/views/"/>
+<beans:property name="suffix" value=".jsp"/>
+</beans:bean>
+<!--  ====================================================================
+       [4] 파일 업로드 처리기 (Multipart Resolver)
+       : <form enctype="multipart/form-data"> 로 파일 업로드할 때 사용
+       : Spring 5.x 이상 + Servlet 3.0+ 환경에서 사용하는 표준 방식
+       ====================================================================  -->
+<beans:bean id="multipartResolver" class="org.springframework.web.multipart.support.StandardServletMultipartResolver"/>
+<!--  ====================================================================
+       [5] 데이터베이스 연결 설정 (DataSource)
+       : DB 접속 정보 - 어떤 DB에, 어떤 계정으로 연결할지
+       
+       ⚠️ 주의: 비밀번호가 그대로 노출됨 → 운영 환경에서는 properties 파일로 분리 권장
+       
+       [아래는 로컬 개발용 - 주석 처리됨]
+       : 로컬 MySQL을 쓰면 팀원들도 똑같이 DB를 만들어야 해서 불편함
+       : 그래서 공용 AWS RDS를 사용하도록 변경됨  -->
+<!-- 
+  <beans:bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+    <beans:property name="driverClassName" value="com.mysql.cj.jdbc.Driver"/>
+    <beans:property name="url" value="jdbc:mysql://localhost/springmvc_db"/>
+    <beans:property name="username" value="root"/>
+    <beans:property name="password" value="1234"/>
+  </beans:bean>
+   -->
+<!--  [현재 사용중] AWS RDS MySQL 연결  -->
+<beans:bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+<!--  MySQL 8.x 드라이버 클래스 (mysql-connector-java 8.x)  -->
+<beans:property name="driverClassName" value="com.mysql.cj.jdbc.Driver"/>
+<!--  DB 접속 URL
+         allowPublicKeyRetrieval=true → 공개키 검색 허용 (MySQL 8 인증)
+         useSSL=false → SSL 비활성화 (개발용)
+         serverTimezone=Asia/Seoul → 시간대 한국  -->
+<beans:property name="url" value="jdbc:mysql://database.c5s8mqcqwxjg.ap-northeast-2.rds.amazonaws.com:3306/Eat?allowPublicKeyRetrieval=true"/>
+<beans:property name="username" value="admin"/>
+<beans:property name="password" value="eks3292929!"/>
+</beans:bean>
+<!--  ====================================================================
+       [6] JdbcTemplate (DB 작업을 쉽게 해주는 도구)
+       : SQL 실행, 결과 받기 등을 간단하게 처리
+       : 위에서 만든 dataSource를 주입받아서 사용
+       : DAO에서 @Autowired private JdbcTemplate jdbcTemplate; 으로 가져다 씀
+       ====================================================================  -->
+<beans:bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+<beans:property name="dataSource" ref="dataSource"/>
+</beans:bean>
+<!--  ====================================================================
+       [7] Interceptor 설정 (현재 비활성화)
+       : 컨트롤러 진입 전/후를 가로채서 공통 작업 처리 (로그인 체크 등)
+       : MonitoringInterceptor → 페이지 처리 시간 측정용
+       : AuditingInterceptor → 사용자 행동 로그 기록용
+       : ⚠️ 클래스가 아직 없어서 주석 처리. 나중에 만들면 주석 해제
+       ====================================================================  -->
+<!-- 
+  <interceptors>
+      <beans:bean class="com.springmvc.interceptor.MonitoringInterceptor" />
+      <beans:bean class="com.springmvc.interceptor.AuditingInterceptor" />
+  </interceptors>
+   -->
+<!--  ====================================================================
+       [8] 컴포넌트 스캔 (자동 빈 등록)
+       : com.springmvc 패키지와 그 아래 모든 패키지를 뒤져서
+       : @Controller, @Service, @Repository, @Component 가 붙은 클래스를
+       : 자동으로 Spring에 등록해줌
+       
+       ⚠️ 중요: "com.springmvc.*" (와일드카드) 쓰면 안 됨!
+              "com.springmvc" 만 쓰면 하위 패키지까지 모두 자동 스캔됨
+       ====================================================================  -->
+<context:component-scan base-package="com.springmvc"/>
+<!--  ====================================================================
+       [9] 메시지 소스 (다국어 / 에러 메시지 관리)
+       : messages.properties 파일에서 메시지를 읽어옴
+       : 예: messages_ko.properties (한글), messages_en.properties (영어)
+       : Validation 에러 메시지도 여기서 관리
+       ====================================================================  -->
+<beans:bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+<beans:property name="basename" value="messages"/>
+<beans:property name="defaultEncoding" value="UTF-8"/>
+</beans:bean>
+<!--  ====================================================================
+       [10] Validator (입력값 검증)
+       : @Valid 어노테이션으로 폼 데이터 유효성 검사할 때 사용
+       : 에러 메시지는 위의 messageSource(messages.properties)에서 가져옴
+       : 예: @NotEmpty, @Size, @Email 등의 검증 어노테이션 동작
+       ====================================================================  -->
+<beans:bean id="validator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean">
+<beans:property name="validationMessageSource" ref="messageSource"/>
+</beans:bean>
+<!--  위에서 만든 validator를 annotation-driven에 연결  -->
+<annotation-driven validator="validator"/>
+</beans:beans>
