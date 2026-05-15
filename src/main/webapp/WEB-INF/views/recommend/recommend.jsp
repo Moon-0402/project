@@ -295,19 +295,44 @@ body {
 	margin-top: 10px;
 }
 
-.map-card strong {
-	display: block;
-	margin-bottom: 10px;
+.map-header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 10px;
+	margin-bottom: 12px;
+}
+
+.map-header strong {
+	margin-bottom: 0;
+	font-weight: 900;
+}
+
+.location-search-btn {
+	width: 64px;
+	height: 34px;
+	border: none;
+	border-radius: 10px;
+	background: #ff6500;
+	color: white;
+	font-size: 13px;
+	font-weight: 900;
+	cursor: pointer;
+	transition: 0.2s;
+	flex-shrink: 0;
+}
+
+.location-search-btn:hover {
+	background: #ea580c;
+	transform: translateY(-1px);
 }
 
 .location-search {
-	display: flex;
-	gap: 8px;
 	margin-bottom: 12px;
 }
 
 .location-search input {
-	flex: 1;
+	width: 100%;
 	height: 38px;
 	border: 1px solid #ddd;
 	border-radius: 10px;
@@ -319,16 +344,7 @@ body {
 
 .location-search input:focus {
 	border-color: #ff6500;
-}
-
-.location-search button {
-	width: 54px;
-	border: none;
-	border-radius: 10px;
-	background: #ff6500;
-	color: white;
-	font-weight: 900;
-	cursor: pointer;
+	box-shadow: 0 0 0 4px rgba(255, 101, 0, 0.08);
 }
 
 #locationMap {
@@ -469,12 +485,20 @@ body {
 				</div>
 
 				<div class="map-card">
-					<strong>📍 내 위치</strong>
+
+					<div class="map-header">
+						<strong>📍 내 위치</strong>
+
+						<button type="button"
+								class="location-search-btn"
+								onclick="searchLocation()">
+							검색
+						</button>
+					</div>
 
 					<div class="location-search">
 						<input id="locationKeyword" type="text"
-							placeholder="예: 경남대, 창원시청, 마산합포구">
-						<button type="button" onclick="searchLocation()">검색</button>
+							   placeholder="예: 경남대, 창원시청, 마산합포구">
 					</div>
 
 					<div id="locationMap"></div>

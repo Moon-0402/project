@@ -20,6 +20,16 @@ public interface ReviewService {
 
 	// 내가 쓴 리뷰 목록 보기
 	List<ReviewDTO> getReviewListByMemberId(Long memberId);
+	
+	// 내가 쓴 리뷰 목록 페이징 추가
+	List<ReviewDTO> getReviewListByMemberId(Long memberId, int offset, int size);
+		
+	int countReviewByMemberId(Long memberId);
+	
+	// 식당 리뷰 목록 페이징 추가
+	List<ReviewDTO> getReviewListByRestaurantId(Long restaurantId, int offset, int size);
+	
+	int countReviewByRestaurantId(Long restaurantId);
 
 	// 같은 회원이 같은 맛집에 이미 리뷰 썼는지 확인
 	int countReviewByMemberAndRestaurant(Long memberId, Long restaurantId);

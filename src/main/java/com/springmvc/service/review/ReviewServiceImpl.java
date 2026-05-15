@@ -21,6 +21,20 @@ public class ReviewServiceImpl implements ReviewService{
 	}
 
 	@Override
+	public List<ReviewDTO> getReviewListByRestaurantId(Long restaurantId, int offset, int size) {
+		// TODO Auto-generated method stub
+		return reviewRepository.getReviewListByRestaurantId(restaurantId, offset, size);
+	}
+
+
+	@Override
+	public int countReviewByRestaurantId(Long restaurantId) {
+		// TODO Auto-generated method stub
+		return reviewRepository.countReviewByRestaurantId(restaurantId);
+	}
+
+
+	@Override
 	public void insertReview(ReviewDTO review) {
 		// TODO Auto-generated method stub
 		reviewRepository.insertReview(review);
@@ -42,6 +56,18 @@ public class ReviewServiceImpl implements ReviewService{
 	public List<ReviewDTO> getReviewListByMemberId(Long memberId) {
 		// TODO Auto-generated method stub
 		return reviewRepository.getReviewListByMemberId(memberId);
+	}
+
+	@Override
+	public List<ReviewDTO> getReviewListByMemberId(Long memberId, int offset, int size) {
+		// TODO Auto-generated method stub
+		return reviewRepository.getReviewListByMemberId(memberId, offset, size);
+	}
+
+	@Override
+	public int countReviewByMemberId(Long memberId) {
+		// TODO Auto-generated method stub
+		return reviewRepository.countReviewByMemberId(memberId);
 	}
 
 	@Override

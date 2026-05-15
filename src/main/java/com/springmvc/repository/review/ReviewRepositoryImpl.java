@@ -28,10 +28,52 @@ public class ReviewRepositoryImpl implements ReviewRepository {
               + "JOIN MEMBER m ON rv.member_id = m.member_id "
               + "JOIN RESTAURANT r ON rv.restaurant_id = r.restaurant_id "
               + "WHERE rv.restaurant_id = ? "
-              + "AND rv.status = 'VISIBLE' "
+              + "AND rv.status = 'ACTIVE' "
               + "ORDER BY rv.created_at DESC";
 		
 		return template.query(sql, new ReviewRowMapper(), restaurantId);
+	}
+	
+	@Override
+	public List<ReviewDTO> getReviewListByRestaurantId(Long restaurantId, int offset, int size) {
+
+	    String sql =
+	            "SELECT rv.review_id, rv.member_id, rv.restaurant_id, "
+	          + "rv.rating, rv.content, rv.image, rv.status, "
+	          + "rv.created_at, rv.updated_at, "
+	          + "m.name AS member_name, "
+	          + "r.name AS restaurant_name "
+	          + "FROM REVIEW rv "
+	          + "JOIN MEMBER m ON rv.member_id = m.member_id "
+	          + "JOIN RESTAURANT r ON rv.restaurant_id = r.restaurant_id "
+	          + "WHERE rv.restaurant_id = ? "
+	          + "AND rv.status = 'ACTIVE' "
+	          + "ORDER BY rv.created_at DESC "
+	          + "LIMIT ?, ?";
+
+	    return template.query(
+	            sql,
+	            new ReviewRowMapper(),
+	            restaurantId,
+	            offset,
+	            size
+	    );
+	}
+
+	@Override
+	public int countReviewByRestaurantId(Long restaurantId) {
+
+	    String sql =
+	            "SELECT COUNT(*) "
+	          + "FROM REVIEW "
+	          + "WHERE restaurant_id = ? "
+	          + "AND status = 'ACTIVE'";
+
+	    return template.queryForObject(
+	            sql,
+	            Integer.class,
+	            restaurantId
+	    );
 	}
 
 	@Override
@@ -40,7 +82,7 @@ public class ReviewRepositoryImpl implements ReviewRepository {
 		String sql = 
 				"INSERT INTO REVIEW "
 				+ "(member_id, restaurant_id, rating, content, image, status, created_at) "
-				+ "VALUES (?, ?, ?, ?, ?, 'VISIBLE', NOW())";
+				+ "VALUES (?, ?, ?, ?, ?, 'ACTIVE', NOW())";
 		
 		template.update(
 				sql, 
@@ -103,12 +145,55 @@ public class ReviewRepositoryImpl implements ReviewRepository {
               + "JOIN MEMBER m ON rv.member_id = m.member_id "
               + "JOIN RESTAURANT r ON rv.restaurant_id = r.restaurant_id "
               + "WHERE rv.member_id = ? "
-              + "AND rv.status = 'VISIBLE' "
+              + "AND rv.status = 'ACTIVE' "
               + "ORDER BY rv.created_at DESC";
 		
 		return template.query(sql, new ReviewRowMapper(), memberId);
 	}
 	
+	@Override
+	public List<ReviewDTO> getReviewListByMemberId(Long memberId, int offset, int size) {
+
+	    String sql =
+	            "SELECT rv.review_id, rv.member_id, rv.restaurant_id, "
+	          + "rv.rating, rv.content, rv.image, rv.status, "
+	          + "rv.created_at, rv.updated_at, "
+	          + "m.name AS member_name, "
+	          + "r.name AS restaurant_name "
+	          + "FROM REVIEW rv "
+	          + "JOIN MEMBER m ON rv.member_id = m.member_id "
+	          + "JOIN RESTAURANT r ON rv.restaurant_id = r.restaurant_id "
+	          + "WHERE rv.member_id = ? "
+	          + "AND rv.status = 'ACTIVE' "
+	          + "ORDER BY rv.created_at DESC "
+	          + "LIMIT ?, ?";
+
+	    return template.query(
+	            sql,
+	            new ReviewRowMapper(),
+	            memberId,
+	            offset,
+	            size
+	    );
+	}
+
+	@Override
+	public int countReviewByMemberId(Long memberId) {
+		// TODO Auto-generated method stub
+		
+		String sql =
+	            "SELECT COUNT(*) "
+	          + "FROM REVIEW "
+	          + "WHERE member_id = ? "
+	          + "AND status = 'ACTIVE'";
+		
+		return template.queryForObject(
+	            sql,
+	            Integer.class,
+	            memberId
+	    );
+	}
+
 	// 같은 회원이 같은 맛집에 이미 리뷰 썼는지 확인
 	@Override
 	public int countReviewByMemberAndRestaurant(Long memberId, Long restaurantId) {
@@ -118,7 +203,7 @@ public class ReviewRepositoryImpl implements ReviewRepository {
               + "FROM REVIEW "
               + "WHERE member_id = ? "
               + "AND restaurant_id = ? "
-              + "AND status = 'VISIBLE'";
+              + "AND status = 'ACTIVE'";
 		
 		return template.queryForObject(
 				sql,
