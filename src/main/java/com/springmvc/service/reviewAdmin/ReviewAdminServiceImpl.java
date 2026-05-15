@@ -47,4 +47,10 @@ public class ReviewAdminServiceImpl implements ReviewAdminService {
 	public int countReviewByRestaurantName(String restaurantName) {
 		return reviewAdminRepository.countReviewByRestaurantName(restaurantName);
 	}
+
+	@Override
+	public ReviewDTO findReviewDetailById(Long reviewId) {
+		// TODO Auto-generated method stub
+		return reviewAdminRepository.findReviewDetailById(reviewId);
+	}
 }

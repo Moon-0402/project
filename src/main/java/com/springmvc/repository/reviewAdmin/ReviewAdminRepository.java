@@ -20,4 +20,7 @@ public interface ReviewAdminRepository {
 	
 	//음식점 이름 검색 결과 개수
 	int countReviewByRestaurantName(String restaurantName);
+	
+	//리뷰 상세보기
+	ReviewDTO findReviewDetailById(Long reviewId);
 }

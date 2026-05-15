@@ -19,4 +19,6 @@ public interface ReviewAdminService {
 
 	// 음식점 이름 검색 결과 개수
 	int countReviewByRestaurantName(String restaurantName);
+	
+	ReviewDTO findReviewDetailById(Long reviewId);
 }

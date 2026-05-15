@@ -31,8 +31,8 @@ public class ReviewRowMapper implements RowMapper<ReviewDTO> {
             review.setUpdatedAt(updatedAt.toLocalDateTime());
         }
 
-        review.setMemberName(rs.getString("member_name"));
-        review.setRestaurantName(rs.getString("restaurant_name"));
+        review.setMemberName(rs.getString("name"));
+        review.setRestaurantName(rs.getString("name"));
 		return review;
 	}
 	

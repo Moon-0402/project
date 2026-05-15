@@ -18,7 +18,7 @@ public class ReviewAdminRepositoryImpl implements ReviewAdminRepository{
 	public List<ReviewDTO> reviewManagement(int offset, int size) {
 		// TODO Auto-generated method stub
 		String sql = "select rv.review_id, rv.member_id, rv.restaurant_id, rv.rating, rv.content, rv.image, "
-				+ "rv.status, rv.created_at, rv.updated_at, m.name, r.name from REVIEW rv "
+				+ "rv.status, rv.created_at, rv.updated_at, m.name , r.name from REVIEW rv "
 				+ "join MEMBER m on rv.member_id = m.member_id "
 				+ "join RESTAURANT r on rv.restaurant_id = r.restaurant_id "
 				+ "order by rv.review_id desc "
@@ -63,6 +63,29 @@ public class ReviewAdminRepositoryImpl implements ReviewAdminRepository{
 		String keyword = "%" + restaurantName +"%";
 		Integer count = template.queryForObject(sql, Integer.class,keyword);
 		return count != null ? count :0;
+	}
+
+	@Override
+	public ReviewDTO findReviewDetailById(Long reviewId) {
+		// TODO Auto-generated method stub
+		String sql = "SELECT "
+				+ "rv.review_id, "
+				+ "rv.member_id, "
+				+ "rv.restaurant_id, "
+				+ "rv.rating, "
+				+ "rv.content, "
+				+ "rv.image, "
+				+ "rv.status, "
+				+ "rv.created_at, "
+				+ "rv.updated_at, "
+				+ "m.name , "
+				+ "r.name "
+				+ "FROM REVIEW rv "
+				+ "JOIN MEMBER m ON rv.member_id = m.member_id "
+				+ "JOIN RESTAURANT r ON rv.restaurant_id = r.restaurant_id "
+				+ "WHERE rv.review_id = ?";
+
+		return template.queryForObject(sql, new ReviewRowMapper(), reviewId);
 	}
 	
 }

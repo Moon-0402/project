@@ -81,14 +81,40 @@ public class ReviewAdminController {
 			}
 			if(!"ACTIVE".equals(status) && !"BLOCKED".equals(status)) {
 				rttr.addFlashAttribute("errorMessage","잘못된 리뷰 상태입니다.");
-				return "redirect:/admin/reviews?page=" + page
+				return "redirect:/admin/reviewList?page=" + page
 			            + "&size=" + size
 			            + "&restaurantName=" + restaurantName.trim();
 			}
 			reviewAdminService.updateReviewStatus(reviewId, status);
 			rttr.addFlashAttribute("successMessage","리뷰 상태가 변경되었습니다.");
-			return "redirect:/admin/reviews?page=" + page
+			return "redirect:/admin/reviewList?page=" + page
 		            + "&size=" + size
 		            + "&restaurantName=" + restaurantName.trim();
+	}
+	
+	@GetMapping("/reviewDetail")
+	public String reviewDetail(@RequestParam("reviewId") Long reviewId,
+							   HttpSession session,
+							   Model model,
+							   RedirectAttributes rttr) {
+
+		LoginMemberDTO loginMember =
+				(LoginMemberDTO) session.getAttribute("loginMember");
+
+		if (loginMember == null) {
+			rttr.addFlashAttribute("errorMessage", "로그인 후 이용할 수 있습니다.");
+			return "redirect:/member/login";
+		}
+
+		if (!"ADMIN".equals(loginMember.getRole())) {
+			rttr.addFlashAttribute("errorMessage", "관리자만 접근할 수 있습니다.");
+			return "redirect:/";
+		}
+
+		ReviewDTO review = reviewAdminService.findReviewDetailById(reviewId);
+
+		model.addAttribute("review", review);
+
+		return "admin/reviewDetail";
 	}
 }
