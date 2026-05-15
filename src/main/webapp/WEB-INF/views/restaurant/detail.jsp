@@ -79,7 +79,7 @@ a {
 }
 
 .container {
-	max-width: 1180px;
+	max-width: 1240px;
 	margin: 0 auto;
 	padding: 52px 24px;
 }
@@ -97,7 +97,7 @@ a {
 	box-shadow: 0 24px 70px rgba(255, 112, 0, 0.14);
 	overflow: hidden;
 	display: grid;
-	grid-template-columns: 1fr 1fr;
+	grid-template-columns: 0.98fr 1.02fr;
 }
 
 .image-area {
@@ -168,24 +168,26 @@ a {
 
 .actions {
 	display: flex;
-	flex-wrap: wrap;
-	gap: 12px;
+	flex-wrap: nowrap;
+	gap: 8px;
 	margin-top: 8px;
+	align-items: center;
 }
 
 .btn {
 	border: none;
 	border-radius: 16px;
-	padding: 15px 22px;
+	padding: 14px 18px;
 	font-weight: 900;
 	cursor: pointer;
-	font-size: 15px;
+	font-size: 14px;
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
 	gap: 7px;
 	transition: 0.2s ease;
 	box-shadow: 0 10px 24px rgba(0, 0, 0, 0.08);
+	white-space: nowrap;
 }
 
 .btn:hover {
@@ -200,6 +202,15 @@ a {
 .secondary {
 	background: #111827;
 	color: #fff;
+}
+
+.review-btn {
+	background: #2563eb;
+	color: white;
+}
+
+.review-btn:hover {
+	background: #1d4ed8;
 }
 
 .map-box {
@@ -235,155 +246,177 @@ a {
 
 <body>
 
-	<%@ include file = "/WEB-INF/views/header.jsp" %>
+	<%@ include file="/WEB-INF/views/header.jsp"%>
 
-<main class="container">
+	<main class="container">
 
-	<a href="${contextPath}/restaurants" class="back">← 맛집 리스트로 돌아가기</a>
+		<a href="${contextPath}/restaurants" class="back">← 맛집 리스트로 돌아가기</a>
 
-	<section class="detail-card">
+		<section class="detail-card">
 
-		<div class="image-area">
+			<div class="image-area">
 
-			<c:choose>
-				<c:when test="${restaurant.categoryId == 1 or fn:contains(restaurant.kakaoCategoryName, '한식')}">
-					<img src="${contextPath}/resources/images/category/korean.jpg" alt="${restaurant.name}">
-				</c:when>
+				<c:choose>
+					<c:when
+						test="${restaurant.categoryId == 1 or fn:contains(restaurant.kakaoCategoryName, '한식')}">
+						<img src="${contextPath}/resources/images/category/korean.jpg"
+							alt="${restaurant.name}">
+					</c:when>
 
-				<c:when test="${restaurant.categoryId == 2 or fn:contains(restaurant.kakaoCategoryName, '중식')}">
-					<img src="${contextPath}/resources/images/category/chinese.jpg" alt="${restaurant.name}">
-				</c:when>
+					<c:when
+						test="${restaurant.categoryId == 2 or fn:contains(restaurant.kakaoCategoryName, '중식')}">
+						<img src="${contextPath}/resources/images/category/chinese.jpg"
+							alt="${restaurant.name}">
+					</c:when>
 
-				<c:when test="${restaurant.categoryId == 3 or fn:contains(restaurant.kakaoCategoryName, '일식')}">
-					<img src="${contextPath}/resources/images/category/japanese.jpg" alt="${restaurant.name}">
-				</c:when>
+					<c:when
+						test="${restaurant.categoryId == 3 or fn:contains(restaurant.kakaoCategoryName, '일식')}">
+						<img src="${contextPath}/resources/images/category/japanese.jpg"
+							alt="${restaurant.name}">
+					</c:when>
 
-				<c:when test="${restaurant.categoryId == 4 or fn:contains(restaurant.kakaoCategoryName, '양식') or fn:contains(restaurant.kakaoCategoryName, '샐러드')}">
-					<img src="${contextPath}/resources/images/category/western.jpg" alt="${restaurant.name}">
-				</c:when>
+					<c:when
+						test="${restaurant.categoryId == 4 or fn:contains(restaurant.kakaoCategoryName, '양식') or fn:contains(restaurant.kakaoCategoryName, '샐러드')}">
+						<img src="${contextPath}/resources/images/category/western.jpg"
+							alt="${restaurant.name}">
+					</c:when>
 
-				<c:when test="${restaurant.categoryId == 5 or fn:contains(restaurant.kakaoCategoryName, '치킨')}">
-					<img src="${contextPath}/resources/images/category/chicken.jpg" alt="${restaurant.name}">
-				</c:when>
+					<c:when
+						test="${restaurant.categoryId == 5 or fn:contains(restaurant.kakaoCategoryName, '치킨')}">
+						<img src="${contextPath}/resources/images/category/chicken.jpg"
+							alt="${restaurant.name}">
+					</c:when>
 
-				<c:when test="${restaurant.categoryId == 6 or fn:contains(restaurant.kakaoCategoryName, '분식')}">
-					<img src="${contextPath}/resources/images/category/snack_food.jpg" alt="${restaurant.name}">
-				</c:when>
+					<c:when
+						test="${restaurant.categoryId == 6 or fn:contains(restaurant.kakaoCategoryName, '분식')}">
+						<img src="${contextPath}/resources/images/category/snack_food.jpg"
+							alt="${restaurant.name}">
+					</c:when>
 
-				<c:when test="${restaurant.categoryId == 7 or fn:contains(restaurant.kakaoCategoryName, '카페') or fn:contains(restaurant.kakaoCategoryName, '디저트') or fn:contains(restaurant.kakaoCategoryName, '커피')}">
-					<img src="${contextPath}/resources/images/category/cafe.jpg" alt="${restaurant.name}">
-				</c:when>
+					<c:when
+						test="${restaurant.categoryId == 7 or fn:contains(restaurant.kakaoCategoryName, '카페') or fn:contains(restaurant.kakaoCategoryName, '디저트') or fn:contains(restaurant.kakaoCategoryName, '커피')}">
+						<img src="${contextPath}/resources/images/category/cafe.jpg"
+							alt="${restaurant.name}">
+					</c:when>
 
-				<c:when test="${restaurant.categoryId == 8 or fn:contains(restaurant.kakaoCategoryName, '술집') or fn:contains(restaurant.kakaoCategoryName, '호프') or fn:contains(restaurant.kakaoCategoryName, '주점') or fn:contains(restaurant.kakaoCategoryName, '이자카야')}">
-					<img src="${contextPath}/resources/images/category/bar.jpg" alt="${restaurant.name}">
-				</c:when>
+					<c:when
+						test="${restaurant.categoryId == 8 or fn:contains(restaurant.kakaoCategoryName, '술집') or fn:contains(restaurant.kakaoCategoryName, '호프') or fn:contains(restaurant.kakaoCategoryName, '주점') or fn:contains(restaurant.kakaoCategoryName, '이자카야')}">
+						<img src="${contextPath}/resources/images/category/bar.jpg"
+							alt="${restaurant.name}">
+					</c:when>
 
-				<c:otherwise>
-					<img src="${contextPath}/resources/images/category/etc_food.png">
-				</c:otherwise>
-			</c:choose>
-
-		</div>
-
-		<div class="info-area">
-
-			<div class="badge">맛집 정보</div>
-
-			<h1 class="title">${restaurant.name}</h1>
-
-			<div class="rating">★ 0.0</div>
-
-			<div class="desc">${restaurant.description}</div>
-
-			<div class="info-list">
-
-				<c:if test="${not empty restaurant.kakaoCategoryName}">
-					<div class="info-row">🏷 카테고리 : ${restaurant.kakaoCategoryName}</div>
-				</c:if>
-
-				<div class="info-row">📍 주소 : ${restaurant.address}</div>
-
-				<div class="info-row">☎ 전화번호 : ${restaurant.phone}</div>
-
-				<div class="info-row">💰 가격대 : ${restaurant.priceRange}</div>
+					<c:otherwise>
+						<img src="${contextPath}/resources/images/category/etc_food.png">
+					</c:otherwise>
+				</c:choose>
 
 			</div>
 
-			<div class="actions">
+			<div class="info-area">
 
-				<a class="btn primary" href="${contextPath}/recommend">추천 받기</a>
+				<div class="badge">맛집 정보</div>
 
-				<c:if test="${not empty restaurant.placeUrl}">
-					<a class="btn kakao" href="${restaurant.placeUrl}" target="_blank">
-						카카오맵 상세정보
-					</a>
-				</c:if>
+				<h1 class="title">${restaurant.name}</h1>
 
-				<c:if test="${empty restaurant.placeUrl}">
-					<a class="btn kakao"
-					   href="https://map.kakao.com/link/search/${restaurant.name} ${restaurant.address}"
-					   target="_blank">
-						카카오맵 검색
-					</a>
-				</c:if>
+				<div class="rating">★ 0.0</div>
 
-				<form action="${contextPath}/bookmark/add" method="post" style="margin: 0;" onsubmit="alert('즐겨찾기에 추가되었습니다.');">
-				
-					<input type="hidden" name="restaurantId" value="${restaurant.restaurantId}">
+				<div class="desc">${restaurant.description}</div>
 
-					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
+				<div class="info-list">
 
-					<button type="submit" class="btn secondary">♡ 즐겨찾기</button>
+					<c:if test="${not empty restaurant.kakaoCategoryName}">
+						<div class="info-row">🏷 카테고리 :
+							${restaurant.kakaoCategoryName}</div>
+					</c:if>
 
-				</form>
+					<div class="info-row">📍 주소 : ${restaurant.address}</div>
+
+					<div class="info-row">☎ 전화번호 : ${restaurant.phone}</div>
+
+					<div class="info-row">💰 가격대 : ${restaurant.priceRange}</div>
+
+				</div>
+
+				<div class="actions">
+
+					<a class="btn primary" href="${contextPath}/recommend"> 추천 받기 </a>
+
+					<c:if test="${not empty restaurant.placeUrl}">
+						<a class="btn kakao" href="${restaurant.placeUrl}" target="_blank">
+							카카오맵 상세정보 </a>
+					</c:if>
+
+					<c:if test="${empty restaurant.placeUrl}">
+						<a class="btn kakao"
+							href="https://map.kakao.com/link/search/${restaurant.name} ${restaurant.address}"
+							target="_blank"> 카카오맵 검색 </a>
+					</c:if>
+
+					<form action="${contextPath}/bookmark/add" method="post"
+						style="margin: 0;" onsubmit="alert('즐겨찾기에 추가되었습니다.');">
+
+						<input type="hidden" name="restaurantId"
+							value="${restaurant.restaurantId}"> <input type="hidden"
+							name="${_csrf.parameterName}" value="${_csrf.token}">
+
+						<button type="submit" class="btn secondary">즐겨찾기</button>
+
+					</form>
+
+					<a class="btn review-btn"
+						href="${contextPath}/review/write?restaurantId=${restaurant.restaurantId}">
+						리뷰 작성하기 </a>
+
+				</div>
 
 			</div>
 
-		</div>
-
-	</section>
-
-	<c:if test="${not empty restaurant.latitude and not empty restaurant.longitude}">
-
-		<section class="map-box">
-			<div class="map-title">위치 보기</div>
-			<div id="map"></div>
 		</section>
 
-		<script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=2a87f90deda3136d9524a194c121dcf1"></script>
+		<c:if
+			test="${not empty restaurant.latitude and not empty restaurant.longitude}">
 
-		<script>
-			var lat = ${restaurant.latitude};
-			var lng = ${restaurant.longitude};
-			var restaurantName = "${restaurant.name}";
+			<section class="map-box">
+				<div class="map-title">위치 보기</div>
+				<div id="map"></div>
+			</section>
 
-			var mapContainer = document.getElementById('map');
+			<script
+				src="//dapi.kakao.com/v2/maps/sdk.js?appkey=2a87f90deda3136d9524a194c121dcf1"></script>
 
-			var mapOption = {
-				center: new kakao.maps.LatLng(lat, lng),
-				level: 4
-			};
+			<script>
+				var lat = ${restaurant.latitude};
+				var lng = ${restaurant.longitude};
+				var restaurantName = "${restaurant.name}";
 
-			var map = new kakao.maps.Map(mapContainer, mapOption);
+				var mapContainer = document.getElementById('map');
 
-			var markerPosition = new kakao.maps.LatLng(lat, lng);
+				var mapOption = {
+					center : new kakao.maps.LatLng(lat, lng),
+					level : 4
+				};
 
-			var marker = new kakao.maps.Marker({
-				position: markerPosition
-			});
+				var map = new kakao.maps.Map(mapContainer, mapOption);
 
-			marker.setMap(map);
+				var markerPosition = new kakao.maps.LatLng(lat, lng);
 
-			var infowindow = new kakao.maps.InfoWindow({
-				content: '<div style="padding:8px 12px;font-weight:800;">' + restaurantName + '</div>'
-			});
+				var marker = new kakao.maps.Marker({
+					position : markerPosition
+				});
 
-			infowindow.open(map, marker);
-		</script>
+				marker.setMap(map);
 
-	</c:if>
+				var infowindow = new kakao.maps.InfoWindow({
+					content : '<div style="padding:8px 12px;font-weight:800;">'
+							+ restaurantName + '</div>'
+				});
 
-</main>
-	<%@ include file = "/WEB-INF/views/footer.jsp" %>
+				infowindow.open(map, marker);
+			</script>
+
+		</c:if>
+
+	</main>
+	<%@ include file="/WEB-INF/views/footer.jsp"%>
 </body>
 </html>

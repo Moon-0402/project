@@ -151,9 +151,12 @@ public class RestaurantController {
     }
     
     @GetMapping("/restaurants/recent")
-    public String recentRestaurant(Model model,HttpSession session) {
+    public String recentRestaurant(
+            Model model,
+            HttpSession session,
+            @RequestParam(value = "page", defaultValue = "1") int page) {
 
-    	LoginMemberDTO loginMember =
+        LoginMemberDTO loginMember =
                 (LoginMemberDTO) session.getAttribute("loginMember");
 
         if (loginMember == null) {
@@ -161,10 +164,33 @@ public class RestaurantController {
         }
 
         Long memberId = loginMember.getMemberId();
+
+        int size = 5;
+        int offset = (page - 1) * size;
+
         List<RestaurantDTO> recentList =
-            restaurantService.getRecentlyRestaurantList(memberId);
+                restaurantService.getRecentlyRestaurantList(memberId, offset, size);
+
+        int totalCount =
+                restaurantService.countRecentlyRestaurantList(memberId);
+
+        int totalPage = (int) Math.ceil((double) totalCount / size);
+
+        int pageLimit = 5;
+        int startPage = ((page - 1) / pageLimit) * pageLimit + 1;
+        int endPage = startPage + pageLimit - 1;
+
+        if (endPage > totalPage) {
+            endPage = totalPage;
+        }
 
         model.addAttribute("recentList", recentList);
+        model.addAttribute("totalCount", totalCount);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPage", totalPage);
+        model.addAttribute("startPage", startPage);
+        model.addAttribute("endPage", endPage);
+        model.addAttribute("pageLimit", pageLimit);
 
         return "restaurant/recent";
     }
