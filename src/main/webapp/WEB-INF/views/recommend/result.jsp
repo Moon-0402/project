@@ -288,7 +288,7 @@ body {
 							<a class="btn btn-main"
 								href="${contextPath}/restaurants/${r.restaurantId}"> 상세보기 </a> <a
 								class="btn btn-review"
-								href="${contextPath}/review?restaurantId=${r.restaurantId}">
+								href="${contextPath}/review/list?restaurantId=${r.restaurantId}">
 								리뷰보기 </a>
 
 						</div>

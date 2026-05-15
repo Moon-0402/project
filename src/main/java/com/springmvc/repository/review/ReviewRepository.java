@@ -33,4 +33,17 @@ public interface ReviewRepository {
 	
 	// 같은 회원이 같은 맛집에 이미 리뷰 썼는지 확인
 	int countReviewByMemberAndRestaurant(Long memberId, Long restaurantId);
+	
+	// 최신 리뷰 조회 
+	List<ReviewDTO> getLatestReviewList(int limit);
+	
+	// 최신 리뷰 목록 페이징 추가
+	List<ReviewDTO> getReviewList(int offset, int size);
+		
+	int countReview();
+	
+	// 리뷰 검색 조회 + 페이징 추가
+	List<ReviewDTO> searchReviewList(String regionKeyword, String foodKeyword, int offset, int size);
+	
+	int countSearchReviewList(String regionKeyword, String foodKeyword);
 }

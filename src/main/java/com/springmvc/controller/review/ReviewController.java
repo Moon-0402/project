@@ -24,72 +24,127 @@ import jakarta.servlet.http.HttpSession;
 @Controller
 public class ReviewController {
 
-    @Autowired
-    private ReviewService reviewService;
+	@Autowired
+	private ReviewService reviewService;
 
-    @Autowired
-    private RestaurantService restaurantService;
+	@Autowired
+	private RestaurantService restaurantService;
 
-    @GetMapping("/review")
-    public String reviewMain() {
-        return "review/main";
-    }
+	// 리뷰 메인 페이지
+	// 최신 리뷰 목록 + 리뷰 검색 + 페이징
+	@GetMapping("/review")
+	public String reviewMain(
+	        @RequestParam(value = "regionKeyword", required = false) String regionKeyword,
+	        @RequestParam(value = "foodKeyword", required = false) String foodKeyword,
+	        @RequestParam(value = "page", defaultValue = "1") int page,
+	        @RequestParam(value = "size", defaultValue = "6") int size,
+	        Model model) {
 
-    @GetMapping("/review/list")
-    public String reviewList(
-            @RequestParam("restaurantId") Long restaurantId,
-            @RequestParam(value = "page", defaultValue = "1") int page,
-            @RequestParam(value = "size", defaultValue = "5") int size,
-            Model model) {
+	    boolean isSearch =
+	            (regionKeyword != null && !regionKeyword.trim().isEmpty())
+	         || (foodKeyword != null && !foodKeyword.trim().isEmpty());
 
-        int totalCount = reviewService.countReviewByRestaurantId(restaurantId);
+	    int offset = (page - 1) * size;
 
-        int offset = (page - 1) * size;
+	    int totalCount;
+	    List<ReviewDTO> latestReviewList;
 
-        List<ReviewDTO> reviewList =
-                reviewService.getReviewListByRestaurantId(restaurantId, offset, size);
+	    if (isSearch) {
 
-        int totalPage = (int) Math.ceil((double) totalCount / size);
+	        totalCount =
+	                reviewService.countSearchReviewList(regionKeyword, foodKeyword);
 
-        int pageLimit = 5;
-        int startPage = ((page - 1) / pageLimit) * pageLimit + 1;
-        int endPage = startPage + pageLimit - 1;
+	        latestReviewList =
+	                reviewService.searchReviewList(
+	                        regionKeyword,
+	                        foodKeyword,
+	                        offset,
+	                        size
+	                );
 
-        if (endPage > totalPage) {
-            endPage = totalPage;
-        }
+	    } else {
 
-        model.addAttribute("reviewList", reviewList);
-        model.addAttribute("restaurantId", restaurantId);
-        model.addAttribute("totalCount", totalCount);
-        model.addAttribute("currentPage", page);
-        model.addAttribute("totalPage", totalPage);
-        model.addAttribute("startPage", startPage);
-        model.addAttribute("endPage", endPage);
-        model.addAttribute("pageLimit", pageLimit);
-        model.addAttribute("size", size);
+	        totalCount = reviewService.countReview();
 
-        return "review/list";
-    }
+	        latestReviewList =
+	                reviewService.getReviewList(offset, size);
+	    }
 
-    @GetMapping("/review/write")
-    public String reviewWriteForm(
-            @RequestParam("restaurantId") Long restaurantId,
-            Model model,
-            HttpSession session) {
+	    int totalPage =
+	            (int) Math.ceil((double) totalCount / size);
 
-        LoginMemberDTO loginMember =
-                (LoginMemberDTO) session.getAttribute("loginMember");
+	    int pageLimit = 5;
+	    int startPage = ((page - 1) / pageLimit) * pageLimit + 1;
+	    int endPage = startPage + pageLimit - 1;
 
-        if (loginMember == null) {
-            return "redirect:/member/login";
-        }
+	    if (endPage > totalPage) {
+	        endPage = totalPage;
+	    }
 
-        Long memberId = loginMember.getMemberId();
-        // ===========================
-        // 기존: 같은 맛집 리뷰 중복 제한
-        // 여러 리뷰 작성 허용을 위해 제거
-        // ===========================
+	    model.addAttribute("latestReviewList", latestReviewList);
+	    model.addAttribute("regionKeyword", regionKeyword);
+	    model.addAttribute("foodKeyword", foodKeyword);
+	    model.addAttribute("isSearch", isSearch);
+
+	    model.addAttribute("totalCount", totalCount);
+	    model.addAttribute("currentPage", page);
+	    model.addAttribute("totalPage", totalPage);
+	    model.addAttribute("startPage", startPage);
+	    model.addAttribute("endPage", endPage);
+	    model.addAttribute("pageLimit", pageLimit);
+	    model.addAttribute("size", size);
+
+	    return "review/main";
+	}
+
+	@GetMapping("/review/list")
+	public String reviewList(@RequestParam("restaurantId") Long restaurantId,
+			@RequestParam(value = "page", defaultValue = "1") int page,
+			@RequestParam(value = "size", defaultValue = "5") int size, Model model) {
+
+		int totalCount = reviewService.countReviewByRestaurantId(restaurantId);
+
+		int offset = (page - 1) * size;
+
+		List<ReviewDTO> reviewList = reviewService.getReviewListByRestaurantId(restaurantId, offset, size);
+
+		int totalPage = (int) Math.ceil((double) totalCount / size);
+
+		int pageLimit = 5;
+		int startPage = ((page - 1) / pageLimit) * pageLimit + 1;
+		int endPage = startPage + pageLimit - 1;
+
+		if (endPage > totalPage) {
+			endPage = totalPage;
+		}
+
+		model.addAttribute("reviewList", reviewList);
+		model.addAttribute("restaurantId", restaurantId);
+		model.addAttribute("totalCount", totalCount);
+		model.addAttribute("currentPage", page);
+		model.addAttribute("totalPage", totalPage);
+		model.addAttribute("startPage", startPage);
+		model.addAttribute("endPage", endPage);
+		model.addAttribute("pageLimit", pageLimit);
+		model.addAttribute("size", size);
+
+		return "review/list";
+	}
+
+	@GetMapping("/review/write")
+	public String reviewWriteForm(@RequestParam("restaurantId") Long restaurantId, Model model, HttpSession session) {
+
+		LoginMemberDTO loginMember = (LoginMemberDTO) session.getAttribute("loginMember");
+
+		if (loginMember == null) {
+			return "redirect:/member/login";
+		}
+
+		Long memberId = loginMember.getMemberId();
+		// ===========================
+		// 기존: 같은 맛집 리뷰 중복 제한
+		// 여러 리뷰 작성 허용을 위해 제거
+		// ===========================
 //        int reviewCount =
 //                reviewService.countReviewByMemberAndRestaurant(memberId, restaurantId);
 //
@@ -97,103 +152,93 @@ public class ReviewController {
 //            return "redirect:/restaurants/" + restaurantId;
 //        }
 
-        Restaurant restaurant =
-                restaurantService.getRestaurantById(restaurantId);
+		Restaurant restaurant = restaurantService.getRestaurantById(restaurantId);
 
-        ReviewDTO review = new ReviewDTO();
-        review.setRestaurantId(restaurantId);
-        review.setMemberId(memberId);
-        review.setRestaurantName(restaurant.getName());
+		ReviewDTO review = new ReviewDTO();
+		review.setRestaurantId(restaurantId);
+		review.setMemberId(memberId);
+		review.setRestaurantName(restaurant.getName());
 
-        model.addAttribute("review", review);
-        model.addAttribute("edit", false);
+		model.addAttribute("review", review);
+		model.addAttribute("edit", false);
 
-        return "review/form";
-    }
+		return "review/form";
+	}
 
-    @PostMapping("/review/write")
-    public String reviewWrite(
-            ReviewDTO review,
-            @RequestParam(value = "imageFile", required = false) MultipartFile imageFile,
-            HttpSession session) throws IOException {
+	@PostMapping("/review/write")
+	public String reviewWrite(ReviewDTO review,
+			@RequestParam(value = "imageFile", required = false) MultipartFile imageFile, HttpSession session)
+			throws IOException {
 
-        LoginMemberDTO loginMember =
-                (LoginMemberDTO) session.getAttribute("loginMember");
+		LoginMemberDTO loginMember = (LoginMemberDTO) session.getAttribute("loginMember");
 
-        if (loginMember == null) {
-            return "redirect:/member/login";
-        }
+		if (loginMember == null) {
+			return "redirect:/member/login";
+		}
 
-        review.setMemberId(loginMember.getMemberId());
+		review.setMemberId(loginMember.getMemberId());
 
-        if (imageFile != null && !imageFile.isEmpty()) {
-            String savedImagePath = saveReviewImage(imageFile, session);
-            review.setImage(savedImagePath);
-        }
+		if (imageFile != null && !imageFile.isEmpty()) {
+			String savedImagePath = saveReviewImage(imageFile, session);
+			review.setImage(savedImagePath);
+		}
 
-        reviewService.insertReview(review);
+		reviewService.insertReview(review);
 
-        // ===========================
-        // 리뷰 작성 후 리뷰 목록으로 이동
-        // 방금 작성한 리뷰를 바로 확인 가능
-        // ===========================
-        return "redirect:/review/list?restaurantId="
-             	+ review.getRestaurantId();	
-    }
+		// ===========================
+		// 리뷰 작성 후 리뷰 목록으로 이동
+		// 방금 작성한 리뷰를 바로 확인 가능
+		// ===========================
+		return "redirect:/review/list?restaurantId=" + review.getRestaurantId();
+	}
 
-    @GetMapping("/review/update")
-    public String reviewUpdateForm(
-            @RequestParam("reviewId") Long reviewId,
-            Model model,
-            HttpSession session) {
+	@GetMapping("/review/update")
+	public String reviewUpdateForm(@RequestParam("reviewId") Long reviewId, Model model, HttpSession session) {
 
-        LoginMemberDTO loginMember =
-                (LoginMemberDTO) session.getAttribute("loginMember");
+		LoginMemberDTO loginMember = (LoginMemberDTO) session.getAttribute("loginMember");
 
-        if (loginMember == null) {
-            return "redirect:/member/login";
-        }
+		if (loginMember == null) {
+			return "redirect:/member/login";
+		}
 
-        ReviewDTO review = reviewService.getReviewById(reviewId);
+		ReviewDTO review = reviewService.getReviewById(reviewId);
 
-        if (!review.getMemberId().equals(loginMember.getMemberId())) {
-            return "redirect:/restaurants/" + review.getRestaurantId();
-        }
+		if (!review.getMemberId().equals(loginMember.getMemberId())) {
+			return "redirect:/restaurants/" + review.getRestaurantId();
+		}
 
-        model.addAttribute("review", review);
-        model.addAttribute("edit", true);
+		model.addAttribute("review", review);
+		model.addAttribute("edit", true);
 
-        return "review/form";
-    }
+		return "review/form";
+	}
 
-    @PostMapping("/review/update")
-    public String reviewUpdate(
-            ReviewDTO review,
-            @RequestParam(value = "imageFile", required = false) MultipartFile imageFile,
-            HttpSession session) throws IOException {
+	@PostMapping("/review/update")
+	public String reviewUpdate(ReviewDTO review,
+			@RequestParam(value = "imageFile", required = false) MultipartFile imageFile, HttpSession session)
+			throws IOException {
 
-        LoginMemberDTO loginMember =
-                (LoginMemberDTO) session.getAttribute("loginMember");
+		LoginMemberDTO loginMember = (LoginMemberDTO) session.getAttribute("loginMember");
 
-        if (loginMember == null) {
-            return "redirect:/member/login";
-        }
+		if (loginMember == null) {
+			return "redirect:/member/login";
+		}
 
-        review.setMemberId(loginMember.getMemberId());
+		review.setMemberId(loginMember.getMemberId());
 
-        if (imageFile != null && !imageFile.isEmpty()) {
-            String savedImagePath = saveReviewImage(imageFile, session);
-            review.setImage(savedImagePath);
-        } else {
-            ReviewDTO oldReview = reviewService.getReviewById(review.getReviewId());
-            review.setImage(oldReview.getImage());
-        }
+		if (imageFile != null && !imageFile.isEmpty()) {
+			String savedImagePath = saveReviewImage(imageFile, session);
+			review.setImage(savedImagePath);
+		} else {
+			ReviewDTO oldReview = reviewService.getReviewById(review.getReviewId());
+			review.setImage(oldReview.getImage());
+		}
 
-        reviewService.updateReview(review);
+		reviewService.updateReview(review);
 
-        return "redirect:/review/list?restaurantId="
-     	+ review.getRestaurantId();	
-    }
+		return "redirect:/review/list?restaurantId=" + review.getRestaurantId();
+	}
+
 
     @GetMapping("/member/mypage/reviews")
     public String myReviewList(
@@ -202,79 +247,75 @@ public class ReviewController {
             HttpSession session,
             Model model) {
 
-        LoginMemberDTO loginMember =
-                (LoginMemberDTO) session.getAttribute("loginMember");
 
-        if (loginMember == null) {
-            return "redirect:/member/login";
-        }
+		LoginMemberDTO loginMember = (LoginMemberDTO) session.getAttribute("loginMember");
 
-        Long memberId = loginMember.getMemberId();
+		if (loginMember == null) {
+			return "redirect:/member/login";
+		}
 
-        int totalCount = reviewService.countReviewByMemberId(memberId);
+		Long memberId = loginMember.getMemberId();
 
-        int offset = (page - 1) * size;
+		int totalCount = reviewService.countReviewByMemberId(memberId);
 
-        List<ReviewDTO> reviewList =
-                reviewService.getReviewListByMemberId(memberId, offset, size);
+		int offset = (page - 1) * size;
 
-        int totalPage = (int) Math.ceil((double) totalCount / size);
+		List<ReviewDTO> reviewList = reviewService.getReviewListByMemberId(memberId, offset, size);
 
-        int pageLimit = 5;
-        int startPage = ((page - 1) / pageLimit) * pageLimit + 1;
-        int endPage = startPage + pageLimit - 1;
+		int totalPage = (int) Math.ceil((double) totalCount / size);
 
-        if (endPage > totalPage) {
-            endPage = totalPage;
-        }
-        System.out.println("memberId = " + memberId);
-        System.out.println("page = " + page);
-        System.out.println("size = " + size);
-        System.out.println("offset = " + offset);
-        System.out.println("totalCount = " + totalCount);
+		int pageLimit = 5;
+		int startPage = ((page - 1) / pageLimit) * pageLimit + 1;
+		int endPage = startPage + pageLimit - 1;
 
-        System.out.println("reviewList size = " + reviewList.size());
+		if (endPage > totalPage) {
+			endPage = totalPage;
+		}
+		System.out.println("memberId = " + memberId);
+		System.out.println("page = " + page);
+		System.out.println("size = " + size);
+		System.out.println("offset = " + offset);
+		System.out.println("totalCount = " + totalCount);
 
-        for (ReviewDTO r : reviewList) {
-            System.out.println(r.getReviewId());
-            System.out.println(r.getRestaurantName());
-        }
+		System.out.println("reviewList size = " + reviewList.size());
 
-        model.addAttribute("reviewList", reviewList);
-        model.addAttribute("totalCount", totalCount);
-        model.addAttribute("currentPage", page);
-        model.addAttribute("totalPage", totalPage);
-        model.addAttribute("startPage", startPage);
-        model.addAttribute("endPage", endPage);
-        model.addAttribute("pageLimit", pageLimit);
-        model.addAttribute("size", size);
+		for (ReviewDTO r : reviewList) {
+			System.out.println(r.getReviewId());
+			System.out.println(r.getRestaurantName());
+		}
 
-        return "review/myList";
-    }
+		model.addAttribute("reviewList", reviewList);
+		model.addAttribute("totalCount", totalCount);
+		model.addAttribute("currentPage", page);
+		model.addAttribute("totalPage", totalPage);
+		model.addAttribute("startPage", startPage);
+		model.addAttribute("endPage", endPage);
+		model.addAttribute("pageLimit", pageLimit);
+		model.addAttribute("size", size);
 
-    private String saveReviewImage(
-            MultipartFile imageFile,
-            HttpSession session) throws IOException {
+		return "review/myList";
+	}
 
-        // 실제 파일 저장 위치
-        String uploadPath = "C:/upload/review/";
+	private String saveReviewImage(MultipartFile imageFile, HttpSession session) throws IOException {
 
-        File dir = new File(uploadPath);
+		// 실제 파일 저장 위치
+		String uploadPath = "C:/upload/review/";
 
-        if (!dir.exists()) {
-            dir.mkdirs();
-        }
+		File dir = new File(uploadPath);
 
-        String originalName = imageFile.getOriginalFilename();
+		if (!dir.exists()) {
+			dir.mkdirs();
+		}
 
-        String savedName =
-                UUID.randomUUID().toString() + "_" + originalName;
+		String originalName = imageFile.getOriginalFilename();
 
-        File saveFile = new File(uploadPath, savedName);
+		String savedName = UUID.randomUUID().toString() + "_" + originalName;
 
-        imageFile.transferTo(saveFile);
+		File saveFile = new File(uploadPath, savedName);
 
-        // DB에 저장될 경로
-        return "/upload/review/" + savedName;
-    }
+		imageFile.transferTo(saveFile);
+
+		// DB에 저장될 경로
+		return "/upload/review/" + savedName;
+	}
 }

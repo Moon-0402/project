@@ -1,5 +1,6 @@
 package com.springmvc.repository.review;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -211,6 +212,196 @@ public class ReviewRepositoryImpl implements ReviewRepository {
 				memberId,
 				restaurantId
 		);
+	}
+
+	// 최신 리뷰 조회 기능
+	@Override
+	public List<ReviewDTO> getLatestReviewList(int limit) {
+		// TODO Auto-generated method stub
+		String sql =
+	            "SELECT rv.review_id, rv.member_id, rv.restaurant_id, "
+	          + "rv.rating, rv.content, rv.image, rv.status, "
+	          + "rv.created_at, rv.updated_at, "
+	          + "m.name AS member_name, "
+	          + "r.name AS restaurant_name "
+	          + "FROM REVIEW rv "
+	          + "JOIN MEMBER m ON rv.member_id = m.member_id "
+	          + "JOIN RESTAURANT r ON rv.restaurant_id = r.restaurant_id "
+	          + "WHERE rv.status = 'ACTIVE' "
+	          + "ORDER BY rv.created_at DESC "
+	          + "LIMIT ?";
+		
+		return template.query(
+				sql,
+				new ReviewRowMapper(),
+				limit
+		);
+	}
+
+	@Override
+	public List<ReviewDTO> getReviewList(int offset, int size) {
+		// TODO Auto-generated method stub
+		String sql =
+	            "SELECT rv.review_id, rv.member_id, rv.restaurant_id, "
+	          + "rv.rating, rv.content, rv.image, rv.status, "
+	          + "rv.created_at, rv.updated_at, "
+	          + "m.name AS member_name, "
+	          + "r.name AS restaurant_name "
+	          + "FROM REVIEW rv "
+	          + "JOIN MEMBER m ON rv.member_id = m.member_id "
+	          + "JOIN RESTAURANT r ON rv.restaurant_id = r.restaurant_id "
+	          + "WHERE rv.status = 'ACTIVE' "
+	          + "ORDER BY rv.created_at DESC "
+	          + "LIMIT ?, ?";
+		
+		return template.query(
+	            sql,
+	            new ReviewRowMapper(),
+	            offset,
+	            size
+	    );
+	}
+
+	@Override
+	public int countReview() {
+		// TODO Auto-generated method stub
+		
+		String sql =
+	            "SELECT COUNT(*) "
+	          + "FROM REVIEW "
+	          + "WHERE status = 'ACTIVE'";
+			    
+		return template.queryForObject(sql, Integer.class);
+	}
+
+	@Override
+	public List<ReviewDTO> searchReviewList(String regionKeyword, String foodKeyword, int offset, int size) {
+		// TODO Auto-generated method stub
+		 StringBuilder sql = new StringBuilder();
+
+		    List<Object> params = new ArrayList<>();
+
+		    sql.append("SELECT rv.review_id, rv.member_id, rv.restaurant_id, ");
+		    sql.append("rv.rating, rv.content, rv.image, rv.status, ");
+		    sql.append("rv.created_at, rv.updated_at, ");
+		    sql.append("m.name AS member_name, ");
+		    sql.append("r.name AS restaurant_name ");
+		    sql.append("FROM REVIEW rv ");
+		    sql.append("JOIN MEMBER m ON rv.member_id = m.member_id ");
+		    sql.append("JOIN RESTAURANT r ON rv.restaurant_id = r.restaurant_id ");
+		    sql.append("LEFT JOIN CATEGORY c ON r.category_id = c.category_id ");
+		    sql.append("WHERE rv.status = 'ACTIVE' ");
+
+		    // 지역 검색
+		    if (regionKeyword != null
+		            && !regionKeyword.trim().isEmpty()) {
+
+		        String regionLike =
+		                "%" + regionKeyword.trim() + "%";
+
+		        sql.append("AND ( ");
+		        sql.append("r.name LIKE ? ");
+		        sql.append("OR r.address LIKE ? ");
+		        sql.append(") ");
+
+		        params.add(regionLike);
+		        params.add(regionLike);
+		    }
+
+		    // 음식/리뷰 검색
+		    if (foodKeyword != null
+		            && !foodKeyword.trim().isEmpty()) {
+
+		        String foodLike =
+		                "%" + foodKeyword.trim() + "%";
+
+		        sql.append("AND ( ");
+		        sql.append("r.name LIKE ? ");
+		        sql.append("OR c.category_name LIKE ? ");
+		        sql.append("OR r.kakao_category_name LIKE ? ");
+		        sql.append("OR rv.content LIKE ? ");
+		        sql.append("OR r.description LIKE ? ");
+		        sql.append(") ");
+
+		        params.add(foodLike);
+		        params.add(foodLike);
+		        params.add(foodLike);
+		        params.add(foodLike);
+		        params.add(foodLike);
+		    }
+
+		    sql.append("ORDER BY rv.created_at DESC ");
+		    sql.append("LIMIT ?, ? ");
+
+		    params.add(offset);
+		    params.add(size);
+
+		    return template.query(
+		            sql.toString(),
+		            new ReviewRowMapper(),
+		            params.toArray()
+		    );
+	}
+
+	@Override
+	public int countSearchReviewList(
+	        String regionKeyword,
+	        String foodKeyword) {
+
+	    StringBuilder sql = new StringBuilder();
+	    List<Object> params = new ArrayList<>();
+
+	    sql.append("SELECT COUNT(*) ");
+	    sql.append("FROM REVIEW rv ");
+	    sql.append("JOIN RESTAURANT r ");
+	    sql.append("ON rv.restaurant_id = r.restaurant_id ");
+	    sql.append("LEFT JOIN CATEGORY c ");
+	    sql.append("ON r.category_id = c.category_id ");
+	    sql.append("WHERE rv.status = 'ACTIVE' ");
+
+	    // 지역 검색
+	    if (regionKeyword != null
+	            && !regionKeyword.trim().isEmpty()) {
+
+	        String regionLike =
+	                "%" + regionKeyword.trim() + "%";
+
+	        sql.append("AND ( ");
+	        sql.append("r.name LIKE ? ");
+	        sql.append("OR r.address LIKE ? ");
+	        sql.append(") ");
+
+	        params.add(regionLike);
+	        params.add(regionLike);
+	    }
+
+	    // 음식/리뷰 검색
+	    if (foodKeyword != null
+	            && !foodKeyword.trim().isEmpty()) {
+
+	        String foodLike =
+	                "%" + foodKeyword.trim() + "%";
+
+	        sql.append("AND ( ");
+	        sql.append("r.name LIKE ? ");
+	        sql.append("OR c.category_name LIKE ? ");
+	        sql.append("OR r.kakao_category_name LIKE ? ");
+	        sql.append("OR rv.content LIKE ? ");
+	        sql.append("OR r.description LIKE ? ");
+	        sql.append(") ");
+
+	        params.add(foodLike);
+	        params.add(foodLike);
+	        params.add(foodLike);
+	        params.add(foodLike);
+	        params.add(foodLike);
+	    }
+
+	    return template.queryForObject(
+	            sql.toString(),
+	            Integer.class,
+	            params.toArray()
+	    );
 	}
 	
 }

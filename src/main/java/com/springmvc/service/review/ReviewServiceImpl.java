@@ -75,4 +75,35 @@ public class ReviewServiceImpl implements ReviewService{
 		// TODO Auto-generated method stub
 		return reviewRepository.countReviewByMemberAndRestaurant(memberId, restaurantId);
 	}
+
+	@Override
+	public List<ReviewDTO> getLatestReviewList(int limit) {
+		// TODO Auto-generated method stub
+		return reviewRepository.getLatestReviewList(limit);
+	}
+
+	@Override
+	public List<ReviewDTO> getReviewList(int offset, int size) {
+		// TODO Auto-generated method stub
+		return reviewRepository.getReviewList(offset, size);
+	}
+
+	@Override
+	public int countReview() {
+		// TODO Auto-generated method stub
+		return reviewRepository.countReview();
+	}
+
+	@Override
+	public List<ReviewDTO> searchReviewList(String regionKeyword, String foodKeyword, int offset, int size) {
+		// TODO Auto-generated method stub
+		return reviewRepository.searchReviewList(regionKeyword, foodKeyword, offset, size);
+	}
+
+	@Override
+	public int countSearchReviewList(String regionKeyword, String foodKeyword) {
+		// TODO Auto-generated method stub
+		return reviewRepository.countSearchReviewList(regionKeyword, foodKeyword);
+	}
+
 }
