@@ -518,13 +518,13 @@ form {
                     문의하기
                 </a>
             </li>
-
+			
             <li>
                 <a href="${pageContext.request.contextPath}/member/inquiries" class="active">
                     문의 내역
                 </a>
             </li>
-
+			<li><a href="${pageContext.request.contextPath}/member/mypage/reviews">내 리뷰 내역</a>
             <li>
                 <a href="${pageContext.request.contextPath}/member/logout">
                     로그아웃

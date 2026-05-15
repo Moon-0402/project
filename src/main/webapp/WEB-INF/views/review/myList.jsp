@@ -7,428 +7,567 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-<title>PickEat - 내가 쓴 리뷰</title>
+<title>PickEat | 내 리뷰 내역</title>
 
 <style>
 * {
-	box-sizing: border-box;
-	margin: 0;
-	padding: 0;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
 }
 
 body {
-	font-family: 'Pretendard', 'Noto Sans KR', sans-serif;
-	background: linear-gradient(135deg, #fff7ed 0%, #fff1e6 45%, #fef3c7 100%);
-	min-height: 100vh;
-	color: #2f241d;
+    font-family: 'Pretendard', 'Noto Sans KR', Arial, sans-serif;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #fff7ed 0%, #fff1e6 45%, #fef3c7 100%);
+    color: #2f241d;
 }
 
-.container {
-	max-width: 1200px;
-	margin: 0 auto;
-	padding: 50px 24px;
+.page-wrap {
+    min-height: 100vh;
+    display: flex;
 }
 
-.top-section {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	margin-bottom: 30px;
-	gap: 20px;
+/* 왼쪽 배너 */
+.sidebar {
+    width: 250px;
+    background: #2f241d;
+    color: #fff;
+    padding: 30px 24px;
+    box-shadow: 8px 0 24px rgba(47, 36, 29, 0.15);
+    flex-shrink: 0;
+}
+
+.logo-box {
+    margin-bottom: 45px;
+}
+
+.logo-link {
+    display: inline-block;
+    text-decoration: none;
+}
+
+.logo {
+    font-size: 30px;
+    font-weight: 900;
+    color: #ffb86b;
+    transition: 0.2s;
+}
+
+.logo span {
+    color: #fff;
+}
+
+.logo-link:hover .logo {
+    transform: translateY(-1px);
+    filter: brightness(1.08);
+}
+
+.logo-desc {
+    font-size: 13px;
+    color: #d6c7b8;
+    margin-top: 8px;
+    line-height: 1.5;
+}
+
+.menu-title {
+    font-size: 12px;
+    color: #a99584;
+    margin-bottom: 12px;
+}
+
+.menu-list {
+    list-style: none;
+}
+
+.menu-list li {
+    margin-bottom: 10px;
+}
+
+.menu-list a {
+    display: block;
+    text-decoration: none;
+    color: #eee2d6;
+    padding: 13px 15px;
+    border-radius: 14px;
+    transition: 0.2s;
+    font-size: 15px;
+}
+
+.menu-list a:hover,
+.menu-list a.active {
+    background: #ff914d;
+    color: #fff;
+    box-shadow: 0 8px 18px rgba(255, 145, 77, 0.35);
+}
+
+/* 메인 */
+.main {
+    flex: 1;
+    padding: 42px 54px;
+}
+
+.top-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 20px;
+    margin-bottom: 34px;
 }
 
 .page-title h1 {
-	font-size: 38px;
-	font-weight: 900;
-	margin-bottom: 10px;
+    font-size: 32px;
+    color: #2f241d;
+    margin-bottom: 8px;
 }
 
 .page-title p {
-	color: #7a6a5d;
-	font-size: 15px;
-	line-height: 1.7;
+    color: #7a6a5d;
+    font-size: 15px;
+    line-height: 1.6;
 }
 
 .review-count {
-	background: rgba(255,255,255,0.8);
-	border: 1px solid rgba(255, 184, 107, 0.4);
-	padding: 16px 22px;
-	border-radius: 20px;
-	font-weight: 900;
-	color: #b45309;
-	box-shadow: 0 12px 30px rgba(0,0,0,0.05);
+    background: rgba(255, 255, 255, 0.86);
+    border: 1px solid rgba(255, 184, 107, 0.35);
+    border-radius: 20px;
+    padding: 16px 22px;
+    color: #b45309;
+    font-weight: 900;
+    box-shadow: 0 12px 30px rgba(90, 64, 43, 0.08);
+    white-space: nowrap;
 }
 
+/* 카드 영역 */
 .review-grid {
-	display: grid;
-	grid-template-columns: repeat(3, 1fr);
-	gap: 22px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 22px;
 }
 
 .review-card {
-	background: rgba(255,255,255,0.88);
-	border: 1px solid rgba(255, 184, 107, 0.35);
-	border-radius: 28px;
-	overflow: hidden;
-	box-shadow: 0 18px 45px rgba(90, 64, 43, 0.12);
-	transition: 0.25s ease;
-	display: flex;
-	flex-direction: column;
+    background: rgba(255, 255, 255, 0.86);
+    border: 1px solid rgba(255, 184, 107, 0.35);
+    border-radius: 28px;
+    overflow: hidden;
+    box-shadow: 0 18px 45px rgba(90, 64, 43, 0.13);
+    transition: 0.25s ease;
+    display: flex;
+    flex-direction: column;
 }
 
 .review-card:hover {
-	transform: translateY(-5px);
-	box-shadow: 0 25px 55px rgba(255,145,77,0.18);
+    transform: translateY(-5px);
+    box-shadow: 0 25px 55px rgba(255, 145, 77, 0.18);
 }
 
 .review-image {
-	width: 100%;
-	height: 220px;
-	object-fit: cover;
-	background: #f3f4f6;
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+    background: #f3f4f6;
 }
 
 .no-image-box {
-	width: 100%;
-	height: 220px;
-	background: #f3f4f6;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	color: #9ca3af;
-	font-weight: 900;
-	font-size: 15px;
+    width: 100%;
+    height: 220px;
+    background: #fffaf3;
+    border-bottom: 1px solid #f4d7b7;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #a27755;
+    font-weight: 900;
+    font-size: 15px;
 }
 
 .review-body {
-	padding: 22px;
-	display: flex;
-	flex-direction: column;
-	flex: 1;
+    padding: 22px;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
 }
 
 .restaurant-name {
-	font-size: 22px;
-	font-weight: 900;
-	margin-bottom: 12px;
-	color: #2f241d;
+    font-size: 22px;
+    font-weight: 900;
+    margin-bottom: 12px;
+    color: #2f241d;
 }
 
 .star-area {
-	color: #facc15;
-	font-size: 22px;
-	margin-bottom: 14px;
-	letter-spacing: 2px;
-	min-height: 28px;
+    color: #facc15;
+    font-size: 22px;
+    margin-bottom: 14px;
+    letter-spacing: 2px;
+    min-height: 28px;
 }
 
 .review-content {
-	color: #6b7280;
-	font-size: 14px;
-	line-height: 1.8;
-	margin-bottom: 20px;
-	flex: 1;
-	word-break: break-word;
-	white-space: normal;
+    color: #6b7280;
+    font-size: 14px;
+    line-height: 1.8;
+    margin-bottom: 20px;
+    flex: 1;
+    word-break: break-word;
 }
 
 .review-date {
-	font-size: 13px;
-	color: #9ca3af;
-	font-weight: 700;
-	margin-bottom: 18px;
+    font-size: 13px;
+    color: #9ca3af;
+    font-weight: 700;
+    margin-bottom: 18px;
 }
 
 .btn-group {
-	display: flex;
-	gap: 10px;
+    display: flex;
+    gap: 10px;
 }
 
 .btn {
-	flex: 1;
-	height: 46px;
-	border-radius: 14px;
-	text-decoration: none;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	font-size: 14px;
-	font-weight: 900;
-	transition: 0.2s;
+    flex: 1;
+    height: 46px;
+    border-radius: 14px;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 900;
+    transition: 0.2s;
 }
 
 .detail-btn {
-	background: #fff3df;
-	color: #b45309;
-	border: 1px solid #f4d7b7;
+    background: #fffaf3;
+    color: #a27755;
+    border: 1px solid #f4d7b7;
 }
 
 .detail-btn:hover {
-	background: #fed7aa;
+    background: #ff914d;
+    color: #fff;
+    box-shadow: 0 8px 18px rgba(255, 145, 77, 0.28);
 }
 
 .edit-btn {
-	background: #ff914d;
-	color: white;
-	border: none;
-	box-shadow: 0 8px 20px rgba(255,145,77,0.28);
+    background: #ff914d;
+    color: #fff;
+    border: none;
+    box-shadow: 0 8px 20px rgba(255, 145, 77, 0.32);
 }
 
 .edit-btn:hover {
-	background: #f97316;
+    background: #f97316;
+    transform: translateY(-1px);
 }
 
+/* 빈 상태 */
 .empty-box {
-	background: rgba(255,255,255,0.9);
-	border-radius: 32px;
-	padding: 80px 30px;
-	text-align: center;
-	box-shadow: 0 18px 45px rgba(90,64,43,0.1);
+    background: rgba(255, 255, 255, 0.86);
+    border: 1px solid rgba(255, 184, 107, 0.35);
+    border-radius: 28px;
+    padding: 80px 30px;
+    text-align: center;
+    box-shadow: 0 18px 45px rgba(90, 64, 43, 0.13);
+}
+
+.empty-icon {
+    width: 78px;
+    height: 78px;
+    border-radius: 26px;
+    background: linear-gradient(135deg, #ff914d, #ffb86b);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 36px;
+    margin: 0 auto 22px;
+    box-shadow: 0 12px 24px rgba(255, 145, 77, 0.24);
 }
 
 .empty-box h2 {
-	font-size: 30px;
-	margin-bottom: 14px;
-	color: #2f241d;
+    font-size: 28px;
+    margin-bottom: 14px;
+    color: #2f241d;
 }
 
 .empty-box p {
-	color: #7a6a5d;
-	margin-bottom: 28px;
-	line-height: 1.8;
+    color: #7a6a5d;
+    margin-bottom: 28px;
+    line-height: 1.8;
 }
 
 .empty-btn {
-	display: inline-flex;
-	align-items: center;
-	justify-content: center;
-	height: 52px;
-	padding: 0 28px;
-	border-radius: 18px;
-	background: #ff914d;
-	color: white;
-	text-decoration: none;
-	font-weight: 900;
-	box-shadow: 0 10px 25px rgba(255,145,77,0.28);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 52px;
+    padding: 0 28px;
+    border-radius: 18px;
+    background: #ff914d;
+    color: white;
+    text-decoration: none;
+    font-weight: 900;
+    box-shadow: 0 10px 25px rgba(255, 145, 77, 0.28);
+    transition: 0.2s;
 }
 
 .empty-btn:hover {
-	background: #f97316;
+    background: #f97316;
+    transform: translateY(-1px);
 }
 
+/* 페이지네이션 */
 .pagination-wrap {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	gap: 8px;
-	margin-top: 35px;
-	flex-wrap: wrap;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    margin-top: 35px;
+    flex-wrap: wrap;
 }
 
 .page-num,
 .page-btn {
-	min-width: 40px;
-	height: 40px;
-	padding: 0 14px;
-	border-radius: 12px;
-	border: 1px solid #f4d7b7;
-	background: white;
-	color: #b45309;
-	text-decoration: none;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	font-weight: 900;
-	transition: all 0.2s ease;
+    min-width: 40px;
+    height: 40px;
+    padding: 0 14px;
+    border-radius: 12px;
+    border: 1px solid #f4d7b7;
+    background: #fff;
+    color: #b45309;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 900;
+    transition: all 0.2s ease;
 }
 
 .page-num:hover,
 .page-btn:hover {
-	background: #fff3df;
-	color: #ff6500;
-	transform: translateY(-2px);
+    background: #fff3df;
+    color: #ff6500;
+    transform: translateY(-2px);
 }
 
 .page-num.active {
-	background: #ff914d;
-	color: white;
-	border-color: #ff914d;
+    background: #ff914d;
+    color: #fff;
+    border-color: #ff914d;
+    box-shadow: 0 8px 18px rgba(255, 145, 77, 0.28);
 }
 
-@media (max-width: 1000px) {
-	.review-grid {
-		grid-template-columns: repeat(2, 1fr);
-	}
+@media (max-width: 1200px) {
+    .review-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
 }
 
-@media (max-width: 700px) {
-	.top-section {
-		flex-direction: column;
-		align-items: flex-start;
-	}
+@media (max-width: 900px) {
+    .page-wrap {
+        display: block;
+    }
 
-	.review-grid {
-		grid-template-columns: 1fr;
-	}
+    .sidebar {
+        width: 100%;
+    }
+
+    .main {
+        padding: 28px 20px;
+    }
+
+    .top-bar {
+        flex-direction: column;
+    }
+
+    .review-count {
+        width: 100%;
+    }
+
+    .review-grid {
+        grid-template-columns: 1fr;
+    }
 }
 </style>
 </head>
 
 <body>
 
-	<%@ include file="/WEB-INF/views/header.jsp"%>
+<div class="page-wrap">
 
-	<main class="container">
+    <aside class="sidebar">
+        <div class="logo-box">
+            <a href="${contextPath}/" class="logo-link">
+                <div class="logo">Pick<span>Eat</span></div>
+            </a>
+            <div class="logo-desc">날씨와 상황에 맞는 맛집 추천 서비스</div>
+        </div>
 
-		<div class="top-section">
+        <div class="menu-title">My Menu</div>
+        <ul class="menu-list">
+            <li>
+                <a href="${contextPath}/">메인 페이지</a>
+            </li>
+            <li>
+                <a href="${contextPath}/member/mypage">내 정보 수정</a>
+            </li>
+            <li>
+                <a href="${contextPath}/member/mypage/changePw">비밀번호 변경</a>
+            </li>
+            <li>
+                <a href="${contextPath}/member/inquiry/write">문의하기</a>
+            </li>
+            <li>
+                <a href="${contextPath}/member/inquiries">문의 내역</a>
+            </li>
+            <li>
+                <a href="${contextPath}/member/mypage/reviews" class="active">내 리뷰 내역</a>
+            </li>
+            <li>
+                <a href="${contextPath}/member/logout">로그아웃</a>
+            </li>
+        </ul>
+    </aside>
 
-			<div class="page-title">
-				<h1>내가 작성한 리뷰</h1>
-				<p>내가 남긴 맛집 리뷰들을 한눈에 확인하고 수정할 수 있습니다.</p>
-			</div>
+    <main class="main">
 
-			<div class="review-count">
-				총 ${totalCount}개의 리뷰
-			</div>
+        <div class="top-bar">
+            <div class="page-title">
+                <h1>내 리뷰 내역</h1>
+                <p>내가 남긴 맛집 리뷰들을 한눈에 확인하고 수정할 수 있습니다.</p>
+            </div>
 
-		</div>
+            <div class="review-count">
+                총 ${totalCount}개의 리뷰
+            </div>
+        </div>
 
-		<c:choose>
+        <c:choose>
 
-			<c:when test="${empty reviewList}">
+            <c:when test="${empty reviewList}">
 
-				<div class="empty-box">
+                <div class="empty-box">
+                    <div class="empty-icon">🍽️</div>
 
-					<h2>아직 작성한 리뷰가 없어요</h2>
+                    <h2>아직 작성한 리뷰가 없어요</h2>
 
-					<p>
-						맛집에 방문하고 첫 리뷰를 남겨보세요.<br>
-						다른 사용자들에게 큰 도움이 됩니다.
-					</p>
+                    <p>
+                        맛집에 방문하고 첫 리뷰를 남겨보세요.<br>
+                        다른 사용자들에게 큰 도움이 됩니다.
+                    </p>
 
-					<a class="empty-btn" href="${contextPath}/restaurants">
-						맛집 보러가기
-					</a>
+                    <a class="empty-btn" href="${contextPath}/restaurants">
+                        맛집 보러가기
+                    </a>
+                </div>
 
-				</div>
+            </c:when>
 
-			</c:when>
+            <c:otherwise>
 
-			<c:otherwise>
+                <div class="review-grid">
 
-				<div class="review-grid">
+                    <c:forEach var="review" items="${reviewList}">
 
-					<c:forEach var="review" items="${reviewList}">
+                        <div class="review-card">
 
-						<div class="review-card">
+                            <c:choose>
+                                <c:when test="${not empty review.image}">
+                                    <img class="review-image"
+                                         src="${contextPath}${review.image}"
+                                         alt="리뷰 이미지">
+                                </c:when>
 
-							<c:choose>
+                                <c:otherwise>
+                                    <div class="no-image-box">
+                                        등록된 이미지 없음
+                                    </div>
+                                </c:otherwise>
+                            </c:choose>
 
-								<c:when test="${not empty review.image}">
-									<img class="review-image"
-										 src="${contextPath}${review.image}"
-										 alt="리뷰 이미지">
-								</c:when>
+                            <div class="review-body">
 
-								<c:otherwise>
-									<%-- 기존 기본 이미지 방식은 파일이 없으면 깨질 수 있어서 주석 처리 --%>
-									<%--
-									<img class="review-image"
-										 src="${contextPath}/resources/images/no-image.png"
-										 alt="기본 이미지">
-									--%>
+                                <div class="restaurant-name">
+                                    ${review.restaurantName}
+                                </div>
 
-									<div class="no-image-box">
-										등록된 이미지 없음
-									</div>
-								</c:otherwise>
+                                <div class="star-area">
+                                    <c:forEach begin="1" end="${review.rating}">
+                                        ★
+                                    </c:forEach>
+                                </div>
 
-							</c:choose>
+                                <div class="review-content">
+                                    ${review.content}
+                                </div>
 
-							<div class="review-body">
+                                <div class="review-date">
+                                    작성일 : ${review.createdAt}
+                                </div>
 
-								<div class="restaurant-name">
-									${review.restaurantName}
-								</div>
+                                <div class="btn-group">
+                                    <a class="btn detail-btn"
+                                       href="${contextPath}/review/list?restaurantId=${review.restaurantId}">
+                                        리뷰 보기
+                                    </a>
 
-								<div class="star-area">
-									<c:forEach begin="1" end="${review.rating}">
-										★
-									</c:forEach>
-								</div>
+                                    <a class="btn edit-btn"
+                                       href="${contextPath}/review/update?reviewId=${review.reviewId}">
+                                        수정하기
+                                    </a>
+                                </div>
 
-								<div class="review-content">
-									${review.content}
-								</div>
+                            </div>
 
-								<div class="review-date">
-									작성일 : ${review.createdAt}
-								</div>
+                        </div>
 
-								<div class="btn-group">
+                    </c:forEach>
 
-									<a class="btn detail-btn"
-									   href="${contextPath}/review/list?restaurantId=${review.restaurantId}">
-										리뷰 보기
-									</a>
+                </div>
 
-									<a class="btn edit-btn"
-									   href="${contextPath}/review/update?reviewId=${review.reviewId}">
-										수정하기
-									</a>
+                <c:if test="${totalPage > 1}">
+                    <div class="pagination-wrap">
 
-								</div>
+                        <c:if test="${startPage > 1}">
+                            <a class="page-btn"
+                               href="${contextPath}/member/mypage/reviews?page=${startPage - pageLimit}&size=${size}">
+                                ‹ 이전
+                            </a>
+                        </c:if>
 
-							</div>
+                        <c:forEach var="i" begin="${startPage}" end="${endPage}">
+                            <c:choose>
+                                <c:when test="${i == currentPage}">
+                                    <span class="page-num active">${i}</span>
+                                </c:when>
 
-						</div>
+                                <c:otherwise>
+                                    <a class="page-num"
+                                       href="${contextPath}/member/mypage/reviews?page=${i}&size=${size}">
+                                        ${i}
+                                    </a>
+                                </c:otherwise>
+                            </c:choose>
+                        </c:forEach>
 
-					</c:forEach>
+                        <c:if test="${endPage < totalPage}">
+                            <a class="page-btn"
+                               href="${contextPath}/member/mypage/reviews?page=${endPage + 1}&size=${size}">
+                                다음 ›
+                            </a>
+                        </c:if>
 
-				</div>
+                    </div>
+                </c:if>
 
-				<c:if test="${totalPage > 1}">
-					<div class="pagination-wrap">
+            </c:otherwise>
 
-						<c:if test="${startPage > 1}">
-							<a class="page-btn"
-							   href="${contextPath}/mypage/reviews?page=${startPage - pageLimit}&size=${size}">
-								‹ 이전
-							</a>
-						</c:if>
+        </c:choose>
 
-						<c:forEach var="i" begin="${startPage}" end="${endPage}">
-							<c:choose>
-								<c:when test="${i == currentPage}">
-									<span class="page-num active">${i}</span>
-								</c:when>
+    </main>
 
-								<c:otherwise>
-									<a class="page-num"
-									   href="${contextPath}/mypage/reviews?page=${i}&size=${size}">
-										${i}
-									</a>
-								</c:otherwise>
-							</c:choose>
-						</c:forEach>
-
-						<c:if test="${endPage < totalPage}">
-							<a class="page-btn"
-							   href="${contextPath}/mypage/reviews?page=${endPage + 1}&size=${size}">
-								다음 ›
-							</a>
-						</c:if>
-
-					</div>
-				</c:if>
-
-			</c:otherwise>
-
-		</c:choose>
-
-	</main>
-
-	<%@ include file="/WEB-INF/views/footer.jsp"%>
+</div>
 
 </body>
 </html>

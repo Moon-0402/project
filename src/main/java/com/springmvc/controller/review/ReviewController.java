@@ -195,7 +195,7 @@ public class ReviewController {
      	+ review.getRestaurantId();	
     }
 
-    @GetMapping("/mypage/reviews")
+    @GetMapping("/member/mypage/reviews")
     public String myReviewList(
             @RequestParam(value = "page", defaultValue = "1") int page,
             @RequestParam(value = "size", defaultValue = "6") int size,
