@@ -488,7 +488,7 @@ public class RestaurantRepositoryImpl implements RestaurantRepository {
 	    sql.append("r.longitude, ");
 
 	    // 실제 거리 계산, 단위 km
-	    sql.append("(");
+	    sql.append("ROUND((");
 	    sql.append("6371 * ACOS(");
 	    sql.append("COS(RADIANS(?)) ");
 	    sql.append("* COS(RADIANS(r.latitude)) ");
@@ -496,7 +496,7 @@ public class RestaurantRepositoryImpl implements RestaurantRepository {
 	    sql.append("+ SIN(RADIANS(?)) ");
 	    sql.append("* SIN(RADIANS(r.latitude))");
 	    sql.append(")");
-	    sql.append(") AS distance ");
+	    sql.append("), 3) AS distance ");
 
 	    sql.append("FROM RESTAURANT r ");
 	    sql.append("LEFT JOIN CATEGORY c ON r.category_id = c.category_id ");

@@ -1,5 +1,5 @@
-<%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" %>
-<%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="jakarta.tags.core"%>
 
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
 
@@ -242,31 +242,57 @@ body {
 	color: #f97316;
 }
 
-@media (max-width: 900px) {
+.pagination-wrap {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	gap: 8px;
+	margin-top: 35px;
+	flex-wrap: wrap;
+}
+
+.page-num,
+.page-btn {
+	min-width: 40px;
+	height: 40px;
+	padding: 0 14px;
+	border-radius: 12px;
+	border: 1px solid #f4d7b7;
+	background: white;
+	color: #b45309;
+	text-decoration: none;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-weight: 900;
+	transition: all 0.2s ease;
+}
+
+.page-num.active {
+	background: #ff914d;
+	color: white;
+	border-color: #ff914d;
+}
+
+@media ( max-width : 900px) {
 	.container {
 		padding: 32px 20px;
 	}
-
 	.top-bar {
 		display: block;
 	}
-
 	.review-badge {
 		margin-top: 16px;
 	}
-
 	.review-head {
 		display: block;
 	}
-
 	.rating {
 		margin-top: 8px;
 	}
-
 	.action-area {
 		justify-content: stretch;
 	}
-
 	.write-btn {
 		width: 100%;
 	}
@@ -276,102 +302,128 @@ body {
 
 <body>
 
-<%@ include file="/WEB-INF/views/header.jsp" %>
+	<%@ include file="/WEB-INF/views/header.jsp"%>
 
-<main class="container">
+	<main class="container">
 
-	<a class="back-link" href="${contextPath}/restaurants/${restaurantId}">
-		← 맛집 상세로 돌아가기
-	</a>
+		<a class="back-link" href="${contextPath}/restaurants/${restaurantId}">
+			← 맛집 상세로 돌아가기 </a>
 
-	<div class="top-bar">
-		<div class="page-title">
-			<h1>리뷰 목록</h1>
-			<p>이 맛집에 대한 사용자들의 솔직한 후기를 확인해보세요.</p>
+		<div class="top-bar">
+			<div class="page-title">
+				<h1>리뷰 목록</h1>
+				<p>이 맛집에 대한 사용자들의 솔직한 후기를 확인해보세요.</p>
+			</div>
+
+			<div class="review-badge">REVIEW MODE</div>
 		</div>
 
-		<div class="review-badge">REVIEW MODE</div>
-	</div>
-
-	<section class="summary-card">
-		<div class="summary-title">
-			<c:choose>
-				<c:when test="${not empty restaurantName}">
+		<section class="summary-card">
+			<div class="summary-title">
+				<c:choose>
+					<c:when test="${not empty restaurantName}">
 					${restaurantName} 리뷰
 				</c:when>
-				<c:otherwise>
+					<c:otherwise>
 					맛집 리뷰
 				</c:otherwise>
-			</c:choose>
+				</c:choose>
+			</div>
+
+			<p class="summary-text">별점과 리뷰 내용을 확인하고, 직접 방문 후기를 남길 수 있습니다. 좋은
+				리뷰는 다른 사용자의 맛집 선택에 도움이 됩니다.</p>
+		</section>
+
+		<div class="action-area">
+			<a class="write-btn"
+				href="${contextPath}/review/write?restaurantId=${restaurantId}">
+				+ 리뷰 작성하기 </a>
 		</div>
 
-		<p class="summary-text">
-			별점과 리뷰 내용을 확인하고, 직접 방문 후기를 남길 수 있습니다.
-			좋은 리뷰는 다른 사용자의 맛집 선택에 도움이 됩니다.
-		</p>
-	</section>
+		<section class="content-card">
 
-	<div class="action-area">
-		<a class="write-btn"
-			href="${contextPath}/reviews/write?restaurantId=${restaurantId}">
-			+ 리뷰 작성하기
-		</a>
-	</div>
+			<c:choose>
+				<c:when test="${empty reviewList}">
+					<div class="empty">
+						아직 등록된 리뷰가 없습니다.<br> <strong>첫 리뷰를 작성해보세요!</strong>
+					</div>
+				</c:when>
 
-	<section class="content-card">
+				<c:otherwise>
+					<c:forEach var="review" items="${reviewList}">
+						<div class="review-card">
 
-		<c:choose>
-			<c:when test="${empty reviewList}">
-				<div class="empty">
-					아직 등록된 리뷰가 없습니다.<br>
-					<strong>첫 리뷰를 작성해보세요!</strong>
-				</div>
-			</c:when>
+							<div class="review-head">
+								<div class="review-info">
+									<h3>${review.memberName}</h3>
+									<div class="review-meta">${review.createdAt}</div>
+								</div>
 
-			<c:otherwise>
-				<c:forEach var="review" items="${reviewList}">
-					<div class="review-card">
+								<div class="rating">
 
-						<div class="review-head">
-							<div class="review-info">
-								<h3>${review.memberName}</h3>
-								<div class="review-meta">
-									${review.createdAt}
+									<c:forEach begin="1" end="${review.rating}">
+										★
+									</c:forEach>
+
 								</div>
 							</div>
 
-							<div class="rating">
-								★ ${review.rating}
-							</div>
+							<div class="review-content">${review.content}</div>
+
+							<c:if test="${not empty review.image}">
+								<div class="review-image">
+									<img src="${contextPath}${review.image}" alt="리뷰 이미지">
+								</div>
+							</c:if>
+
+							<c:if test="${loginMember.memberId == review.memberId}">
+								<div class="review-actions">
+									<a class="action-btn edit-btn"
+										href="${contextPath}/review/update?reviewId=${review.reviewId}">
+										수정 </a>
+								</div>
+							</c:if>
+
 						</div>
+					</c:forEach>
+				</c:otherwise>
+			</c:choose>
 
-						<div class="review-content">${review.content}</div>
+		</section>
+		<c:if test="${totalPage > 1}">
+			<div class="pagination-wrap">
 
-						<c:if test="${not empty review.image}">
-							<div class="review-image">
-								<img src="${contextPath}${review.image}" alt="리뷰 이미지">
-							</div>
-						</c:if>
+				<c:if test="${startPage > 1}">
+					<a class="page-btn"
+						href="${contextPath}/review/list?restaurantId=${restaurantId}&page=${startPage - pageLimit}&size=${size}">
+						‹ 이전 </a>
+				</c:if>
 
-						<c:if test="${loginMember.memberId == review.memberId}">
-							<div class="review-actions">
-								<a class="action-btn edit-btn"
-									href="${contextPath}/reviews/update/${review.reviewId}">
-									수정
-								</a>
-							</div>
-						</c:if>
-
-					</div>
+				<c:forEach var="i" begin="${startPage}" end="${endPage}">
+					<c:choose>
+						<c:when test="${i == currentPage}">
+							<span class="page-num active">${i}</span>
+						</c:when>
+						<c:otherwise>
+							<a class="page-num"
+								href="${contextPath}/review/list?restaurantId=${restaurantId}&page=${i}&size=${size}">
+								${i} </a>
+						</c:otherwise>
+					</c:choose>
 				</c:forEach>
-			</c:otherwise>
-		</c:choose>
 
-	</section>
+				<c:if test="${endPage < totalPage}">
+					<a class="page-btn"
+						href="${contextPath}/review/list?restaurantId=${restaurantId}&page=${endPage + 1}&size=${size}">
+						다음 › </a>
+				</c:if>
 
-</main>
+			</div>
+		</c:if>
 
-<%@ include file="/WEB-INF/views/footer.jsp" %>
+	</main>
+
+	<%@ include file="/WEB-INF/views/footer.jsp"%>
 
 </body>
 </html>
