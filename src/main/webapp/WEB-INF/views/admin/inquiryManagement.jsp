@@ -521,7 +521,10 @@ tbody tr:hover {
             <li>
                 <a href="${pageContext.request.contextPath}/admin/reviewList">리뷰 관리</a>
             </li>
-            <li>
+			 <li>
+                <a href="${pageContext.request.contextPath}/member/logout">
+                    로그아웃
+                </a>
             </li>
         </ul>
     </aside>

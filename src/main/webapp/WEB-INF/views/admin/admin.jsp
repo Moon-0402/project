@@ -457,6 +457,11 @@ body {
             <li><a href="${pageContext.request.contextPath}/admin/inquiries">문의 관리</a></li>
             <li><a href="${pageContext.request.contextPath}/admin/restaurants">맛집 관리</a></li>
             <li><a href="${pageContext.request.contextPath}/admin/reviewList">리뷰 관리</a></li>
+             <li>
+                <a href="${pageContext.request.contextPath}/member/logout">
+                    로그아웃
+                </a>
+            </li>
         </ul>
     </aside>
 

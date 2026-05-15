@@ -365,8 +365,12 @@ body {
 				<li><a href="${contextPath}/admin/members">회원 관리</a></li>
 				<li><a href="${contextPath}/admin/inquiries">문의 관리</a></li>
 				<li><a href="${contextPath}/admin/restaurants">맛집 관리</a></li>
-				<li><a href="${contextPath}/admin/reviewList" class="active">리뷰
-						관리</a></li>
+				<li><a href="${contextPath}/admin/reviewList" class="active">리뷰 관리</a></li>
+				<li>
+                <a href="${pageContext.request.contextPath}/member/logout">
+                    로그아웃
+                </a>
+            </li>
 			</ul>
 		</aside>
 
