@@ -252,6 +252,24 @@ body {
 	margin-top: 8px;
 }
 
+.review-btn {
+	background: #2563eb;
+	color: white;
+	padding: 6px 12px;
+	border-radius: 8px;
+	text-decoration: none;
+	font-size: 14px;
+	display: inline-block;
+	margin-top: 8px;
+	margin-left: 6px;
+	font-weight: 700;
+	transition: all 0.2s ease;
+}
+
+.review-btn:hover {
+	background: #1d4ed8;
+}
+
 .pagination-wrap {
 	display: flex;
 	justify-content: center;
@@ -398,7 +416,10 @@ body {
 								${r.categoryName}</div>
 
 							<a class="btn"
-								href="${contextPath}/restaurants/${r.restaurantId}"> 상세보기 </a>
+								href="${contextPath}/restaurants/${r.restaurantId}"> 상세보기 </a> <a
+								class="review-btn"
+								href="${contextPath}/review?restaurantId=${r.restaurantId}">
+								리뷰보기 </a>
 						</div>
 
 					</div>
@@ -591,6 +612,6 @@ body {
 		focusRestaurantCard(restaurantId);
 	}
 </script>
-<%@ include file = "/WEB-INF/views/footer.jsp" %>
+	<%@ include file="/WEB-INF/views/footer.jsp"%>
 </body>
 </html>

@@ -239,6 +239,53 @@ public class RestaurantRepositoryImpl implements RestaurantRepository {
 
 		return template.query(sql, new RestaurantDTORowMapper(), memberId);
 	}
+	
+	@Override
+	public List<RestaurantDTO> getRecentlyRestaurantList(Long memberId, int offset, int size) {
+
+		String sql = "SELECT r.restaurant_id, r.name, "
+				+ "COALESCE(r.kakao_category_name, c.category_name) AS category_name, "
+				+ "IFNULL(ROUND(AVG(rv.rating), 1), 0) AS rating, "
+				+ "MIN(ri.image_url) AS image_url, "
+				+ "r.latitude, r.longitude "
+				+ "FROM RECENTLY_RESTAURANT rr "
+				+ "JOIN RESTAURANT r ON rr.restaurant_id = r.restaurant_id "
+				+ "LEFT JOIN CATEGORY c ON r.category_id = c.category_id "
+				+ "LEFT JOIN REVIEW rv ON r.restaurant_id = rv.restaurant_id "
+				+ "LEFT JOIN RESTAURANT_IMAGE ri ON r.restaurant_id = ri.restaurant_id "
+				+ "WHERE rr.member_id = ? "
+				+ "AND r.status = 'ACTIVE' "
+				+ "AND rr.viewed_at >= DATE_SUB(NOW(), INTERVAL 1 MONTH) "
+				+ "GROUP BY r.restaurant_id, r.name, r.kakao_category_name, "
+				+ "c.category_name, r.latitude, r.longitude, rr.viewed_at "
+				+ "ORDER BY rr.viewed_at DESC "
+				+ "LIMIT ? OFFSET ?";
+
+		return template.query(
+				sql,
+				new RestaurantDTORowMapper(),
+				memberId,
+				size,
+				offset
+		);
+	}
+	
+	@Override
+	public int countRecentlyRestaurantList(Long memberId) {
+
+		String sql = "SELECT COUNT(*) "
+				+ "FROM RECENTLY_RESTAURANT rr "
+				+ "JOIN RESTAURANT r ON rr.restaurant_id = r.restaurant_id "
+				+ "WHERE rr.member_id = ? "
+				+ "AND r.status = 'ACTIVE' "
+				+ "AND rr.viewed_at >= DATE_SUB(NOW(), INTERVAL 1 MONTH)";
+
+		return template.queryForObject(
+				sql,
+				Integer.class,
+				memberId
+		);
+	}
 
 	@Override
 	public List<RestaurantDTO> searchRestaurantList(String regionKeyword, String foodKeyword, int offset, int size) {
@@ -477,7 +524,7 @@ public class RestaurantRepositoryImpl implements RestaurantRepository {
 	    sql.append("r.longitude ");
 
 	    sql.append("HAVING distance <= 3 ");
-	    sql.append("ORDER BY distance ASC ");
+	    sql.append("ORDER BY RAND() ");
 	    sql.append("LIMIT ? ");
 
 	    String keywordLike = "%" + keyword + "%";

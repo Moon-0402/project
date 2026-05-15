@@ -43,6 +43,11 @@ public interface RestaurantRepository {
 
     // 최근 본 맛집 조회
     List<RestaurantDTO> getRecentlyRestaurantList(Long memberId);
+    
+    // 최근 본 맛집 페이징 부분
+    List<RestaurantDTO> getRecentlyRestaurantList(Long memberId, int offset, int size);
+
+    int countRecentlyRestaurantList(Long memberId);
 
     // 사용자 맛집 리스트 페이징
     List<RestaurantDTO> getRestaurantList(int offset, int size);

@@ -38,15 +38,20 @@ public interface RestaurantService {
     // 최근 본 맛집 조회
     List<RestaurantDTO> getRecentlyRestaurantList(Long memberId);
     
+    // 최근 본 맛집 페이징 부분
+    List<RestaurantDTO> getRecentlyRestaurantList(Long memberId, int offset, int size);
+
+    int countRecentlyRestaurantList(Long memberId);
+    
     List<RestaurantDTO> getRestaurantList(int offset, int size);
 
     List<RestaurantDTO> searchRestaurantList(String regionKeyword, String foodKeyword, int offset, int size);
 
     int countRestaurantList();
 
-    int countSearchRestaurantList(String resionKeyword, String foodKeyword);
+    int countSearchRestaurantList(String regionKeyword, String foodKeyword);
     
-    List<RestaurantMapDTO> getSearchRestaurantMapList(String resionKeyword, String foodKeyword);
+    List<RestaurantMapDTO> getSearchRestaurantMapList(String regionKeyword, String foodKeyword);
     
     List<RestaurantDTO> getNearRestaurants(String keyword, Double lat, Double lng, int limit);
     

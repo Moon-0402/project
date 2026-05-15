@@ -22,52 +22,6 @@ body {
 	color: #111827;
 }
 
-.header {
-	height: 70px;
-	background: #fff;
-	border-bottom: 1px solid #eee;
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-	padding: 0 40px;
-}
-
-.logo {
-	display: flex;
-	align-items: center;
-	gap: 8px;
-	text-decoration: none;
-}
-
-.logo-text {
-	font-size: 26px;
-	font-weight: 900;
-	color: #111827;
-}
-
-.logo-icon {
-	width: 22px;
-	height: 28px;
-	background: #ff6500;
-	border-radius: 50% 50% 50% 0;
-	transform: rotate(-45deg);
-}
-
-.nav {
-	display: flex;
-	gap: 40px;
-}
-
-.nav a {
-	text-decoration: none;
-	color: #111827;
-	font-weight: 800;
-}
-
-.nav a.active {
-	color: #ff6500;
-}
-
 .container {
 	padding: 40px;
 }
@@ -160,17 +114,58 @@ body {
 	color: #6b7280;
 	font-weight: 800;
 }
+
+.pagination-wrap {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	gap: 8px;
+	margin-top: 30px;
+	flex-wrap: wrap;
+}
+
+.page-num,
+.page-btn {
+	min-width: 40px;
+	height: 40px;
+	padding: 0 14px;
+	border-radius: 12px;
+	border: 1px solid #e5e7eb;
+	background: white;
+	color: #374151;
+	text-decoration: none;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-weight: 800;
+	transition: all 0.2s ease;
+}
+
+.page-num:hover,
+.page-btn:hover {
+	background: #fff3e8;
+	color: #ff6500;
+	border-color: #ffb37a;
+	transform: translateY(-2px);
+}
+
+.page-num.active {
+	background: #ff6500;
+	color: white;
+	border-color: #ff6500;
+	box-shadow: 0 4px 12px rgba(255, 101, 0, 0.25);
+}
 </style>
 </head>
 
 <body>
 
-	<%@ include file = "/WEB-INF/views/header.jsp" %>
+	<%@ include file="/WEB-INF/views/header.jsp"%>
 
 	<main class="container">
 
 		<div class="title">
-			최근 본 맛집 (${recentList.size()})
+			최근 본 맛집 (${totalCount})
 		</div>
 
 		<div class="desc">
@@ -257,16 +252,12 @@ body {
 
 						<div class="category-text"
 							title="${restaurant.categoryName}">
-
 							${restaurant.categoryName}
-
 						</div>
 
 						<a class="btn"
 							href="${contextPath}/restaurants/${restaurant.restaurantId}">
-
 							다시 보기
-
 						</a>
 
 					</div>
@@ -276,8 +267,45 @@ body {
 			</c:forEach>
 
 		</div>
-		<%@ include file = "/WEB-INF/views/footer.jsp" %>
+
+		<c:if test="${totalPage > 1}">
+			<div class="pagination-wrap">
+
+				<c:if test="${startPage > 1}">
+					<a class="page-btn"
+						href="${contextPath}/restaurants/recent?page=${startPage - pageLimit}">
+						‹ 이전
+					</a>
+				</c:if>
+
+				<c:forEach var="i" begin="${startPage}" end="${endPage}">
+					<c:choose>
+						<c:when test="${i == currentPage}">
+							<span class="page-num active">${i}</span>
+						</c:when>
+
+						<c:otherwise>
+							<a class="page-num"
+								href="${contextPath}/restaurants/recent?page=${i}">
+								${i}
+							</a>
+						</c:otherwise>
+					</c:choose>
+				</c:forEach>
+
+				<c:if test="${endPage < totalPage}">
+					<a class="page-btn"
+						href="${contextPath}/restaurants/recent?page=${endPage + 1}">
+						다음 ›
+					</a>
+				</c:if>
+
+			</div>
+		</c:if>
+
 	</main>
+
+	<%@ include file="/WEB-INF/views/footer.jsp"%>
 
 </body>
 </html>

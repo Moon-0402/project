@@ -115,7 +115,20 @@ public class RestaurantServiceImpl implements RestaurantService {
         );
     }
 
-    // 사용자 맛집 리스트 - 페이징 조회
+    // 최근 본 맛집 개수 넣기
+    @Override
+	public List<RestaurantDTO> getRecentlyRestaurantList(Long memberId, int offset, int size) {
+		// TODO Auto-generated method stub
+		return restaurantRepository.getRecentlyRestaurantList(memberId, offset, size);
+	}
+
+	@Override
+	public int countRecentlyRestaurantList(Long memberId) {
+		// TODO Auto-generated method stub
+		return restaurantRepository.countRecentlyRestaurantList(memberId);
+	}
+
+	// 사용자 맛집 리스트 - 페이징 조회
     @Override
     public List<RestaurantDTO> getRestaurantList(
             int offset,

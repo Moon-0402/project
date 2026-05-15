@@ -181,6 +181,15 @@ body {
 	color: #111827;
 	border: 1px solid #ddd;
 }
+
+.btn-review {
+	background: #2563eb;
+	color: white;
+}
+
+.btn-review:hover {
+	background: #1d4ed8;
+}
 </style>
 </head>
 
@@ -274,8 +283,15 @@ body {
 						<c:if test="${not empty r.distance}">
 							<span class="tag">${r.distance} km</span>
 						</c:if>
-						<br> <br> <a class="btn btn-main"
-							href="${contextPath}/restaurants/${r.restaurantId}"> 상세보기 </a>
+						<div style="display: flex; gap: 10px; margin-top: 18px;">
+
+							<a class="btn btn-main"
+								href="${contextPath}/restaurants/${r.restaurantId}"> 상세보기 </a> <a
+								class="btn btn-review"
+								href="${contextPath}/review?restaurantId=${r.restaurantId}">
+								리뷰보기 </a>
+
+						</div>
 					</div>
 				</div>
 			</c:forEach>

@@ -14,6 +14,28 @@ public class ReviewDTO {
     private LocalDateTime updatedAt;
     private String memberName;
     private String restaurantName;
+<<<<<<< HEAD
+=======
+	public ReviewDTO() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+	public ReviewDTO(Long reviewId, Long memberId, Long restaurantId, int rating, String content, String image,
+			String status, LocalDateTime createdAt, LocalDateTime updatedAt, String memberName, String restaurantName) {
+		super();
+		this.reviewId = reviewId;
+		this.memberId = memberId;
+		this.restaurantId = restaurantId;
+		this.rating = rating;
+		this.content = content;
+		this.image = image;
+		this.status = status;
+		this.createdAt = createdAt;
+		this.updatedAt = updatedAt;
+		this.memberName = memberName;
+		this.restaurantName = restaurantName;
+	}
+>>>>>>> 1af05bdcb175fd19b6e9daaf44d0de084e082138
 	public Long getReviewId() {
 		return reviewId;
 	}
@@ -80,6 +102,7 @@ public class ReviewDTO {
 	public void setRestaurantName(String restaurantName) {
 		this.restaurantName = restaurantName;
 	}
+<<<<<<< HEAD
 	public ReviewDTO(Long reviewId, Long memberId, Long restaurantId, int rating, String content, String image,
 			String status, LocalDateTime createdAt, LocalDateTime updatedAt, String memberName, String restaurantName) {
 		super();
@@ -101,3 +124,6 @@ public class ReviewDTO {
 	}
 	
 }
+=======
+}
+>>>>>>> 1af05bdcb175fd19b6e9daaf44d0de084e082138
