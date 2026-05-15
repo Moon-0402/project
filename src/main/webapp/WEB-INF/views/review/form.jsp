@@ -320,7 +320,10 @@ body {
 
 		<section class="content-card">
 
-			<form action="${contextPath}/review/${edit ? 'update' : 'write'}"
+			<!-- 수정1. multipart/form-data 형식에서는 CSRF hidden input을 넣어도 Spring Security가 토큰을 제대로 못 읽을 수 있다고 함 
+						action에도 csrf 토큰 전송하기 (hidden 유지)
+				 수정2. C드라이브에 upload 폴더 없다하여 생성함 -->
+			<form action="${contextPath}/review/${edit ? 'update' : 'write'}?${_csrf.parameterName}=${_csrf.token}"
 				  method="post"
 				  enctype="multipart/form-data">
 
