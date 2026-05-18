@@ -349,38 +349,33 @@ a {
 	background: #e5e7eb;
 }
 
-.kakao-btn {
+.kakao-login-btn {
 	width: 100%;
-	height: 42px;
-	border: 1px solid #d1d5db;
-	border-radius: 8px;
-	background: #ffffff;
-	color: #111827;
-	font-size: 13px;
+	height: 48px;
+	border: none;
+	border-radius: 10px;
+	background: #FEE500;
+	color: #191919;
+	font-size: 14px;
 	font-weight: 900;
 	cursor: pointer;
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	gap: 9px;
+	gap: 10px;
+	text-decoration: none;
+	transition: all 0.2s ease;
+	box-shadow: 0 6px 18px rgba(254, 229, 0, 0.35);
 }
 
-.kakao-btn:hover {
-	background: #fff7d6;
-	border-color: #fee500;
+.kakao-login-btn:hover {
+	background: #f7d900;
+	transform: translateY(-2px);
+	box-shadow: 0 10px 24px rgba(254, 229, 0, 0.45);
 }
 
-.kakao-icon {
-	width: 20px;
-	height: 20px;
-	border-radius: 50%;
-	background: #fee500;
-	color: #111827;
-	display: inline-flex;
-	align-items: center;
-	justify-content: center;
-	font-size: 11px;
-	font-weight: 900;
+.kakao-login-btn:active {
+	transform: scale(0.98);
 }
 
 .message {

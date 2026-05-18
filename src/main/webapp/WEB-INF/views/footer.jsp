@@ -73,7 +73,6 @@
 				<a href="${contextPath}/">홈</a>
 				<a href="${contextPath}/recommend">추천</a>
 				<a href="${contextPath}/restaurants">맛집 리스트</a>
-				<a href="${contextPath}/member/login">로그인</a>
 			</div>
 		</div>
 	</footer>
