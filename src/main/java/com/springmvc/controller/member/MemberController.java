@@ -281,10 +281,11 @@ public class MemberController {
 		pwChangeDTO.setPwCheck(myPwChangeDTO.getNewPwCheck());
 
 		memberService.changePassword(loginId, pwChangeDTO);
+		
+		session.removeAttribute("loginMember");
+		rttr.addFlashAttribute("successMessage","비밀번호가 변경되었습니다. 다시 로그인해주세요.");
 
-		rttr.addFlashAttribute("successMessage", "비밀번호가 변경되었습니다.");
-
-		return "redirect:/member/mypage/changePw";
+		return "redirect:/member/login";
 	}
 
 	

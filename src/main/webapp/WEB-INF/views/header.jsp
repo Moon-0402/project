@@ -19,6 +19,7 @@
 <c:set var="bookmarkURI" value="${contextPath}/bookmark/list" />
 <c:set var="reviewURI" value="${contextPath}/review" />
 <c:set var="loginURI" value="${contextPath}/member/login" />
+<c:set var="restaurantsPath" value="${contextPath }/restaurants"/>
 <style>
 * {
 	box-sizing: border-box;
@@ -236,7 +237,7 @@ a {
 	</a>
 
 	<a href="${not empty sessionScope.loginMember ? restaurantsURI : loginURI}"
-		class="${fn:contains(currentURI, '/restaurants') or fn:contains(currentURI, '/restaurant') ? 'active' : ''}">
+		class="${currentURI eq contextPath.concat('/restaurants') ? 'active' : ''}">
 		맛집 리스트
 	</a>
 
