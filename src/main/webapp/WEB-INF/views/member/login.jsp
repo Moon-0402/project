@@ -269,20 +269,6 @@ a {
 	font-size: 15px;
 }
 
-.remember-row {
-	display: flex;
-	align-items: center;
-	gap: 6px;
-	margin: 6px 0 20px;
-	color: #6b7280;
-	font-size: 12px;
-}
-
-.remember-row input {
-	width: 13px;
-	height: 13px;
-}
-
 .login-btn {
 	width: 100%;
 	height: 44px;
@@ -293,10 +279,13 @@ a {
 	font-size: 14px;
 	font-weight: 900;
 	cursor: pointer;
+	transition: 0.2s ease;
 }
 
 .login-btn:hover {
 	background: #f05f00;
+	transform: translateY(-1px);
+	box-shadow: 0 10px 20px rgba(255, 101, 0, 0.22);
 }
 
 .find-links {
@@ -349,12 +338,22 @@ a {
 	background: #e5e7eb;
 }
 
+<<<<<<< HEAD
 .kakao-login-btn {
 	width: 100%;
 	height: 48px;
 	border: none;
 	border-radius: 10px;
 	background: #FEE500;
+=======
+/* 카카오 로그인 버튼 */
+.kakao-login-btn {
+	width: 100%;
+	height: 46px;
+	border: none;
+	border-radius: 10px;
+	background: #fee500;
+>>>>>>> e96313e4bc375f9b40b6b2b7c7f6597e6dc27723
 	color: #191919;
 	font-size: 14px;
 	font-weight: 900;
@@ -362,6 +361,7 @@ a {
 	display: flex;
 	align-items: center;
 	justify-content: center;
+<<<<<<< HEAD
 	gap: 10px;
 	text-decoration: none;
 	transition: all 0.2s ease;
@@ -376,6 +376,54 @@ a {
 
 .kakao-login-btn:active {
 	transform: scale(0.98);
+=======
+	gap: 9px;
+	box-shadow: 0 10px 22px rgba(254, 229, 0, 0.28);
+	transition: 0.22s ease;
+	position: relative;
+	overflow: hidden;
+}
+
+.kakao-login-btn::before {
+	content: "💬";
+	width: 24px;
+	height: 24px;
+	border-radius: 50%;
+	background: #191919;
+	color: #fee500;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 13px;
+	line-height: 1;
+}
+
+.kakao-login-btn::after {
+	content: "";
+	position: absolute;
+	top: 0;
+	left: -80px;
+	width: 60px;
+	height: 100%;
+	background: rgba(255, 255, 255, 0.35);
+	transform: skewX(-18deg);
+	transition: 0.45s ease;
+}
+
+.kakao-login-btn:hover {
+	background: #f7dc00;
+	transform: translateY(-2px);
+	box-shadow: 0 14px 28px rgba(254, 229, 0, 0.38);
+}
+
+.kakao-login-btn:hover::after {
+	left: 115%;
+}
+
+.kakao-login-btn:active {
+	transform: translateY(0);
+	box-shadow: 0 8px 18px rgba(254, 229, 0, 0.24);
+>>>>>>> e96313e4bc375f9b40b6b2b7c7f6597e6dc27723
 }
 
 .message {
@@ -383,6 +431,18 @@ a {
 	margin-bottom: 14px;
 	border-radius: 8px;
 	font-size: 13px;
+	background: #fff1f2;
+	color: #e11d48;
+	border: 1px solid #fecdd3;
+}
+
+.success-message {
+	background: #ecfdf5;
+	color: #047857;
+	border: 1px solid #a7f3d0;
+}
+
+.error-message {
 	background: #fff1f2;
 	color: #e11d48;
 	border: 1px solid #fecdd3;
@@ -422,7 +482,7 @@ a {
 
 <body>
 
-	<%@ include file = "/WEB-INF/views/header.jsp" %>
+	<%@ include file="/WEB-INF/views/header.jsp"%>
 
 	<main class="login-page">
 		<section class="login-container">
@@ -447,8 +507,12 @@ a {
 				<div class="login-card">
 					<h2>로그인</h2>
 
+					<c:if test="${not empty successMessage}">
+						<div class="message success-message">${successMessage}</div>
+					</c:if>
+
 					<c:if test="${not empty errorMessage}">
-						<div class="message">${errorMessage}</div>
+						<div class="message error-message">${errorMessage}</div>
 					</c:if>
 
 					<form action="${contextPath}/member/login" method="post">
@@ -481,14 +545,15 @@ a {
 
 					<div class="or-box">또는</div>
 
-					<a class="kakao-login-btn"
-						href="${pageContext.request.contextPath}/member/kakao/login">
+					<a class="kakao-login-btn" href="${contextPath}/member/kakao/login">
 						카카오 로그인 </a>
 				</div>
 			</div>
 
 		</section>
 	</main>
-	<%@ include file = "/WEB-INF/views/footer.jsp" %>
+
+	<%@ include file="/WEB-INF/views/footer.jsp"%>
+
 </body>
 </html>
