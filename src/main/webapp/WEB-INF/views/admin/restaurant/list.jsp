@@ -72,11 +72,11 @@ body {
 }
 
 .menu-title {
-	font-size: 12px;
-	color: #a99584;
-	margin-bottom: 12px;
-	text-transform: uppercase;
-	font-weight: 900;
+    font-size: 12px;
+    color: #a99584;
+    margin-bottom: 12px;
+    text-transform: uppercase;
+    font-weight: 900;
 }
 
 .menu-list {
@@ -555,6 +555,9 @@ tbody tr:hover {
 			<li>
 				<a href="${contextPath}/admin/reviewList">리뷰 관리</a>
 			</li>
+			<li>
+                <a href="${contextPath}/member/logout">로그아웃</a>
+            </li>
 		</ul>
 	</aside>
 

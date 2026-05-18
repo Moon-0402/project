@@ -48,23 +48,11 @@ body {
 }
 
 .logo-icon {
-	position: relative;
 	width: 22px;
 	height: 28px;
 	background: #ff6500;
 	border-radius: 50% 50% 50% 0;
 	transform: rotate(-45deg);
-}
-
-.logo-icon::before {
-	content: "";
-	position: absolute;
-	width: 8px;
-	height: 8px;
-	background: white;
-	border-radius: 50%;
-	top: 8px;
-	left: 7px;
 }
 
 .nav {

@@ -251,8 +251,7 @@ body {
 	flex-wrap: wrap;
 }
 
-.page-num,
-.page-btn {
+.page-num, .page-btn {
 	min-width: 40px;
 	height: 40px;
 	padding: 0 14px;
@@ -322,11 +321,12 @@ body {
 			<div class="summary-title">
 				<c:choose>
 					<c:when test="${not empty restaurantName}">
-					${restaurantName} 리뷰
-				</c:when>
+						${restaurantName}
+					</c:when>
+
 					<c:otherwise>
-					맛집 리뷰
-				</c:otherwise>
+						맛집 리뷰
+					</c:otherwise>
 				</c:choose>
 			</div>
 

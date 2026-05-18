@@ -72,8 +72,8 @@ body {
     color: #a99584;
     margin-bottom: 12px;
     text-transform: uppercase;
+    font-weight: 900;
 }
-
 .menu-list {
     list-style: none;
 }
@@ -457,11 +457,7 @@ body {
             <li><a href="${pageContext.request.contextPath}/admin/inquiries">문의 관리</a></li>
             <li><a href="${pageContext.request.contextPath}/admin/restaurants">맛집 관리</a></li>
             <li><a href="${pageContext.request.contextPath}/admin/reviewList">리뷰 관리</a></li>
-             <li>
-                <a href="${pageContext.request.contextPath}/member/logout">
-                    로그아웃
-                </a>
-            </li>
+            <li><a href="${pageContext.request.contextPath}/member/logout">로그아웃</a></li>
         </ul>
     </aside>
 
@@ -470,7 +466,7 @@ body {
         <div class="top-bar">
             <div class="page-title">
                 <h1>PickEat 관리자 대시보드</h1>
-                <p>회원, 맛집, 리뷰, 날씨 기반 추천 흐름을 한눈에 관리합니다.</p>
+                <p>회원, 맛집, 리뷰, 문의 관리를 한눈에 관리합니다.</p>
             </div>
 
             <div class="admin-badge">ADMIN MODE</div>
@@ -481,29 +477,29 @@ body {
                 <div class="welcome-title">오늘도 맛있는 운영을 시작합니다</div>
                 <p class="welcome-text">
                     PickEat은 날씨와 사용자 상황을 바탕으로 맛집을 추천하는 서비스입니다.
-                    관리자 페이지에서는 회원 정보와 서비스 데이터를 관리하고,
-                    추천 서비스가 안정적으로 작동하도록 운영 흐름을 확인할 수 있습니다.
+                    관리자 페이지에서는 회원 정보와 맛집 데이터, 리뷰, 문의 내역을 관리하고
+                    서비스가 안정적으로 작동하도록 운영 흐름을 확인할 수 있습니다.
                 </p>
 
                 <div class="quick-actions">
                     <a href="${pageContext.request.contextPath}/admin/members" class="btn btn-primary">회원 관리 바로가기</a>
-                    <a href="${pageContext.request.contextPath}/admin/restaurantList" class="btn btn-soft">맛집 관리</a>
+                    <a href="${pageContext.request.contextPath}/admin/restaurants" class="btn btn-soft">맛집 관리</a>
                     <a href="${pageContext.request.contextPath}/admin/reviewList" class="btn btn-soft">리뷰 관리</a>
                 </div>
             </div>
 
             <div class="weather-card">
                 <div>
-                    <div class="weather-icon">🌤</div>
-                    <h2>날씨 기반 추천 관리</h2>
+                    <div class="weather-icon">📩</div>
+                    <h2>문의 관리</h2>
                     <p>
-                        날씨 API와 위치 정보를 활용해 사용자에게 어울리는 맛집을 추천하는 영역입니다.
-                        추후 날씨 조건별 추천 기준을 이곳에서 관리할 수 있습니다.
+                        사용자가 작성한 문의사항을 확인하고 관리하는 영역입니다.
+                        서비스 이용 중 발생한 요청사항과 피드백을 관리자 페이지에서 확인할 수 있습니다.
                     </p>
                 </div>
 
                 <div style="margin-top: 22px;">
-                    <a href="${pageContext.request.contextPath}/admin/weather" class="btn btn-primary">추천 관리 이동</a>
+                    <a href="${pageContext.request.contextPath}/admin/inquiries" class="btn btn-primary">문의 관리 이동</a>
                 </div>
             </div>
         </section>
@@ -531,10 +527,10 @@ body {
             </div>
 
             <div class="stat-card">
-                <div class="stat-icon">📍</div>
-                <div class="stat-label">위치 / 날씨</div>
-                <div class="stat-value">API</div>
-                <div class="stat-desc">외부 API 기반 추천 흐름을 관리합니다.</div>
+                <div class="stat-icon">📩</div>
+                <div class="stat-label">문의 관리</div>
+                <div class="stat-value">Q&A</div>
+                <div class="stat-desc">사용자 문의사항과 요청 내용을 확인합니다.</div>
             </div>
         </section>
 
@@ -555,16 +551,16 @@ body {
                     <li>
                         <div class="task-icon">2</div>
                         <div>
-                            <div class="task-title">회원 정보 수정</div>
-                            <div class="task-desc">이름, 이메일, 전화번호 같은 기본 정보를 수정합니다. 권한은 변경하지 않습니다.</div>
+                            <div class="task-title">맛집 데이터 관리</div>
+                            <div class="task-desc">추천에 사용될 맛집 정보를 등록, 수정, 삭제합니다.</div>
                         </div>
                     </li>
 
                     <li>
                         <div class="task-icon">3</div>
                         <div>
-                            <div class="task-title">맛집 / 리뷰 데이터 관리</div>
-                            <div class="task-desc">서비스 추천 품질을 위해 맛집과 리뷰 데이터를 점검합니다.</div>
+                            <div class="task-title">리뷰 / 문의 확인</div>
+                            <div class="task-desc">사용자가 작성한 리뷰와 문의사항을 점검하고 서비스 품질을 관리합니다.</div>
                         </div>
                     </li>
                 </ul>
@@ -579,7 +575,7 @@ body {
                         <span class="feature-desc">회원 목록, 상세 정보, 수정 페이지로 이동합니다.</span>
                     </a>
 
-                    <a href="${pageContext.request.contextPath}/admin/restaurantList" class="feature-item">
+                    <a href="${pageContext.request.contextPath}/admin/restaurants" class="feature-item">
                         <span class="feature-title">맛집 관리</span>
                         <span class="feature-desc">추천에 사용될 맛집 데이터를 관리합니다.</span>
                     </a>
@@ -589,9 +585,9 @@ body {
                         <span class="feature-desc">회원들이 작성한 리뷰 데이터를 확인합니다.</span>
                     </a>
 
-                    <a href="${pageContext.request.contextPath}/admin/weather" class="feature-item">
-                        <span class="feature-title">날씨 추천 관리</span>
-                        <span class="feature-desc">날씨와 상황 기반 추천 로직을 관리합니다.</span>
+                    <a href="${pageContext.request.contextPath}/admin/inquiries" class="feature-item">
+                        <span class="feature-title">문의 관리</span>
+                        <span class="feature-desc">사용자 문의사항과 서비스 요청 내용을 확인합니다.</span>
                     </a>
                 </div>
             </div>

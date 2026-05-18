@@ -527,7 +527,7 @@ a {
 
 							<div class="card-actions">
 								<a class="card-btn detail-btn"
-								   href="${contextPath}/review/list?restaurantId=${review.restaurantId}">
+								   href="${contextPath}/review/one?reviewId=${review.reviewId}">
 									리뷰 보기
 								</a>
 							</div>

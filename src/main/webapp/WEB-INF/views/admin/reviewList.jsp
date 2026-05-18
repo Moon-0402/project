@@ -70,10 +70,11 @@ body {
 }
 
 .menu-title {
-	font-size: 12px;
-	color: #a99584;
-	margin-bottom: 12px;
-	text-transform: uppercase;
+    font-size: 12px;
+    color: #a99584;
+    margin-bottom: 12px;
+    text-transform: uppercase;
+    font-weight: 900;
 }
 
 .menu-list {

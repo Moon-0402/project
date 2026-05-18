@@ -44,10 +44,11 @@ body {
 }
 
 .logo {
-	font-size: 30px;
-	font-weight: 900;
-	color: #ffb86b;
-	transition: 0.2s;
+    font-size: 30px;
+    font-weight: 900;
+    color: #ffb86b;
+    letter-spacing: -1px;
+    transition: 0.2s;
 }
 
 .logo span {
@@ -67,9 +68,11 @@ body {
 }
 
 .menu-title {
-	font-size: 12px;
-	color: #a99584;
-	margin-bottom: 12px;
+    font-size: 12px;
+    color: #a99584;
+    margin-bottom: 12px;
+    text-transform: uppercase;
+    font-weight: 900;
 }
 
 .menu-list {
