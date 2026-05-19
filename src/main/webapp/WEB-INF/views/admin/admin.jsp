@@ -1,5 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="jakarta.tags.core"%>
+<c:set var="contextPath" value="${pageContext.request.contextPath}" />
 
 <!DOCTYPE html>
 <html lang="ko">
@@ -21,6 +22,11 @@ body {
     color: #2f241d;
 }
 
+body.dark-mode {
+    background: linear-gradient(135deg, #111827 0%, #1f2937 55%, #0f172a 100%);
+    color: #f9fafb;
+}
+
 .admin-layout {
     display: flex;
     min-height: 100vh;
@@ -29,7 +35,7 @@ body {
 .sidebar {
     width: 250px;
     background: #2f241d;
-    color: #fff;
+    color: #ffffff;
     padding: 30px 24px;
     box-shadow: 8px 0 24px rgba(47, 36, 29, 0.15);
 }
@@ -52,7 +58,7 @@ body {
 }
 
 .logo span {
-    color: #fff;
+    color: #ffffff;
 }
 
 .logo-link:hover .logo {
@@ -95,7 +101,7 @@ body {
 .menu-list a:hover,
 .menu-list a.active {
     background: #ff914d;
-    color: #fff;
+    color: #ffffff;
     box-shadow: 0 8px 18px rgba(255, 145, 77, 0.35);
 }
 
@@ -124,8 +130,11 @@ body {
     line-height: 1.6;
 }
 
-.admin-badge {
-    display: inline-block;
+.admin-badge,
+.theme-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     background: rgba(255, 255, 255, 0.78);
     border: 1px solid rgba(255, 184, 107, 0.45);
     color: #a15c22;
@@ -136,6 +145,16 @@ body {
     white-space: nowrap;
 }
 
+.top-actions {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.theme-toggle {
+    cursor: pointer;
+}
+
 .hero-card {
     display: grid;
     grid-template-columns: 1.4fr 0.8fr;
@@ -144,7 +163,7 @@ body {
 }
 
 .welcome-card,
-.weather-card,
+.inquiry-card,
 .stat-card,
 .panel {
     background: rgba(255, 255, 255, 0.86);
@@ -154,7 +173,7 @@ body {
 }
 
 .welcome-card,
-.weather-card {
+.inquiry-card {
     padding: 32px;
 }
 
@@ -208,7 +227,7 @@ body {
 
 .btn-primary {
     background: #ff914d;
-    color: #fff;
+    color: #ffffff;
     box-shadow: 0 8px 20px rgba(255, 145, 77, 0.32);
 }
 
@@ -226,7 +245,7 @@ body {
     background: #fed7aa;
 }
 
-.weather-icon {
+.inquiry-icon {
     width: 72px;
     height: 72px;
     border-radius: 24px;
@@ -239,13 +258,13 @@ body {
     margin-bottom: 18px;
 }
 
-.weather-card h2 {
+.inquiry-card h2 {
     font-size: 22px;
     color: #2f241d;
     margin-bottom: 10px;
 }
 
-.weather-card p {
+.inquiry-card p {
     color: #7a6a5d;
     font-size: 14px;
     line-height: 1.7;
@@ -399,6 +418,96 @@ body {
     line-height: 1.5;
 }
 
+body.dark-mode .sidebar {
+    background: #0f172a;
+    box-shadow: 8px 0 24px rgba(0, 0, 0, 0.25);
+}
+
+body.dark-mode .logo {
+    color: #ffb86b;
+}
+
+body.dark-mode .logo span {
+    color: #ffffff;
+}
+
+body.dark-mode .logo-desc,
+body.dark-mode .menu-title {
+    color: #cbd5e1;
+}
+
+body.dark-mode .menu-list a {
+    color: #e5e7eb;
+}
+
+body.dark-mode .menu-list a:hover,
+body.dark-mode .menu-list a.active {
+    background: #fb923c;
+    color: #111827;
+}
+
+body.dark-mode .page-title h1,
+body.dark-mode .welcome-title,
+body.dark-mode .inquiry-card h2,
+body.dark-mode .stat-value,
+body.dark-mode .panel-title,
+body.dark-mode .task-title,
+body.dark-mode .feature-title {
+    color: #f9fafb;
+}
+
+body.dark-mode .page-title p,
+body.dark-mode .welcome-text,
+body.dark-mode .inquiry-card p,
+body.dark-mode .stat-desc,
+body.dark-mode .task-desc,
+body.dark-mode .feature-desc {
+    color: #d1d5db;
+}
+
+body.dark-mode .welcome-card,
+body.dark-mode .inquiry-card,
+body.dark-mode .stat-card,
+body.dark-mode .panel,
+body.dark-mode .feature-item {
+    background: #1f2937;
+    border-color: #374151;
+    box-shadow: 0 18px 45px rgba(0, 0, 0, 0.28);
+}
+
+body.dark-mode .stat-icon,
+body.dark-mode .task-icon,
+body.dark-mode .btn-soft {
+    background: #111827;
+    color: #f9fafb;
+    border: 1px solid #4b5563;
+}
+
+body.dark-mode .stat-label,
+body.dark-mode .admin-badge,
+body.dark-mode .theme-toggle {
+    color: #fed7aa;
+}
+
+body.dark-mode .admin-badge,
+body.dark-mode .theme-toggle {
+    background: rgba(251, 146, 60, 0.16);
+    border-color: rgba(251, 146, 60, 0.36);
+}
+
+body.dark-mode .task-list li {
+    border-bottom-color: #374151;
+}
+
+body.dark-mode .btn-primary {
+    background: #fb923c;
+    color: #111827;
+}
+
+body.dark-mode .btn-primary:hover {
+    background: #fdba74;
+}
+
 @media (max-width: 1100px) {
     .hero-card,
     .content-grid {
@@ -427,53 +536,399 @@ body {
         display: block;
     }
 
-    .admin-badge {
+    .top-actions {
         margin-top: 16px;
+        flex-wrap: wrap;
     }
 
     .dashboard-grid {
         grid-template-columns: 1fr;
     }
 }
+
+
+/* ===== PickEat admin common sidebar / dark-mode fix ===== */
+.admin-layout,
+.page-wrap {
+    min-height: 100vh;
+}
+
+.admin-layout > .sidebar,
+.page-wrap > .sidebar,
+.sidebar.admin-sidebar {
+    width: 250px !important;
+    min-width: 250px !important;
+    background: #2f241d !important;
+    color: #ffffff !important;
+    padding: 30px 24px !important;
+    box-shadow: 8px 0 24px rgba(47, 36, 29, 0.15) !important;
+    border-right: 0 !important;
+    display: block !important;
+}
+
+.sidebar .logo-box,
+.admin-sidebar .logo-box {
+    margin-bottom: 38px !important;
+}
+
+.sidebar .logo-link,
+.admin-sidebar .logo-link {
+    display: inline-block !important;
+    text-decoration: none !important;
+    color: inherit !important;
+    background: transparent !important;
+    box-shadow: none !important;
+}
+
+.sidebar .logo,
+.admin-sidebar .logo {
+    font-size: 30px !important;
+    line-height: 1 !important;
+    font-weight: 950 !important;
+    color: #ffb86b !important;
+    letter-spacing: -1px !important;
+    background: transparent !important;
+}
+
+.sidebar .logo span,
+.admin-sidebar .logo span {
+    color: #ffffff !important;
+}
+
+.sidebar .logo-desc,
+.admin-sidebar .logo-desc {
+    font-size: 13px !important;
+    color: #d6c7b8 !important;
+    margin-top: 10px !important;
+    line-height: 1.5 !important;
+}
+
+.sidebar .menu-title,
+.admin-sidebar .menu-title {
+    font-size: 12px !important;
+    color: #a99584 !important;
+    margin: 0 0 12px !important;
+    text-transform: uppercase !important;
+    font-weight: 900 !important;
+    letter-spacing: 0.04em !important;
+}
+
+.sidebar .admin-menu-subtitle,
+.admin-sidebar .admin-menu-subtitle {
+    margin-top: 28px !important;
+}
+
+.sidebar .menu-list,
+.admin-sidebar .menu-list {
+    list-style: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    display: block !important;
+}
+
+.sidebar .menu-list li,
+.admin-sidebar .menu-list li {
+    margin: 0 0 10px !important;
+    padding: 0 !important;
+}
+
+.sidebar .menu-list a,
+.sidebar .admin-side-theme-toggle,
+.admin-sidebar .menu-list a,
+.admin-sidebar .admin-side-theme-toggle {
+    width: 100% !important;
+    display: flex !important;
+    align-items: center !important;
+    min-height: 46px !important;
+    text-decoration: none !important;
+    color: #eee2d6 !important;
+    padding: 13px 15px !important;
+    border-radius: 14px !important;
+    border: 1px solid transparent !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    transition: 0.2s !important;
+    font-size: 15px !important;
+    font-weight: 850 !important;
+    font-family: inherit !important;
+    text-align: left !important;
+    cursor: pointer !important;
+}
+
+.sidebar .menu-list a:hover,
+.sidebar .menu-list a.active,
+.sidebar .admin-side-theme-toggle:hover,
+.admin-sidebar .menu-list a:hover,
+.admin-sidebar .menu-list a.active,
+.admin-sidebar .admin-side-theme-toggle:hover {
+    background: #ff914d !important;
+    color: #ffffff !important;
+    border-color: rgba(255, 255, 255, 0.12) !important;
+    box-shadow: 0 8px 18px rgba(255, 145, 77, 0.35) !important;
+}
+
+body.dark-mode {
+    background: linear-gradient(135deg, #111827 0%, #1f2937 55%, #0f172a 100%) !important;
+    color: #f9fafb !important;
+}
+
+body.dark-mode .admin-layout > .sidebar,
+body.dark-mode .page-wrap > .sidebar,
+body.dark-mode .sidebar.admin-sidebar {
+    background: #0f172a !important;
+    color: #f9fafb !important;
+    box-shadow: 8px 0 24px rgba(0, 0, 0, 0.28) !important;
+}
+
+body.dark-mode .sidebar .logo,
+body.dark-mode .admin-sidebar .logo {
+    color: #ffb86b !important;
+}
+
+body.dark-mode .sidebar .logo span,
+body.dark-mode .admin-sidebar .logo span {
+    color: #ffffff !important;
+}
+
+body.dark-mode .sidebar .logo-desc,
+body.dark-mode .sidebar .menu-title,
+body.dark-mode .admin-sidebar .logo-desc,
+body.dark-mode .admin-sidebar .menu-title {
+    color: #cbd5e1 !important;
+}
+
+body.dark-mode .sidebar .menu-list a,
+body.dark-mode .sidebar .admin-side-theme-toggle,
+body.dark-mode .admin-sidebar .menu-list a,
+body.dark-mode .admin-sidebar .admin-side-theme-toggle {
+    color: #e5e7eb !important;
+    background: transparent !important;
+}
+
+body.dark-mode .sidebar .menu-list a:hover,
+body.dark-mode .sidebar .menu-list a.active,
+body.dark-mode .sidebar .admin-side-theme-toggle:hover,
+body.dark-mode .admin-sidebar .menu-list a:hover,
+body.dark-mode .admin-sidebar .menu-list a.active,
+body.dark-mode .admin-sidebar .admin-side-theme-toggle:hover {
+    background: #fb923c !important;
+    color: #111827 !important;
+}
+
+body.dark-mode .main,
+body.dark-mode main,
+body.dark-mode .content,
+body.dark-mode .main-content {
+    color: #f9fafb !important;
+}
+
+body.dark-mode h1,
+body.dark-mode h2,
+body.dark-mode h3,
+body.dark-mode h4,
+body.dark-mode .page-title h1,
+body.dark-mode .section-title,
+body.dark-mode .panel-title,
+body.dark-mode .card-title,
+body.dark-mode .detail-title,
+body.dark-mode .list-title,
+body.dark-mode .form-title,
+body.dark-mode .stat-value,
+body.dark-mode .feature-title,
+body.dark-mode .task-title {
+    color: #f9fafb !important;
+}
+
+body.dark-mode p,
+body.dark-mode label,
+body.dark-mode small,
+body.dark-mode li,
+body.dark-mode .page-title p,
+body.dark-mode .desc,
+body.dark-mode .description,
+body.dark-mode .sub-text,
+body.dark-mode .muted,
+body.dark-mode .meta,
+body.dark-mode .date,
+body.dark-mode .address,
+body.dark-mode .help-text,
+body.dark-mode .feature-desc,
+body.dark-mode .task-desc,
+body.dark-mode .stat-desc,
+body.dark-mode .form-label,
+body.dark-mode .info-label,
+body.dark-mode .info-value {
+    color: #d1d5db !important;
+}
+
+body.dark-mode .card,
+body.dark-mode .box,
+body.dark-mode .panel,
+body.dark-mode .content-box,
+body.dark-mode .content-card,
+body.dark-mode .form-card,
+body.dark-mode .detail-card,
+body.dark-mode .list-card,
+body.dark-mode .table-card,
+body.dark-mode .search-box,
+body.dark-mode .search-area,
+body.dark-mode .search-card,
+body.dark-mode .stat-card,
+body.dark-mode .welcome-card,
+body.dark-mode .inquiry-card,
+body.dark-mode .feature-item,
+body.dark-mode .form-item,
+body.dark-mode .info-box,
+body.dark-mode .info-card,
+body.dark-mode .reply-card,
+body.dark-mode .empty-box,
+body.dark-mode .pagination,
+body.dark-mode .filter-box {
+    background: #1f2937 !important;
+    color: #f9fafb !important;
+    border-color: #374151 !important;
+    box-shadow: 0 18px 45px rgba(0, 0, 0, 0.28) !important;
+}
+
+body.dark-mode input,
+body.dark-mode textarea,
+body.dark-mode select,
+body.dark-mode .form-input,
+body.dark-mode .search-input,
+body.dark-mode .readonly-input {
+    background: #111827 !important;
+    color: #f9fafb !important;
+    border-color: #4b5563 !important;
+}
+
+body.dark-mode input::placeholder,
+body.dark-mode textarea::placeholder {
+    color: #9ca3af !important;
+}
+
+body.dark-mode table,
+body.dark-mode thead,
+body.dark-mode tbody,
+body.dark-mode tr {
+    background: #1f2937 !important;
+    color: #f9fafb !important;
+    border-color: #374151 !important;
+}
+
+body.dark-mode th,
+body.dark-mode td {
+    border-color: #374151 !important;
+    color: #e5e7eb !important;
+}
+
+body.dark-mode thead th,
+body.dark-mode .table-card th {
+    background: #111827 !important;
+    color: #f9fafb !important;
+}
+
+body.dark-mode tbody tr:hover {
+    background: rgba(251, 146, 60, 0.08) !important;
+}
+
+body.dark-mode .btn,
+body.dark-mode .btn-primary,
+body.dark-mode .primary-btn,
+body.dark-mode .submit-btn,
+body.dark-mode .search-btn,
+body.dark-mode .save-btn,
+body.dark-mode .btn-save,
+body.dark-mode .answer-btn,
+body.dark-mode .add-btn {
+    background: #fb923c !important;
+    border-color: #fb923c !important;
+    color: #111827 !important;
+}
+
+body.dark-mode .btn-soft,
+body.dark-mode .btn-list,
+body.dark-mode .btn-detail,
+body.dark-mode .btn-edit,
+body.dark-mode .btn-delete,
+body.dark-mode .back-btn,
+body.dark-mode .reset-btn,
+body.dark-mode .cancel-btn,
+body.dark-mode .secondary-btn,
+body.dark-mode .detail-btn,
+body.dark-mode .edit-btn,
+body.dark-mode .delete-btn {
+    background: #111827 !important;
+    border-color: #4b5563 !important;
+    color: #f9fafb !important;
+}
+
+body.dark-mode .pagination a,
+body.dark-mode .pagination span,
+body.dark-mode .page-link,
+body.dark-mode .page-btn,
+body.dark-mode .page-num {
+    background: #1f2937 !important;
+    border-color: #4b5563 !important;
+    color: #e5e7eb !important;
+}
+
+body.dark-mode .pagination a.active,
+body.dark-mode .pagination a:hover,
+body.dark-mode .page-link.active,
+body.dark-mode .page-link:hover,
+body.dark-mode .page-btn.active,
+body.dark-mode .page-btn:hover,
+body.dark-mode .page-num.active,
+body.dark-mode .page-num:hover {
+    background: #fb923c !important;
+    border-color: #fb923c !important;
+    color: #111827 !important;
+}
+
+@media (max-width: 900px) {
+    .admin-layout,
+    .page-wrap {
+        display: block !important;
+    }
+
+    .admin-layout > .sidebar,
+    .page-wrap > .sidebar,
+    .sidebar.admin-sidebar {
+        width: 100% !important;
+        min-width: 0 !important;
+    }
+}
+
 </style>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/pickeat-final-fix.css?v=20260519fix4">
+<script src="${pageContext.request.contextPath}/resources/js/pickeat-theme-fix.js?v=20260519fix4"></script>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/pickeat-hard-fix.css?v=20260519hard3">
 </head>
 
 <body>
+<script>
+(function () {
+    if (localStorage.getItem("theme") === "dark") {
+        document.body.classList.add("dark-mode");
+    }
+})();
+</script>
 
 <div class="admin-layout">
-
-    <aside class="sidebar">
-        <div class="logo-box">
-            <a href="${pageContext.request.contextPath}/" class="logo-link">
-                <div class="logo">Pick<span>Eat</span></div>
-            </a>
-            <div class="logo-desc">날씨와 상황에 맞는 맛집 추천 서비스</div>
-        </div>
-
-        <div class="menu-title">Admin Menu</div>
-        <ul class="menu-list">
-            <li><a href="${pageContext.request.contextPath}/admin" class="active">대시보드</a></li>
-            <li><a href="${pageContext.request.contextPath}/admin/members">회원 관리</a></li>
-            <li><a href="${pageContext.request.contextPath}/admin/inquiries">문의 관리</a></li>
-            <li><a href="${pageContext.request.contextPath}/admin/restaurants">맛집 관리</a></li>
-            <li><a href="${pageContext.request.contextPath}/admin/reviewList">리뷰 관리</a></li>
-             <li>
-                <a href="${pageContext.request.contextPath}/member/logout">
-                    로그아웃
-                </a>
-            </li>
-        </ul>
-    </aside>
+    <c:set var="activeAdminMenu" value="dashboard" />
+    <jsp:include page="/WEB-INF/views/admin/adminSidebar.jsp" />
 
     <main class="main">
-
         <div class="top-bar">
             <div class="page-title">
                 <h1>PickEat 관리자 대시보드</h1>
-                <p>회원, 맛집, 리뷰, 날씨 기반 추천 흐름을 한눈에 관리합니다.</p>
+                <p>회원, 맛집, 리뷰, 문의 흐름을 한눈에 관리합니다.</p>
             </div>
 
-            <div class="admin-badge">ADMIN MODE</div>
+            <div class="top-actions">
+                <button type="button" id="adminThemeToggle" class="theme-toggle">🌙 다크모드</button>
+                <div class="admin-badge">ADMIN MODE</div>
+            </div>
         </div>
 
         <section class="hero-card">
@@ -482,28 +937,28 @@ body {
                 <p class="welcome-text">
                     PickEat은 날씨와 사용자 상황을 바탕으로 맛집을 추천하는 서비스입니다.
                     관리자 페이지에서는 회원 정보와 서비스 데이터를 관리하고,
-                    추천 서비스가 안정적으로 작동하도록 운영 흐름을 확인할 수 있습니다.
+                    사용자의 문의와 리뷰를 확인해 서비스 흐름을 안정적으로 운영할 수 있습니다.
                 </p>
 
                 <div class="quick-actions">
-                    <a href="${pageContext.request.contextPath}/admin/members" class="btn btn-primary">회원 관리 바로가기</a>
-                    <a href="${pageContext.request.contextPath}/admin/restaurantList" class="btn btn-soft">맛집 관리</a>
-                    <a href="${pageContext.request.contextPath}/admin/reviewList" class="btn btn-soft">리뷰 관리</a>
+                    <a href="${contextPath}/admin/members" class="btn btn-primary">회원 관리 바로가기</a>
+                    <a href="${contextPath}/admin/restaurants" class="btn btn-soft">맛집 관리</a>
+                    <a href="${contextPath}/admin/reviewList" class="btn btn-soft">리뷰 관리</a>
                 </div>
             </div>
 
-            <div class="weather-card">
+            <div class="inquiry-card">
                 <div>
-                    <div class="weather-icon">🌤</div>
-                    <h2>날씨 기반 추천 관리</h2>
+                    <div class="inquiry-icon">💬</div>
+                    <h2>문의 관리</h2>
                     <p>
-                        날씨 API와 위치 정보를 활용해 사용자에게 어울리는 맛집을 추천하는 영역입니다.
-                        추후 날씨 조건별 추천 기준을 이곳에서 관리할 수 있습니다.
+                        사용자가 남긴 문의를 확인하고 답변을 등록하는 영역입니다.
+                        처리 상태를 확인하면서 답변을 관리할 수 있습니다.
                     </p>
                 </div>
 
                 <div style="margin-top: 22px;">
-                    <a href="${pageContext.request.contextPath}/admin/weather" class="btn btn-primary">추천 관리 이동</a>
+                    <a href="${contextPath}/admin/inquiries" class="btn btn-primary">문의 관리 이동</a>
                 </div>
             </div>
         </section>
@@ -524,22 +979,21 @@ body {
             </div>
 
             <div class="stat-card">
-                <div class="stat-icon">💬</div>
+                <div class="stat-icon">⭐</div>
                 <div class="stat-label">리뷰 관리</div>
                 <div class="stat-value">REVIEW</div>
-                <div class="stat-desc">사용자 리뷰와 서비스 피드백을 확인합니다.</div>
+                <div class="stat-desc">사용자가 작성한 리뷰와 평점을 확인합니다.</div>
             </div>
 
             <div class="stat-card">
-                <div class="stat-icon">📍</div>
-                <div class="stat-label">위치 / 날씨</div>
-                <div class="stat-value">API</div>
-                <div class="stat-desc">외부 API 기반 추천 흐름을 관리합니다.</div>
+                <div class="stat-icon">💬</div>
+                <div class="stat-label">문의 관리</div>
+                <div class="stat-value">Q&amp;A</div>
+                <div class="stat-desc">문의 내용을 확인하고 답변을 등록합니다.</div>
             </div>
         </section>
 
         <section class="content-grid">
-
             <div class="panel">
                 <h2 class="panel-title">관리자 작업 순서</h2>
 
@@ -555,8 +1009,8 @@ body {
                     <li>
                         <div class="task-icon">2</div>
                         <div>
-                            <div class="task-title">회원 정보 수정</div>
-                            <div class="task-desc">이름, 이메일, 전화번호 같은 기본 정보를 수정합니다. 권한은 변경하지 않습니다.</div>
+                            <div class="task-title">문의 답변 처리</div>
+                            <div class="task-desc">문의 관리에서 사용자의 질문을 확인하고 답변을 등록합니다.</div>
                         </div>
                     </li>
 
@@ -574,32 +1028,51 @@ body {
                 <h2 class="panel-title">빠른 이동</h2>
 
                 <div class="feature-list">
-                    <a href="${pageContext.request.contextPath}/admin/members" class="feature-item">
+                    <a href="${contextPath}/admin/members" class="feature-item">
                         <span class="feature-title">회원 관리</span>
                         <span class="feature-desc">회원 목록, 상세 정보, 수정 페이지로 이동합니다.</span>
                     </a>
 
-                    <a href="${pageContext.request.contextPath}/admin/restaurantList" class="feature-item">
+                    <a href="${contextPath}/admin/inquiries" class="feature-item">
+                        <span class="feature-title">문의 관리</span>
+                        <span class="feature-desc">사용자 문의 목록과 답변 등록 화면으로 이동합니다.</span>
+                    </a>
+
+                    <a href="${contextPath}/admin/restaurants" class="feature-item">
                         <span class="feature-title">맛집 관리</span>
                         <span class="feature-desc">추천에 사용될 맛집 데이터를 관리합니다.</span>
                     </a>
 
-                    <a href="${pageContext.request.contextPath}/admin/reviewList" class="feature-item">
+                    <a href="${contextPath}/admin/reviewList" class="feature-item">
                         <span class="feature-title">리뷰 관리</span>
                         <span class="feature-desc">회원들이 작성한 리뷰 데이터를 확인합니다.</span>
                     </a>
-
-                    <a href="${pageContext.request.contextPath}/admin/weather" class="feature-item">
-                        <span class="feature-title">날씨 추천 관리</span>
-                        <span class="feature-desc">날씨와 상황 기반 추천 로직을 관리합니다.</span>
-                    </a>
                 </div>
             </div>
-
         </section>
-
     </main>
 </div>
 
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const toggle = document.getElementById("adminThemeToggle");
+
+    if (!toggle) {
+        return;
+    }
+
+    function syncText() {
+        toggle.textContent = document.body.classList.contains("dark-mode") ? "☀️ 라이트모드" : "🌙 다크모드";
+    }
+
+    syncText();
+
+    toggle.addEventListener("click", function () {
+        document.body.classList.toggle("dark-mode");
+        localStorage.setItem("theme", document.body.classList.contains("dark-mode") ? "dark" : "light");
+        syncText();
+    });
+});
+</script>
 </body>
 </html>

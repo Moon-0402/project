@@ -469,10 +469,231 @@ form {
         text-align: center;
     }
 }
+
+
+/* ===== PickEat common dark-mode readability fix ===== */
+body.dark-mode {
+    background: linear-gradient(135deg, #111827 0%, #1f2937 55%, #0f172a 100%) !important;
+    color: #f9fafb !important;
+}
+
+body.dark-mode .page-wrap,
+body.dark-mode .main,
+body.dark-mode main,
+body.dark-mode .container,
+body.dark-mode .content,
+body.dark-mode .page-content,
+body.dark-mode .section {
+    color: #f9fafb !important;
+}
+
+body.dark-mode h1,
+body.dark-mode h2,
+body.dark-mode h3,
+body.dark-mode h4,
+body.dark-mode .title,
+body.dark-mode .page-title,
+body.dark-mode .section-title,
+body.dark-mode .card-title,
+body.dark-mode .restaurant-name,
+body.dark-mode .review-title,
+body.dark-mode .inquiry-title,
+body.dark-mode .feature-title {
+    color: #f9fafb !important;
+}
+
+body.dark-mode p,
+body.dark-mode label,
+body.dark-mode small,
+body.dark-mode li,
+body.dark-mode .desc,
+body.dark-mode .description,
+body.dark-mode .sub-text,
+body.dark-mode .muted,
+body.dark-mode .meta,
+body.dark-mode .date,
+body.dark-mode .address,
+body.dark-mode .help-text,
+body.dark-mode .section-subtitle,
+body.dark-mode .feature-desc,
+body.dark-mode .review-text,
+body.dark-mode .footer-text,
+body.dark-mode .form-label,
+body.dark-mode .info-label,
+body.dark-mode .info-value {
+    color: #d1d5db !important;
+}
+
+body.dark-mode .card,
+body.dark-mode .box,
+body.dark-mode .panel,
+body.dark-mode .content-box,
+body.dark-mode .content-card,
+body.dark-mode .form-card,
+body.dark-mode .login-card,
+body.dark-mode .signup-card,
+body.dark-mode .mypage-card,
+body.dark-mode .profile-card,
+body.dark-mode .quick-card,
+body.dark-mode .detail-card,
+body.dark-mode .list-card,
+body.dark-mode .review-card,
+body.dark-mode .restaurant-card,
+body.dark-mode .bookmark-card,
+body.dark-mode .inquiry-card,
+body.dark-mode .recommend-card,
+body.dark-mode .result-card,
+body.dark-mode .history-card,
+body.dark-mode .search-area,
+body.dark-mode .search-box,
+body.dark-mode .search-card,
+body.dark-mode .table-card,
+body.dark-mode .reply-card,
+body.dark-mode .empty-box,
+body.dark-mode .no-data,
+body.dark-mode .weather-card,
+body.dark-mode .form-item,
+body.dark-mode .info-box,
+body.dark-mode .quick-link,
+body.dark-mode .side-card {
+    background: #1f2937 !important;
+    color: #f9fafb !important;
+    border-color: #374151 !important;
+    box-shadow: 0 18px 45px rgba(0, 0, 0, 0.28) !important;
+}
+
+body.dark-mode input,
+body.dark-mode textarea,
+body.dark-mode select,
+body.dark-mode .form-input,
+body.dark-mode .form-textarea,
+body.dark-mode .search-input,
+body.dark-mode .readonly-input {
+    background: #111827 !important;
+    color: #f9fafb !important;
+    border-color: #4b5563 !important;
+}
+
+body.dark-mode input::placeholder,
+body.dark-mode textarea::placeholder {
+    color: #9ca3af !important;
+}
+
+body.dark-mode table,
+body.dark-mode thead,
+body.dark-mode tbody,
+body.dark-mode tr {
+    background: #1f2937 !important;
+    color: #f9fafb !important;
+    border-color: #374151 !important;
+}
+
+body.dark-mode th,
+body.dark-mode td {
+    border-color: #374151 !important;
+    color: #e5e7eb !important;
+}
+
+body.dark-mode thead th,
+body.dark-mode .table-card th {
+    background: #111827 !important;
+    color: #f9fafb !important;
+}
+
+body.dark-mode tbody tr:hover {
+    background: rgba(251, 146, 60, 0.08) !important;
+}
+
+body.dark-mode .btn,
+body.dark-mode .primary,
+body.dark-mode .primary-btn,
+body.dark-mode .btn-primary,
+body.dark-mode .search-btn,
+body.dark-mode .submit-btn,
+body.dark-mode .add-btn,
+body.dark-mode .write-btn,
+body.dark-mode .answer-btn,
+body.dark-mode .login-btn,
+body.dark-mode .signup-btn,
+body.dark-mode .btn-submit,
+body.dark-mode .btn-save {
+    background: #fb923c !important;
+    border-color: #fb923c !important;
+    color: #111827 !important;
+}
+
+body.dark-mode .secondary,
+body.dark-mode .secondary-btn,
+body.dark-mode .reset-btn,
+body.dark-mode .back-btn,
+body.dark-mode .back-link,
+body.dark-mode .btn-outline,
+body.dark-mode .btn-soft,
+body.dark-mode .btn-sub,
+body.dark-mode .btn-list,
+body.dark-mode .clear-btn,
+body.dark-mode .detail-btn,
+body.dark-mode .view-btn,
+body.dark-mode .edit-btn,
+body.dark-mode .delete-btn,
+body.dark-mode .btn-delete,
+body.dark-mode .btn-edit,
+body.dark-mode .btn-detail {
+    background: #111827 !important;
+    border-color: #4b5563 !important;
+    color: #f9fafb !important;
+}
+
+body.dark-mode .sidebar,
+body.dark-mode .left-banner,
+body.dark-mode .side-banner {
+    background: #0f172a !important;
+    color: #f9fafb !important;
+    border-color: #334155 !important;
+}
+
+body.dark-mode .sidebar .logo,
+body.dark-mode .left-banner .logo,
+body.dark-mode .side-banner .logo {
+    color: #ffb86b !important;
+}
+
+body.dark-mode .sidebar .logo span,
+body.dark-mode .left-banner .logo span,
+body.dark-mode .side-banner .logo span {
+    color: #ffffff !important;
+}
+
+body.dark-mode .sidebar .menu-list a,
+body.dark-mode .left-banner a,
+body.dark-mode .side-banner a {
+    color: #e5e7eb !important;
+}
+
+body.dark-mode .sidebar .menu-list a.active,
+body.dark-mode .sidebar .menu-list a:hover,
+body.dark-mode .left-banner a.active,
+body.dark-mode .left-banner a:hover,
+body.dark-mode .side-banner a.active,
+body.dark-mode .side-banner a:hover {
+    background: #fb923c !important;
+    color: #111827 !important;
+}
+
 </style>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/pickeat-final-fix.css?v=20260519fix4">
+<script src="${pageContext.request.contextPath}/resources/js/pickeat-theme-fix.js?v=20260519fix4"></script>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/pickeat-hard-fix.css?v=20260519hard3">
 </head>
 
 <body>
+<script id="pke-theme-init">
+(function () {
+    if (localStorage.getItem("theme") === "dark") {
+        document.body.classList.add("dark-mode");
+    }
+})();
+</script>
 
 <div class="page-wrap">
 

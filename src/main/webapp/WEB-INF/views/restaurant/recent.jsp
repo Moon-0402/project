@@ -156,9 +156,19 @@ body {
 	box-shadow: 0 4px 12px rgba(255, 101, 0, 0.25);
 }
 </style>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/pickeat-final-fix.css?v=20260519fix4">
+<script src="${pageContext.request.contextPath}/resources/js/pickeat-theme-fix.js?v=20260519fix4"></script>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/pickeat-hard-fix.css?v=20260519hard3">
 </head>
 
 <body>
+<script id="pke-theme-init">
+(function () {
+    if (localStorage.getItem("theme") === "dark") {
+        document.body.classList.add("dark-mode");
+    }
+})();
+</script>
 
 	<%@ include file="/WEB-INF/views/header.jsp"%>
 
