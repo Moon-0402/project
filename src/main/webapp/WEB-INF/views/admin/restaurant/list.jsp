@@ -606,7 +606,7 @@ tbody tr:hover {
 				<a href="${contextPath}/admin/restaurants/add"
 				   class="add-btn">
 					+ 맛집 등록
-				</a>
+				</a>	
 			</form>
 
 			<c:if test="${not empty keyword}">

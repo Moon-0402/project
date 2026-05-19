@@ -134,6 +134,7 @@ public class RestaurantController {
 
         Long memberId = loginMember.getMemberId();
         restaurantService.insertRecentlyRestaurant(memberId, restaurantId);
+        // 상세보기한 맛집을 최근 본 맛집으로 저장하기 위해서
 
         model.addAttribute("restaurant", restaurant);
 

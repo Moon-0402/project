@@ -180,7 +180,7 @@ public class RecommendController {
 		// =========================================
 		if (!nearRestaurantList.isEmpty()) {
 
-			// 첫 번째 추천 음식점
+			// 내가 고른 추천 음식점
 			RestaurantDTO recommendRestaurant =
 					nearRestaurantList.get(0);
 
@@ -261,11 +261,14 @@ public class RecommendController {
 
 		// JSP 전달
 		model.addAttribute("historyList", list);
+		
+		model.addAttribute("todayTopFoods", recommendService.getTodayFoods());
 
 		// 추천 기록 페이지 반환
 		return "recommend/history";
 	}
 
+	
 	
 	
 	// =========================
