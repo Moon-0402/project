@@ -338,14 +338,6 @@ a {
 	background: #e5e7eb;
 }
 
-<<<<<<< HEAD
-.kakao-login-btn {
-	width: 100%;
-	height: 48px;
-	border: none;
-	border-radius: 10px;
-	background: #FEE500;
-=======
 /* 카카오 로그인 버튼 */
 .kakao-login-btn {
 	width: 100%;
@@ -353,7 +345,6 @@ a {
 	border: none;
 	border-radius: 10px;
 	background: #fee500;
->>>>>>> e96313e4bc375f9b40b6b2b7c7f6597e6dc27723
 	color: #191919;
 	font-size: 14px;
 	font-weight: 900;
@@ -361,22 +352,6 @@ a {
 	display: flex;
 	align-items: center;
 	justify-content: center;
-<<<<<<< HEAD
-	gap: 10px;
-	text-decoration: none;
-	transition: all 0.2s ease;
-	box-shadow: 0 6px 18px rgba(254, 229, 0, 0.35);
-}
-
-.kakao-login-btn:hover {
-	background: #f7d900;
-	transform: translateY(-2px);
-	box-shadow: 0 10px 24px rgba(254, 229, 0, 0.45);
-}
-
-.kakao-login-btn:active {
-	transform: scale(0.98);
-=======
 	gap: 9px;
 	box-shadow: 0 10px 22px rgba(254, 229, 0, 0.28);
 	transition: 0.22s ease;
@@ -423,7 +398,6 @@ a {
 .kakao-login-btn:active {
 	transform: translateY(0);
 	box-shadow: 0 8px 18px rgba(254, 229, 0, 0.24);
->>>>>>> e96313e4bc375f9b40b6b2b7c7f6597e6dc27723
 }
 
 .message {
