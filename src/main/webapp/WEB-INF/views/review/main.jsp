@@ -427,7 +427,7 @@ a {
 			<c:choose>
 				<c:when test="${not empty sessionScope.loginMember}">
 					<a class="btn secondary"
-					   href="${contextPath}/mypage/reviews">
+					   href="${contextPath}/member/mypage/reviews">
 						내가 쓴 리뷰
 					</a>
 				</c:when>

@@ -16,7 +16,8 @@ public class RestaurantRepositoryImpl implements RestaurantRepository {
 
 	@Autowired
 	private JdbcTemplate template;
-
+	
+	// 전체 조회
 	@Override
 	public List<RestaurantDTO> getRestaurantList() {
 		String sql = "SELECT r.restaurant_id, r.name, "
@@ -41,13 +42,15 @@ public class RestaurantRepositoryImpl implements RestaurantRepository {
 		return list;
 	}
 
+	// 식당 조회
 	@Override
 	public Restaurant getRestaurantById(Long restaurantId) {
 		String sql = "SELECT * FROM RESTAURANT WHERE restaurant_id = ?";
 
 		return template.queryForObject(sql, new RestaurantRowMapper(), restaurantId);
 	}
-
+	
+	// 지도에 뜨는 식당
 	@Override
 	public List<RestaurantMapDTO> getRestaurantMapList() {
 		String sql = "SELECT r.restaurant_id, r.name, "
@@ -65,6 +68,7 @@ public class RestaurantRepositoryImpl implements RestaurantRepository {
 		return template.query(sql, new RestaurantMapDTORowMapper());
 	}
 
+	// 식당 넣기
 	@Override
 	public void insertRestaurant(Restaurant restaurant) {
 		String sql = "INSERT IGNORE INTO RESTAURANT "
@@ -86,6 +90,7 @@ public class RestaurantRepositoryImpl implements RestaurantRepository {
 				restaurant.getPlaceUrl());
 	}
 
+	// 식당 수정
 	@Override
 	public void updateRestaurant(Restaurant restaurant) {
 		String sql = "update RESTAURANT set name = ?, phone = ? , address = ? , price_range = ? , opening_hours = ?, description = ?, status = ? where restaurant_id = ? ";
@@ -93,6 +98,7 @@ public class RestaurantRepositoryImpl implements RestaurantRepository {
 				restaurant.getName(), restaurant.getPhone(), restaurant.getAddress(),restaurant.getPriceRange(),restaurant.getOpeningHours(),restaurant.getDescription(), restaurant.getStatus(),restaurant.getRestaurantId());
 	}
 
+	// 식당 삭제
 	@Override
 	public void deleteRestaurant(Long restaurantId) {
 
@@ -102,6 +108,7 @@ public class RestaurantRepositoryImpl implements RestaurantRepository {
 
 	}
 	
+	// 관리자용 식당 목록
 	@Override
 	public List<RestaurantDTO> getAdminRestaurantList(int offset, int size) {
 
@@ -129,6 +136,7 @@ public class RestaurantRepositoryImpl implements RestaurantRepository {
 		);
 	}
 
+	// 식당 목록 개수
 	@Override
 	public int countAdminRestaurantList() {
 
@@ -142,6 +150,7 @@ public class RestaurantRepositoryImpl implements RestaurantRepository {
 		);
 	}
 	
+	// 관리자용 식당 조회
 	@Override
 	public List<RestaurantDTO> searchAdminRestaurantList(
 	        String keyword,
@@ -176,6 +185,7 @@ public class RestaurantRepositoryImpl implements RestaurantRepository {
 	    );
 	}
 
+	// 관리자용 식당 조회 개수
 	@Override
 	public int countSearchAdminRestaurantList(String keyword) {
 
@@ -193,6 +203,7 @@ public class RestaurantRepositoryImpl implements RestaurantRepository {
 	    );
 	}
 
+	// 최근 본 식당 삽입
 	@Override
 	public void insertRecentlyRestaurant(Long memberId, Long restaurantId) {
 
@@ -217,6 +228,7 @@ public class RestaurantRepositoryImpl implements RestaurantRepository {
 		template.update(insertSql, memberId, restaurantId);
 	}
 
+	// 최근 본 식당 불러오기
 	@Override
 	public List<RestaurantDTO> getRecentlyRestaurantList(Long memberId) {
 		String sql = "SELECT r.restaurant_id, r.name, "
@@ -240,6 +252,7 @@ public class RestaurantRepositoryImpl implements RestaurantRepository {
 		return template.query(sql, new RestaurantDTORowMapper(), memberId);
 	}
 	
+	// 페이징 넣기
 	@Override
 	public List<RestaurantDTO> getRecentlyRestaurantList(Long memberId, int offset, int size) {
 
@@ -270,6 +283,7 @@ public class RestaurantRepositoryImpl implements RestaurantRepository {
 		);
 	}
 	
+	// 개수
 	@Override
 	public int countRecentlyRestaurantList(Long memberId) {
 

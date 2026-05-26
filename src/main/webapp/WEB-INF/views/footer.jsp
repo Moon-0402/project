@@ -31,7 +31,6 @@
     font-size: 13px;
     color: #9ca3af;
     line-height: 1.7;
-    1
 }
 
 .footer-links {

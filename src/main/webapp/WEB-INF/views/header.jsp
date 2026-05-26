@@ -15,6 +15,7 @@
 
 <c:set var="homeURI" value="${contextPath}/" />
 <c:set var="recommendURI" value="${contextPath}/recommend" />
+<c:set var="aipickURI" value="${contextPath}/aipick" />
 <c:set var="restaurantsURI" value="${contextPath}/restaurants" />
 <c:set var="bookmarkURI" value="${contextPath}/bookmark/list" />
 <c:set var="reviewURI" value="${contextPath}/review" />
@@ -233,7 +234,12 @@ a {
 
 	<a href="${not empty sessionScope.loginMember ? recommendURI : loginURI}"
 		class="${fn:contains(currentURI, '/recommend') ? 'active' : ''}">
-		추천
+		Pick 룰렛
+	</a>
+	
+	<a href="${not empty sessionScope.loginMember ? aipickURI : loginURI}"
+		class="${fn:contains(currentURI, '/aipick') ? 'active' : ''}">
+		AI PICK
 	</a>
 
 	<a href="${not empty sessionScope.loginMember ? restaurantsURI : loginURI}"
