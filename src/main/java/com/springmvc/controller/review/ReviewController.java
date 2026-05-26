@@ -318,4 +318,24 @@ public class ReviewController {
 		// DB에 저장될 경로
 		return "/upload/review/" + savedName;
 	}
+	
+	// 리뷰 1개만 보기
+	@GetMapping("/review/one")
+	public String reviewOne(
+	        @RequestParam("reviewId") Long reviewId,
+	        Model model) {
+
+	    ReviewDTO review = reviewService.getReviewById(reviewId);
+
+	    List<ReviewDTO> reviewList = List.of(review);
+
+	    model.addAttribute("reviewList", reviewList);
+	    model.addAttribute("restaurantId", review.getRestaurantId());
+	    
+	    model.addAttribute("restaurantName", review.getRestaurantName());
+	    
+	    model.addAttribute("oneReview", true);
+
+	    return "review/list";
+	}
 }

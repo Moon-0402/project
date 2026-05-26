@@ -32,8 +32,82 @@ a {
 	color: inherit;
 }
 
+.header {
+	height: 58px;
+	background: rgba(255, 255, 255, 0.88);
+	border-bottom: 1px solid #e5e7eb;
+	display: flex;
+	align-items: center;
+	padding: 0 32px;
+	backdrop-filter: blur(12px);
+	position: sticky;
+	top: 0;
+	z-index: 20;
+}
+
+.logo {
+	font-size: 27px;
+	font-weight: 900;
+	letter-spacing: -1px;
+	color: #111827;
+	display: flex;
+	align-items: center;
+	gap: 6px;
+}
+
+.logo-icon {
+	width: 24px;
+	height: 30px;
+	background: #ff6500;
+	border-radius: 50% 50% 50% 0;
+	transform: rotate(-45deg);
+	display: inline-block;
+}
+
+.nav {
+	flex: 1;
+	display: flex;
+	justify-content: center;
+	gap: 52px;
+	font-size: 14px;
+	font-weight: 800;
+}
+
+.nav a {
+	color: #111827;
+}
+
+.nav a:hover {
+	color: #ff6500;
+}
+
+.header-actions {
+	display: flex;
+	gap: 10px;
+	align-items: center;
+}
+
+.header-btn {
+	border: none;
+	border-radius: 8px;
+	padding: 10px 17px;
+	font-weight: 800;
+	font-size: 13px;
+	cursor: pointer;
+}
+
+.login-header-btn {
+	background: #111827;
+	color: white;
+}
+
+.join-header-btn {
+	background: #ff6500;
+	color: white;
+}
+
 .login-page {
-	min-height: calc(100vh - 64px);
+	min-height: calc(100vh - 58px);
 	padding: 28px 24px;
 	display: flex;
 	justify-content: center;
@@ -82,7 +156,6 @@ a {
 	margin: 0 0 22px;
 	font-weight: 900;
 	letter-spacing: -1.6px;
-	color: #111827;
 }
 
 .login-visual h1 span {
@@ -164,7 +237,6 @@ a {
 	font-size: 26px;
 	font-weight: 900;
 	letter-spacing: -1px;
-	color: #111827;
 }
 
 .input-group {
@@ -181,7 +253,6 @@ a {
 	font-size: 13px;
 	outline: none;
 	background: white;
-	color: #111827;
 }
 
 .input-group input:focus {
@@ -260,8 +331,7 @@ a {
 	margin-bottom: 18px;
 }
 
-.or-box::before,
-.or-box::after {
+.or-box::before, .or-box::after {
 	content: "";
 	flex: 1;
 	height: 1px;
@@ -352,206 +422,39 @@ a {
 	border: 1px solid #fecdd3;
 }
 
-/* =========================
-   Login Dark Mode
-========================= */
-
-body.dark-mode .login-page {
-	color: #f9fafb;
-}
-
-body.dark-mode .login-container {
-	background: rgba(31, 41, 55, 0.88);
-	border-color: #374151;
-	box-shadow: 0 24px 70px rgba(0, 0, 0, 0.35);
-}
-
-body.dark-mode .login-container::before {
-	background-image: radial-gradient(rgba(251, 146, 60, 0.18) 1px, transparent 1px);
-	opacity: 0.28;
-}
-
-body.dark-mode .login-visual h1 {
-	color: #f9fafb;
-}
-
-body.dark-mode .login-visual h1 span {
-	color: #fb923c;
-}
-
-body.dark-mode .login-visual p {
-	color: #d1d5db;
-}
-
-body.dark-mode .mini-card {
-	background: rgba(17, 24, 39, 0.9);
-	color: #e5e7eb;
-	border-color: #374151;
-	box-shadow: 0 14px 34px rgba(0, 0, 0, 0.28);
-}
-
-body.dark-mode .mini-card strong {
-	color: #fb923c;
-}
-
-body.dark-mode .food-glow {
-	opacity: 0.42;
-	filter: brightness(0.85);
-}
-
-body.dark-mode .login-form-area {
-	background: linear-gradient(135deg, rgba(17, 24, 39, 0.72),
-		rgba(31, 41, 55, 0.38));
-}
-
-body.dark-mode .login-card {
-	background: rgba(17, 24, 39, 0.94);
-	border-color: #374151;
-	box-shadow: 0 20px 55px rgba(0, 0, 0, 0.38);
-}
-
-body.dark-mode .login-card h2 {
-	color: #f9fafb;
-}
-
-body.dark-mode .input-group input {
-	background: #111827;
-	color: #f9fafb;
-	border-color: #4b5563;
-}
-
-body.dark-mode .input-group input::placeholder {
-	color: #9ca3af;
-}
-
-body.dark-mode .input-group input:focus {
-	border-color: #fb923c;
-	box-shadow: 0 0 0 3px rgba(251, 146, 60, 0.16);
-}
-
-body.dark-mode .input-icon {
-	color: #9ca3af;
-}
-
-body.dark-mode .login-btn {
-	background: #fb923c;
-	color: #111827;
-}
-
-body.dark-mode .login-btn:hover {
-	background: #f97316;
-	box-shadow: 0 10px 20px rgba(251, 146, 60, 0.22);
-}
-
-body.dark-mode .find-links {
-	color: #93c5fd;
-}
-
-body.dark-mode .find-links span {
-	color: #4b5563;
-}
-
-body.dark-mode .line {
-	background: #374151;
-}
-
-body.dark-mode .join-row {
-	color: #d1d5db;
-}
-
-body.dark-mode .join-row a {
-	color: #fb923c;
-}
-
-body.dark-mode .or-box {
-	color: #9ca3af;
-}
-
-body.dark-mode .or-box::before,
-body.dark-mode .or-box::after {
-	background: #374151;
-}
-
-body.dark-mode .message {
-	background: rgba(239, 68, 68, 0.14);
-	color: #fecaca;
-	border-color: rgba(239, 68, 68, 0.35);
-}
-
-body.dark-mode .success-message {
-	background: rgba(34, 197, 94, 0.14);
-	color: #bbf7d0;
-	border-color: rgba(34, 197, 94, 0.35);
-}
-
-body.dark-mode .error-message {
-	background: rgba(239, 68, 68, 0.14);
-	color: #fecaca;
-	border-color: rgba(239, 68, 68, 0.35);
-}
-
 @media ( max-width : 900px) {
+	.header {
+		padding: 0 18px;
+	}
+	.nav {
+		display: none;
+	}
 	.login-container {
 		grid-template-columns: 1fr;
 	}
-
 	.login-visual {
 		padding: 52px 32px 34px;
 	}
-
 	.login-visual h1 {
 		font-size: 34px;
 	}
-
 	.food-glow {
 		width: 360px;
 		height: 360px;
 		right: -90px;
 		bottom: -120px;
 	}
-
 	.mini-card {
 		display: none;
 	}
-
 	.login-form-area {
 		padding: 28px;
 	}
 }
-body.dark-mode .kakao-login-btn {
-	background: #3f3a12;
-	color: #fde68a;
-	border: 1px solid rgba(253, 230, 138, 0.35);
-	box-shadow: 0 10px 22px rgba(0, 0, 0, 0.24);
-}
-
-body.dark-mode .kakao-login-btn::before {
-	background: #fde68a;
-	color: #111827;
-}
-
-body.dark-mode .kakao-login-btn::after {
-	background: rgba(255, 255, 255, 0.12);
-}
-
-body.dark-mode .kakao-login-btn:hover {
-	background: #514817;
-	box-shadow: 0 12px 24px rgba(0, 0, 0, 0.30);
-}
 </style>
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/pickeat-final-fix.css?v=20260519fix4">
-<script src="${pageContext.request.contextPath}/resources/js/pickeat-theme-fix.js?v=20260519fix4"></script>
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/pickeat-hard-fix.css?v=20260519hard3">
 </head>
 
 <body>
-<script id="pke-theme-init">
-(function () {
-    if (localStorage.getItem("theme") === "dark") {
-        document.body.classList.add("dark-mode");
-    }
-})();
-</script>
 
 	<%@ include file="/WEB-INF/views/header.jsp"%>
 
@@ -560,14 +463,11 @@ body.dark-mode .kakao-login-btn:hover {
 
 			<div class="login-visual">
 				<h1>
-					오늘 뭐 먹지?<br>
-					<span>픽잇이</span><br>
-					골라드릴게요!
+					오늘 뭐 먹지?<br> <span>픽잇이</span><br> 골라드릴게요!
 				</h1>
 
 				<p>
-					날씨와 취향을 분석해<br>
-					지금 딱 맞는 맛집을 추천해드려요.
+					날씨와 취향을 분석해<br> 지금 딱 맞는 맛집을 추천해드려요.
 				</p>
 
 				<div class="mini-card">
@@ -594,38 +494,33 @@ body.dark-mode .kakao-login-btn:hover {
 							value="${_csrf.token}" />
 
 						<div class="input-group">
-							<span class="input-icon">✉</span>
-							<input type="text" name="id"
+							<span class="input-icon">✉</span> <input type="text" name="id"
 								placeholder="아이디를 입력해주세요" required>
 						</div>
 
 						<div class="input-group">
-							<span class="input-icon">🔒</span>
-							<input type="password" name="pw"
-								placeholder="비밀번호를 입력해주세요" required>
+							<span class="input-icon">🔒</span> <input type="password"
+								name="pw" placeholder="비밀번호를 입력해주세요" required>
 						</div>
 
 						<button type="submit" class="login-btn">로그인</button>
 					</form>
 
 					<div class="find-links">
-						<a href="${contextPath}/member/findId">아이디 찾기</a>
-						<span>|</span>
-						<a href="${contextPath}/member/findPw">비밀번호 찾기</a>
+						<a href="${contextPath}/member/findId">아이디 찾기</a> <span>|</span> <a
+							href="${contextPath}/member/findPw">비밀번호 찾기</a>
 					</div>
 
 					<div class="line"></div>
 
 					<div class="join-row">
-						계정이 없으신가요?
-						<a href="${contextPath}/member/signup">회원가입</a>
+						계정이 없으신가요? <a href="${contextPath}/member/signup">회원가입</a>
 					</div>
 
 					<div class="or-box">또는</div>
 
 					<a class="kakao-login-btn" href="${contextPath}/member/kakao/login">
-						카카오 로그인
-					</a>
+						카카오 로그인 </a>
 				</div>
 			</div>
 

@@ -47,12 +47,10 @@ public class KakaoController {
             HttpSession session) {
 
         if (error != null) {
-            System.out.println("카카오 로그인 에러: " + error);
             return "redirect:/member/login";
         }
 
         if (code == null || code.trim().isEmpty()) {
-            System.out.println("카카오 인가 코드 없음");
             return "redirect:/member/login";
         }
 

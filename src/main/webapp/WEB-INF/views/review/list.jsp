@@ -251,8 +251,7 @@ body {
 	flex-wrap: wrap;
 }
 
-.page-num,
-.page-btn {
+.page-num, .page-btn {
 	min-width: 40px;
 	height: 40px;
 	padding: 0 14px;
@@ -298,19 +297,9 @@ body {
 	}
 }
 </style>
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/pickeat-final-fix.css?v=20260519fix4">
-<script src="${pageContext.request.contextPath}/resources/js/pickeat-theme-fix.js?v=20260519fix4"></script>
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/pickeat-hard-fix.css?v=20260519hard3">
 </head>
 
 <body>
-<script id="pke-theme-init">
-(function () {
-    if (localStorage.getItem("theme") === "dark") {
-        document.body.classList.add("dark-mode");
-    }
-})();
-</script>
 
 	<%@ include file="/WEB-INF/views/header.jsp"%>
 
@@ -332,11 +321,12 @@ body {
 			<div class="summary-title">
 				<c:choose>
 					<c:when test="${not empty restaurantName}">
-					${restaurantName} 리뷰
-				</c:when>
+						${restaurantName}
+					</c:when>
+
 					<c:otherwise>
-					맛집 리뷰
-				</c:otherwise>
+						맛집 리뷰
+					</c:otherwise>
 				</c:choose>
 			</div>
 

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import com.springmvc.dto.recommend.FoodStatsDTO;
 import com.springmvc.dto.recommend.RecommendHistory;
 
 @Repository
@@ -42,4 +43,19 @@ public class RecommendRepositoryImpl implements RecommendRepository {
         String sql = "DELETE FROM RECOMMEND_HISTORY WHERE recommend_id = ? AND member_id = ?";
         template.update(sql, recommendId, memberId);
     }
+
+	@Override
+	public List<FoodStatsDTO> getTodayFoods() {
+		// TODO Auto-generated method stub
+		String sql = "SELECT selected_food, COUNT(*) AS count "
+				+ "FROM RECOMMEND_HISTORY "
+				+ "WHERE DATE(created_at) = CURDATE() "
+				+ "GROUP BY selected_food "
+				+ "ORDER BY count DESC "
+				+ "LIMIT 3";
+		return template.query(
+				sql,
+				new FoodStatsRowMapper()
+		);
+	}
 }

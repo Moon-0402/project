@@ -292,7 +292,8 @@ body {
 	border-radius: 16px;
 	padding: 18px;
 	background: #fff;
-	margin-top: 10px;
+	margin-top: 0;
+	margin-bottom: 14px;
 }
 
 .map-header {
@@ -349,7 +350,7 @@ body {
 
 #locationMap {
 	width: 100%;
-	height: 210px;
+	height: 260px;
 	border-radius: 14px;
 	overflow: hidden;
 	background: #f3f4f6;
@@ -371,19 +372,9 @@ body {
 	text-align: center;
 }
 </style>
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/pickeat-final-fix.css?v=20260519fix4">
-<script src="${pageContext.request.contextPath}/resources/js/pickeat-theme-fix.js?v=20260519fix4"></script>
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/pickeat-hard-fix.css?v=20260519hard3">
 </head>
 
 <body>
-<script id="pke-theme-init">
-(function () {
-    if (localStorage.getItem("theme") === "dark") {
-        document.body.classList.add("dark-mode");
-    }
-})();
-</script>
 
 	<%@ include file="/WEB-INF/views/header.jsp"%>
 
@@ -460,6 +451,30 @@ body {
 					<span id="weatherText">날씨 불러오는 중...</span>
 				</div>
 
+				<div class="map-card">
+
+					<div class="map-header">
+						<strong>📍 내 위치</strong>
+
+						<button type="button"
+								class="location-search-btn"
+								onclick="searchLocation()">
+							검색
+						</button>
+					</div>
+
+					<div class="location-search">
+						<input id="locationKeyword" type="text"
+							   placeholder="예: 경남대, 창원시청, 마산합포구">
+					</div>
+
+					<div id="locationMap"></div>
+
+					<div id="locationText" class="location-text">
+						현재 위치를 불러오는 중...
+					</div>
+				</div>
+
 				<div class="condition-card">
 					<strong>👤 상황</strong>
 					<select id="situation">
@@ -487,35 +502,6 @@ body {
 						<option value="보통">보통</option>
 						<option value="매움">매움</option>
 					</select>
-				</div>
-
-				<div class="condition-card">
-					<strong>♡ 내 취향 불러오기</strong>
-					<span>저장된 취향으로 빠르게 추천받기</span>
-				</div>
-
-				<div class="map-card">
-
-					<div class="map-header">
-						<strong>📍 내 위치</strong>
-
-						<button type="button"
-								class="location-search-btn"
-								onclick="searchLocation()">
-							검색
-						</button>
-					</div>
-
-					<div class="location-search">
-						<input id="locationKeyword" type="text"
-							   placeholder="예: 경남대, 창원시청, 마산합포구">
-					</div>
-
-					<div id="locationMap"></div>
-
-					<div id="locationText" class="location-text">
-						현재 위치를 불러오는 중...
-					</div>
 				</div>
 			</aside>
 
@@ -997,7 +983,7 @@ if (navigator.geolocation) {
         "위 검색창에 지역명을 입력해주세요.";
 
     renderWeatherRecommendFoods();
-
+    initMap(35.23625957158495, 128.57829025641476);
 }
 </script>
 

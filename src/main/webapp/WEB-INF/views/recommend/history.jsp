@@ -21,52 +21,6 @@ body {
 	color: #111827;
 }
 
-.header {
-	height: 70px;
-	background: #fff;
-	border-bottom: 1px solid #eee;
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-	padding: 0 40px;
-}
-
-.logo {
-	display: flex;
-	align-items: center;
-	gap: 8px;
-	text-decoration: none;
-}
-
-.logo-text {
-	font-size: 26px;
-	font-weight: 900;
-	color: #111827;
-}
-
-.logo-icon {
-	width: 22px;
-	height: 28px;
-	background: #ff6500;
-	border-radius: 50% 50% 50% 0;
-	transform: rotate(-45deg);
-}
-
-.nav {
-	display: flex;
-	gap: 40px;
-}
-
-.nav a {
-	text-decoration: none;
-	color: #111827;
-	font-weight: 800;
-}
-
-.nav a.active {
-	color: #ff6500;
-}
-
 .container {
 	padding: 44px 60px;
 }
@@ -135,7 +89,6 @@ body {
 	padding: 8px 12px;
 	font-size: 14px;
 	font-weight: 800;
-	/* 수정: 긴 값 들어와도 안 깨지게 */
 	max-width: 220px;
 	overflow: hidden;
 	text-overflow: ellipsis;
@@ -216,6 +169,19 @@ body {
 	font-weight: 700;
 }
 
+.top-food-list {
+	margin-top: 8px;
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+}
+
+.top-food-item {
+	color: #6b7280;
+	font-weight: 800;
+	font-size: 15px;
+}
+
 .empty-box {
 	background: #fff;
 	border-radius: 22px;
@@ -248,21 +214,11 @@ body {
 	}
 }
 </style>
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/pickeat-final-fix.css?v=20260519fix4">
-<script src="${pageContext.request.contextPath}/resources/js/pickeat-theme-fix.js?v=20260519fix4"></script>
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/pickeat-hard-fix.css?v=20260519hard3">
 </head>
 
 <body>
-<script id="pke-theme-init">
-(function () {
-    if (localStorage.getItem("theme") === "dark") {
-        document.body.classList.add("dark-mode");
-    }
-})();
-</script>
 
-	<%@ include file = "/WEB-INF/views/header.jsp" %>
+	<%@ include file="/WEB-INF/views/header.jsp" %>
 
 	<main class="container">
 
@@ -280,8 +236,7 @@ body {
 						<div class="empty-box">
 							<h2>아직 추천 기록이 없어요.</h2>
 							<p>돌림판을 돌려 오늘의 메뉴를 추천받아보세요.</p>
-							<a class="btn btn-orange" href="${contextPath}/recommend">추천
-								받으러 가기</a>
+							<a class="btn btn-orange" href="${contextPath}/recommend">추천 받으러 가기</a>
 						</div>
 					</c:when>
 
@@ -290,13 +245,13 @@ body {
 							<article class="history-card">
 								<div>
 									<div class="food-name">${history.selectedFood}</div>
-									<p class="desc">${history.selectedFood}기준으로 주변 맛집을 추천받았어요.</p>
+									<p class="desc">${history.selectedFood} 기준으로 주변 맛집을 추천받았어요.</p>
 
 									<div class="tags">
-										<span class="tag">☁ ${history.weather}</span> <span
-											class="tag">👤 ${history.situation}</span> <span class="tag">🪙
-											${history.priceRange}</span> <span class="tag">🌶
-											${history.spicyLevel}</span>
+										<span class="tag">☁ ${history.weather}</span>
+										<span class="tag">👤 ${history.situation}</span>
+										<span class="tag">🪙 ${history.priceRange}</span>
+										<span class="tag">🌶 ${history.spicyLevel}</span>
 									</div>
 								</div>
 
@@ -306,15 +261,16 @@ body {
 									<div class="btns">
 										<a class="btn btn-orange"
 											href="${contextPath}/recommend/result?selectedFood=${history.selectedFood}">
-											결과 보기 </a>
+											결과 보기
+										</a>
 
 										<form class="delete-form"
 											action="${contextPath}/recommend/history/delete"
-											method="post" onsubmit="return confirm('정말 삭제하시겠습니까?');">
+											method="post"
+											onsubmit="return confirm('정말 삭제하시겠습니까?');">
 
-											<input type="hidden" name="recommendId"
-												value="${history.recommendId}"> <input type="hidden"
-												name="${_csrf.parameterName}" value="${_csrf.token}">
+											<input type="hidden" name="recommendId" value="${history.recommendId}">
+											<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
 
 											<button class="btn btn-outline" type="submit">삭제</button>
 										</form>
@@ -331,7 +287,8 @@ body {
 				<h3>추천 기록 요약</h3>
 
 				<div class="summary-card">
-					<strong>${historyList.size()}개</strong> <span>총 추천 기록</span>
+					<strong>${historyList.size()}개</strong>
+					<span>총 추천 기록</span>
 				</div>
 
 				<div class="summary-card">
@@ -357,11 +314,32 @@ body {
 					</c:choose>
 					<span>최근 선택한 상황</span>
 				</div>
+
+				<div class="summary-card">
+					<strong>오늘 TOP 3</strong>
+
+					<c:choose>
+						<c:when test="${empty todayTopFoods}">
+							<span>오늘 추천 기록이 없어요.</span>
+						</c:when>
+
+						<c:otherwise>
+							<div class="top-food-list">
+								<c:forEach var="food" items="${todayTopFoods}" varStatus="status">
+									<div class="top-food-item">
+										${status.index + 1}위 ${food.selectedFood} - ${food.count}회
+									</div>
+								</c:forEach>
+							</div>
+						</c:otherwise>
+					</c:choose>
+				</div>
 			</aside>
 
 		</section>
 
 	</main>
-	<%@ include file = "/WEB-INF/views/footer.jsp" %>
+
+	<%@ include file="/WEB-INF/views/footer.jsp" %>
 </body>
 </html>

@@ -242,19 +242,9 @@ a {
 	}
 }
 </style>
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/pickeat-final-fix.css?v=20260519fix4">
-<script src="${pageContext.request.contextPath}/resources/js/pickeat-theme-fix.js?v=20260519fix4"></script>
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/pickeat-hard-fix.css?v=20260519hard3">
 </head>
 
 <body>
-<script id="pke-theme-init">
-(function () {
-    if (localStorage.getItem("theme") === "dark") {
-        document.body.classList.add("dark-mode");
-    }
-})();
-</script>
 
 	<%@ include file="/WEB-INF/views/header.jsp"%>
 
@@ -417,7 +407,7 @@ a {
 				marker.setMap(map);
 
 				var infowindow = new kakao.maps.InfoWindow({
-					content : '<div class="pke-map-label" style="min-width:240px;max-width:360px;padding:12px 18px;font-weight:900;color:#111827;background:#ffffff;border:1px solid #e5e7eb;border-radius:12px;white-space:normal;word-break:keep-all;line-height:1.35;text-align:center;box-shadow:0 8px 20px rgba(0,0,0,0.18);">'
+					content : '<div style="padding:8px 12px;font-weight:800;">'
 							+ restaurantName + '</div>'
 				});
 

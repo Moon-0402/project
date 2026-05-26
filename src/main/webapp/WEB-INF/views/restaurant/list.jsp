@@ -48,23 +48,11 @@ body {
 }
 
 .logo-icon {
-	position: relative;
 	width: 22px;
 	height: 28px;
 	background: #ff6500;
 	border-radius: 50% 50% 50% 0;
 	transform: rotate(-45deg);
-}
-
-.logo-icon::before {
-	content: "";
-	position: absolute;
-	width: 8px;
-	height: 8px;
-	background: white;
-	border-radius: 50%;
-	top: 8px;
-	left: 7px;
 }
 
 .nav {
@@ -328,19 +316,9 @@ body {
 	align-items: center;
 }
 </style>
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/pickeat-final-fix.css?v=20260519fix4">
-<script src="${pageContext.request.contextPath}/resources/js/pickeat-theme-fix.js?v=20260519fix4"></script>
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/pickeat-hard-fix.css?v=20260519hard3">
 </head>
 
 <body>
-<script id="pke-theme-init">
-(function () {
-    if (localStorage.getItem("theme") === "dark") {
-        document.body.classList.add("dark-mode");
-    }
-})();
-</script>
 
 	<%@ include file="/WEB-INF/views/header.jsp"%>
 	<%-- jsp:include page="/WEB-INF/views/header.jsp"/>--%>

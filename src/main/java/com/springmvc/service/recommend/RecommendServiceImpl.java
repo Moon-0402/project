@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.springmvc.dto.recommend.FoodStatsDTO;
 import com.springmvc.dto.recommend.RecommendHistory;
 import com.springmvc.repository.recommend.RecommendRepository;
 
@@ -30,5 +31,11 @@ public class RecommendServiceImpl implements RecommendService {
 	public void deleteRecommendHistory(Long recommendId, Long memberId) {
 		// TODO Auto-generated method stub
 		recommendRepository.deleteRecommendHistory(recommendId, memberId);
+	}
+
+	@Override
+	public List<FoodStatsDTO> getTodayFoods() {
+		// TODO Auto-generated method stub
+		return recommendRepository.getTodayFoods();
 	}
 }

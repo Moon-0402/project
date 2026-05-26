@@ -258,8 +258,7 @@ a {
 }
 
 .overlay-card {
-    width: 260px;
-    min-width: 260px;
+    width: 220px;
     background: white;
     border-radius: 18px;
     padding: 16px;
@@ -271,16 +270,13 @@ a {
     font-size: 16px;
     font-weight: 900;
     margin-bottom: 6px;
-    color: #111827;
-    line-height: 1.35;
-    word-break: keep-all;
 }
 
 .overlay-category {
     font-size: 13px;
     color: #6b7280;
     margin-bottom: 8px;
-    max-width: 220px;
+    max-width: 180px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -320,19 +316,9 @@ a {
     }
 }
 </style>
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/pickeat-final-fix.css?v=20260519fix4">
-<script src="${pageContext.request.contextPath}/resources/js/pickeat-theme-fix.js?v=20260519fix4"></script>
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/pickeat-hard-fix.css?v=20260519hard3">
 </head>
 
 <body>
-<script id="pke-theme-init">
-(function () {
-    if (localStorage.getItem("theme") === "dark") {
-        document.body.classList.add("dark-mode");
-    }
-})();
-</script>
 
 <%@ include file = "/WEB-INF/views/header.jsp" %>
 
