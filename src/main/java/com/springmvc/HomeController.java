@@ -43,13 +43,4 @@ public class HomeController {
          return "index";
     }
 
-    @RequestMapping("/login")
-    public String login() {
-        return "login";   // → /WEB-INF/views/login.jsp
-    }
-
-    @RequestMapping("/setup")
-    public String setup() {
-        return "setup-summary";   // → /WEB-INF/views/setup-summary.jsp
-    }
 }

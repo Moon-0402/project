@@ -37,30 +37,30 @@ public class MemberController {
 		return "member/login";
 	}
 
-	@PostMapping("/login")
-	public String login(@ModelAttribute LoginDTO loginDTO, HttpSession session, RedirectAttributes rttr) {
-
-		LoginMemberDTO loginMember = memberService.login(loginDTO);
-
-		if (loginMember == null) {
-			rttr.addFlashAttribute("errorMessage", "아이디 또는 비밀번호가 일치하지 않습니다.");
-			return "redirect:/member/login";
-		}
-
-		session.setAttribute("loginMember", loginMember);
-
-		if ("ADMIN".equals(loginMember.getRole())) {
-			return "redirect:/admin";
-		}
-
-		return "redirect:/";
-	}
-
-	@GetMapping("/logout")
-	public String logout(HttpSession session) {
-		session.invalidate();
-		return "redirect:/";
-	}
+//	@PostMapping("/login")
+//	public String login(@ModelAttribute LoginDTO loginDTO, HttpSession session, RedirectAttributes rttr) {
+//
+//		LoginMemberDTO loginMember = memberService.login(loginDTO);
+//
+//		if (loginMember == null) {
+//			rttr.addFlashAttribute("errorMessage", "아이디 또는 비밀번호가 일치하지 않습니다.");
+//			return "redirect:/member/login";
+//		}
+//
+//		session.setAttribute("loginMember", loginMember);
+//
+//		if ("ADMIN".equals(loginMember.getRole())) {
+//			return "redirect:/admin";
+//		}
+//
+//		return "redirect:/";
+//	}
+//
+//	@GetMapping("/logout")
+//	public String logout(HttpSession session) {
+//		session.invalidate();
+//		return "redirect:/";
+//	}
 
 	@GetMapping("/signup")
 	public String signupForm(Model model) {

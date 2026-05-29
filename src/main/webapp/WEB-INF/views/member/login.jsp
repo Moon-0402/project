@@ -488,7 +488,9 @@ a {
 					<c:if test="${not empty errorMessage}">
 						<div class="message error-message">${errorMessage}</div>
 					</c:if>
-
+					<c:if test="${param.error != null}">
+						<div class="message error-message">아이디 또는 비밀번호가 일치하지 않습니다.</div>
+					</c:if>
 					<form action="${contextPath}/member/login" method="post">
 						<input type="hidden" name="${_csrf.parameterName}"
 							value="${_csrf.token}" />
