@@ -6,10 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.springmvc.dto.aipick.AiPickDTO;
 import com.springmvc.dto.user.LoginMemberDTO;
+import com.springmvc.service.aipick.AiPickFeedbackService;
 import com.springmvc.service.aipick.AiPickService;
 
 import jakarta.servlet.http.HttpSession;
@@ -19,6 +21,9 @@ public class AiPickController {
 
     @Autowired
     private AiPickService aiPickService;
+    
+    @Autowired
+    private AiPickFeedbackService aiPickFeedbackService;
 
     /**
      * AI PICK 페이지
@@ -58,5 +63,34 @@ public class AiPickController {
         model.addAttribute("needLocation", false);
 
         return "aipick/aiPick";
+    }
+    
+    // 
+    @PostMapping("/aipick/feedback")
+    public String saveFeedback(
+            @RequestParam("restaurantId") Long restaurantId,
+            @RequestParam("feedbackType") String feedbackType,
+            @RequestParam(value = "lat", required = false) Double lat,
+            @RequestParam(value = "lng", required = false) Double lng,
+            HttpSession session) {
+
+        LoginMemberDTO loginMember =
+                (LoginMemberDTO) session.getAttribute("loginMember");
+
+        if (loginMember == null) {
+            return "redirect:/member/login";
+        }
+
+        aiPickFeedbackService.saveFeedback(
+                loginMember.getMemberId(),
+                restaurantId,
+                feedbackType
+        );
+
+        if (lat != null && lng != null) {
+            return "redirect:/aipick?lat=" + lat + "&lng=" + lng;
+        }
+
+        return "redirect:/aipick";
     }
 }
