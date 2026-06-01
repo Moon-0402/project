@@ -5,7 +5,8 @@
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
 
 <c:choose>
-	<c:when test="${not empty requestScope['jakarta.servlet.forward.request_uri']}">
+	<c:when
+		test="${not empty requestScope['jakarta.servlet.forward.request_uri']}">
 		<c:set var="currentURI"
 			value="${requestScope['jakarta.servlet.forward.request_uri']}" />
 	</c:when>
@@ -313,84 +314,38 @@ a {
 
 <header class="header">
 
-	<a href="${contextPath}/" class="logo">
-		PickEat <span class="logo-icon"></span>
+	<a href="${contextPath}/" class="logo"> PickEat <span
+		class="logo-icon"></span>
 	</a>
 
 	<nav class="nav">
 
-<<<<<<< HEAD
-	<a href="${contextPath}/"
-		class="${currentURI eq homeURI or currentURI eq contextPath ? 'active' : ''}">
-		홈
-	</a>
 
-	<a href="${not empty sessionScope.loginMember ? recommendURI : loginURI}"
-		class="${fn:contains(currentURI, '/recommend') ? 'active' : ''}">
-		Pick 룰렛
-	</a>
-	
-	<a href="${not empty sessionScope.loginMember ? aipickURI : loginURI}"
-		class="${fn:contains(currentURI, '/aipick') ? 'active' : ''}">
-		AI PICK
-	</a>
-
-	<a href="${not empty sessionScope.loginMember ? restaurantsURI : loginURI}"
-		class="${currentURI eq contextPath.concat('/restaurants') ? 'active' : ''}">
-		맛집 리스트
-	</a>
-
-	<a href="${not empty sessionScope.loginMember ? bookmarkURI : loginURI}"
-		class="${fn:contains(currentURI, '/bookmark') ? 'active' : ''}">
-		즐겨찾기
-	</a>
-
-	<a href="${not empty sessionScope.loginMember ? reviewURI : loginURI}"
-		class="${fn:contains(currentURI, '/review') ? 'active' : ''}">
-		리뷰
-	</a>
-
-	<c:if test="${not empty sessionScope.loginMember and sessionScope.loginMember.role ne 'ADMIN'}">
-		<a href="${contextPath}/member/mypage?memberId=${sessionScope.loginMember.memberId}"
-			class="${fn:contains(currentURI, '/member/mypage') ? 'active' : ''}">
-			마이페이지
-=======
 		<a href="${contextPath}/"
 			class="${currentURI eq homeURI or currentURI eq contextPath ? 'active' : ''}">
-			홈
->>>>>>> 93d2f287ff1744340e64fa3ea274c54ca45b899a
-		</a>
-
-		<a href="${not empty sessionScope.loginMember ? recommendURI : loginURI}"
+			홈 </a> <a
+			href="${not empty sessionScope.loginMember ? recommendURI : loginURI}"
 			class="${fn:contains(currentURI, '/recommend') ? 'active' : ''}">
-			Pick 룰렛
-		</a>
-
-		<a href="${not empty sessionScope.loginMember ? aipickURI : loginURI}"
-			class="${fn:contains(currentURI, '/aipick') ? 'active' : ''}">
-			AI PICK
-		</a>
-
-		<a href="${not empty sessionScope.loginMember ? restaurantsURI : loginURI}"
+			Pick 룰렛 </a> <a
+			href="${not empty sessionScope.loginMember ? aipickURI : loginURI}"
+			class="${fn:contains(currentURI, '/aipick') ? 'active' : ''}"> AI
+			PICK </a> <a
+			href="${not empty sessionScope.loginMember ? restaurantsURI : loginURI}"
 			class="${currentURI eq contextPath.concat('/restaurants') ? 'active' : ''}">
-			맛집 리스트
-		</a>
-
-		<a href="${not empty sessionScope.loginMember ? bookmarkURI : loginURI}"
+			맛집 리스트 </a> <a
+			href="${not empty sessionScope.loginMember ? bookmarkURI : loginURI}"
 			class="${fn:contains(currentURI, '/bookmark') ? 'active' : ''}">
-			즐겨찾기
+			즐겨찾기 </a> <a
+			href="${not empty sessionScope.loginMember ? reviewURI : loginURI}"
+			class="${fn:contains(currentURI, '/review') ? 'active' : ''}"> 리뷰
 		</a>
 
-		<a href="${not empty sessionScope.loginMember ? reviewURI : loginURI}"
-			class="${fn:contains(currentURI, '/review') ? 'active' : ''}">
-			리뷰
-		</a>
-
-		<c:if test="${not empty sessionScope.loginMember and sessionScope.loginMember.role ne 'ADMIN'}">
-			<a href="${contextPath}/member/mypage?memberId=${sessionScope.loginMember.memberId}"
+		<c:if
+			test="${not empty sessionScope.loginMember and sessionScope.loginMember.role ne 'ADMIN'}">
+			<a
+				href="${contextPath}/member/mypage?memberId=${sessionScope.loginMember.memberId}"
 				class="${fn:contains(currentURI, '/member/mypage') ? 'active' : ''}">
-				마이페이지
-			</a>
+				마이페이지 </a>
 		</c:if>
 
 	</nav>
@@ -402,9 +357,7 @@ a {
 			<c:when test="${not empty sessionScope.loginMember}">
 
 				<div class="user-box">
-					<span class="user-name">
-						${sessionScope.loginMember.name}님
-					</span>
+					<span class="user-name"> ${sessionScope.loginMember.name}님 </span>
 
 					<c:choose>
 						<c:when test="${sessionScope.loginMember.role eq 'ADMIN'}">
@@ -421,30 +374,23 @@ a {
 
 					<c:choose>
 						<c:when test="${sessionScope.loginMember.role eq 'ADMIN'}">
-							<a href="${contextPath}/admin" class="mypage-btn">
-								관리자
-							</a>
+							<a href="${contextPath}/admin" class="mypage-btn"> 관리자 </a>
 						</c:when>
 
 						<c:otherwise>
-							<a href="${contextPath}/member/mypage?memberId=${sessionScope.loginMember.memberId}"
-								class="mypage-btn">
-								마이페이지
-							</a>
+							<a
+								href="${contextPath}/member/mypage?memberId=${sessionScope.loginMember.memberId}"
+								class="mypage-btn"> 마이페이지 </a>
 						</c:otherwise>
 					</c:choose>
 
-					<form action="${contextPath}/member/logout"
-						method="post"
+					<form action="${contextPath}/member/logout" method="post"
 						class="logout-form">
 
-						<input type="hidden"
-							name="${_csrf.parameterName}"
+						<input type="hidden" name="${_csrf.parameterName}"
 							value="${_csrf.token}" />
 
-						<button type="submit" class="logout-btn">
-							로그아웃
-						</button>
+						<button type="submit" class="logout-btn">로그아웃</button>
 					</form>
 
 				</div>
@@ -454,14 +400,10 @@ a {
 			<c:otherwise>
 
 				<a href="${contextPath}/member/login"
-					class="header-btn header-login">
-					로그인
-				</a>
+					class="header-btn header-login"> 로그인 </a>
 
 				<a href="${contextPath}/member/signup"
-					class="header-btn header-join">
-					회원가입
-				</a>
+					class="header-btn header-join"> 회원가입 </a>
 
 			</c:otherwise>
 

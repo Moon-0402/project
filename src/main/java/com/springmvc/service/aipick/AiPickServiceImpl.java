@@ -65,9 +65,7 @@ public class AiPickServiceImpl implements AiPickService {
             // 테이블 없이 추천 결과가 매번 완전히 고정되지 않도록 소폭 랜덤 점수 부여
             int randomScore =
                     ThreadLocalRandom.current().nextInt(0, 11);
-
             int duplicatePenalty = calculateDuplicatePenalty(aiPick, bookmarkMap, reviewMap, recentViewMap);
-
 
             int totalScore =
                     preferenceScore
@@ -232,6 +230,7 @@ public class AiPickServiceImpl implements AiPickService {
 
         return 10;
     }
+
     
     private AiPickDTO findExplorationPick(Long memberId, String favoriteCategory, Double lat, Double lng, List<AiPickDTO> alreadySelectedList) {
 
@@ -371,5 +370,4 @@ public class AiPickServiceImpl implements AiPickService {
 
         return Math.min(penalty, 15);
     }
-
 }

@@ -7,7 +7,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.springmvc.dto.aipick.AiPickDTO;
@@ -22,10 +21,9 @@ public class AiPickController {
 
     @Autowired
     private AiPickService aiPickService;
-    
+
     @Autowired
     private AiPickFeedbackService aiPickFeedbackService;
-
 
     /**
      * AI PICK 페이지
@@ -66,8 +64,7 @@ public class AiPickController {
 
         return "aipick/aiPick";
     }
-
-    // 
+    
     @PostMapping("/aipick/feedback")
     public String saveFeedback(
             @RequestParam("restaurantId") Long restaurantId,
@@ -95,5 +92,4 @@ public class AiPickController {
 
         return "redirect:/aipick";
     }
-
 }
