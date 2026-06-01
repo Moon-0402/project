@@ -189,11 +189,11 @@ public class AiPickRepositoryImpl implements AiPickRepository {
         }, memberId);
     }
     
-    // 새로운 추천 1개
+
+    // 탐색 추천 후보 맛집 조회
     @Override
-    public AiPickDTO getNewPickByFavoriteCategory(
+    public List<AiPickDTO> getExplorationCandidateList(
             Long memberId,
-            String categoryName,
             Double lat,
             Double lng) {
 
@@ -219,27 +219,48 @@ public class AiPickRepositoryImpl implements AiPickRepository {
               + "WHERE r.status = 'ACTIVE' "
               + "AND r.latitude IS NOT NULL "
               + "AND r.longitude IS NOT NULL "
-              + "AND c.category_name = ? "
+
+              // 제외 시켜야할 것들(즐겨찾기한 맛집, 리뷰 쓴 맛집)
               + "AND r.restaurant_id NOT IN ( "
               + "    SELECT restaurant_id FROM BOOKMARK WHERE member_id = ? "
               + "    UNION "
               + "    SELECT restaurant_id FROM REVIEW WHERE member_id = ? "
-              + "    UNION "
-              + "    SELECT restaurant_id FROM RECENTLY_RESTAURANT WHERE member_id = ? "
               + ") "
               + "GROUP BY r.restaurant_id, r.name, c.category_name, r.kakao_category_name, "
               + "r.address, r.latitude, r.longitude "
-              + "ORDER BY rating DESC, distance ASC "
-              + "LIMIT 1";
+              + "HAVING distance <= 10 "
+              + "AND rating >= 3.5";
 
-        List<AiPickDTO> list = template.query(
+        return template.query(
                 sql,
                 new AiPickRowMapper(),
                 lat, lng, lat,
-                categoryName,
-                memberId, memberId, memberId
+                memberId, memberId
         );
+    }
+    
+    // 선호 카테고리와 다른 카테고리들의 유사도 조회
+    @Override
+    public Map<String, Double> getCategorySimilarityMap(String favoriteCategory) {
 
-        return list.isEmpty() ? null : list.get(0);
+        String sql =
+                "SELECT target.category_name, cs.similarity "
+              + "FROM CATEGORY_SIMILARITY cs "
+              + "JOIN CATEGORY base ON cs.base_category_id = base.category_id "
+              + "JOIN CATEGORY target ON cs.target_category_id = target.category_id "
+              + "WHERE base.category_name = ?";
+
+        return template.query(sql, rs -> {
+            Map<String, Double> map = new java.util.HashMap<>();
+
+            while (rs.next()) {
+                map.put(
+                        rs.getString("category_name"),
+                        rs.getDouble("similarity")
+                );
+            }
+
+            return map;
+        }, favoriteCategory);
     }
 }

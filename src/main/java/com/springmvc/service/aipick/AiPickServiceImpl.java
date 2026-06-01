@@ -64,16 +64,13 @@ public class AiPickServiceImpl implements AiPickService {
 
             // 테이블 없이 추천 결과가 매번 완전히 고정되지 않도록 소폭 랜덤 점수 부여
             int randomScore =
-                    ThreadLocalRandom.current().nextInt(0, 21);
-
-            // 추천 이력 테이블을 사용하지 않으므로 실제 중복 패널티는 0으로 유지
-            int duplicatePenalty = 0;
-            System.out.println(randomScore);
+                    ThreadLocalRandom.current().nextInt(0, 11);
+            int duplicatePenalty = calculateDuplicatePenalty(aiPick, bookmarkMap, reviewMap, recentViewMap);
             int totalScore =
                     preferenceScore
                     + distanceScore
                     + ratingScore
-                    - randomScore
+                    + randomScore
                     - duplicatePenalty;
 
             aiPick.setBookmarkScore(bookmarkScore);
@@ -99,20 +96,11 @@ public class AiPickServiceImpl implements AiPickService {
         String favoriteCategory = findFavoriteCategory(bookmarkMap, reviewMap, recentViewMap);
 
         if (favoriteCategory != null) {
-            AiPickDTO newPick = aiPickRepository.getNewPickByFavoriteCategory(
-                    memberId,
-                    favoriteCategory,
-                    lat,
-                    lng
-            );
 
-            if (newPick != null && newPick.getDistance() != null && newPick.getDistance() <= 10) {
-                newPick.setNewTasteRecommendation(true);
-                newPick.setTotalScore(0);
-                newPick.setAiReason("최근 기록을 분석해보니 " + favoriteCategory
-                        + " 카테고리를 선호하는 것으로 보여요. 아직 이용하지 않은 새로운 맛집을 추천드려요.");
+            AiPickDTO explorationPick = findExplorationPick(memberId, favoriteCategory, lat, lng, result);
 
-                result.add(newPick);
+            if (explorationPick != null) {
+                result.add(explorationPick);
             }
         }
 
@@ -131,7 +119,45 @@ public class AiPickServiceImpl implements AiPickService {
 
         return result;
     }
+
+    private int calculateSimilarityScore(
+            AiPickDTO pick,
+            Map<String, Double> similarityMap,
+            String favoriteCategory) {
+
+        String categoryName = pick.getCategoryName();
+
+        if (categoryName == null || categoryName.isBlank()) {
+            return 0;
+        }
+
+        if (categoryName.equals(favoriteCategory)) {
+            return 35;
+        }
+
+        double similarity = similarityMap.getOrDefault(categoryName, 0.0);
+
+        return (int) (similarity * 60);
+    }
+
+    private int calculatePopularityScore(Double rating) {
+
+        if (rating == null) {
+            return 0;
+        }
+
+        if (rating >= 4.5) {
+            return 30;
+        } else if (rating >= 4.0) {
+            return 20;
+        } else if (rating >= 3.5) {
+            return 10;
+        }
+
+        return 0;
+    }
     
+    // 선호 카테고리
     private String findFavoriteCategory(
             Map<String, Integer> bookmarkMap,
             Map<String, Integer> reviewMap,
@@ -203,6 +229,80 @@ public class AiPickServiceImpl implements AiPickService {
         return 10;
     }
 
+    
+    private AiPickDTO findExplorationPick(Long memberId, String favoriteCategory, Double lat, Double lng, List<AiPickDTO> alreadySelectedList) {
+
+        List<AiPickDTO> candidates =
+                aiPickRepository.getExplorationCandidateList(memberId, lat, lng);
+
+        Map<String, Double> similarityMap =
+                aiPickRepository.getCategorySimilarityMap(favoriteCategory);
+
+        List<AiPickDTO> scoredCandidates = new java.util.ArrayList<>();
+
+        for (AiPickDTO pick : candidates) {
+
+            boolean alreadySelected = alreadySelectedList.stream()
+                    .anyMatch(selected ->
+                            selected.getRestaurantId().equals(pick.getRestaurantId()));
+
+            if (alreadySelected) {
+                continue;
+            }
+
+            int similarityScore =
+                    calculateSimilarityScore(pick, similarityMap, favoriteCategory);
+
+            int popularityScore =
+                    calculatePopularityScore(pick.getRating());
+
+            int noveltyScore = 30;
+
+            int distanceScore =
+                    calculateDistanceScore(pick.getDistance());
+
+            int randomScore =
+                    ThreadLocalRandom.current().nextInt(0, 11);
+
+            int explorationScore =
+                    similarityScore
+                    + popularityScore
+                    + noveltyScore
+                    + distanceScore
+                    + randomScore;
+
+            pick.setPreferenceScore(explorationScore);
+            pick.setDistanceScore(distanceScore);
+            pick.setTotalScore(explorationScore);
+
+            scoredCandidates.add(pick);
+        }
+
+        if (scoredCandidates.isEmpty()) {
+            return null;
+        }
+
+        // 점수 높은 순으로 정렬
+        scoredCandidates.sort(
+                Comparator.comparingInt(AiPickDTO::getTotalScore).reversed()
+        );
+
+        // 상위 5개 중 랜덤 선택
+        int limit = Math.min(5, scoredCandidates.size());
+        int randomIndex = ThreadLocalRandom.current().nextInt(0, limit);
+
+        AiPickDTO explorationPick = scoredCandidates.get(randomIndex);
+
+        explorationPick.setNewTasteRecommendation(true);
+        explorationPick.setAiReason(
+                "최근 기록을 분석해보니 " + favoriteCategory
+                + " 계열을 선호하는 것으로 보여요. "
+                + "이번에는 평점, 거리, 유사 카테고리를 함께 고려해서 새로운 취향 추천으로 선정했어요."
+        );
+
+        return explorationPick;
+    }
+
     private int calculateRatingScore(Double rating) {
 
         if (rating == null) {
@@ -242,6 +342,30 @@ public class AiPickServiceImpl implements AiPickService {
 
         return String.join(", ", reasons) + "를 종합하여 추천했어요.";
     }
-    
-    
+
+    //최근 본 맛집과 같은 카테고리 → -5점 리뷰 쓴 카테고리와 같음 → -5점 즐겨찾기한 카테고리와 같음 → -5점 --->사용자가 이미 자주 본 카테고리면 약간 감점 그래도 점수가 높으면 추천 가능 완전히 제외하지는 않음
+    private int calculateDuplicatePenalty(AiPickDTO aiPick, Map<String, Integer> bookmarkMap, Map<String, Integer> reviewMap, Map<String, Integer> recentViewMap) {
+
+        int penalty = 0;
+
+        String categoryName = aiPick.getCategoryName();
+
+        if (categoryName == null || categoryName.isBlank()) {
+            return 0;
+        }
+
+        if (bookmarkMap.containsKey(categoryName)) {
+            penalty += 5;
+        }
+
+        if (reviewMap.containsKey(categoryName)) {
+            penalty += 5;
+        }
+
+        if (recentViewMap.containsKey(categoryName)) {
+            penalty += 5;
+        }
+
+        return Math.min(penalty, 15);
+    }
 }

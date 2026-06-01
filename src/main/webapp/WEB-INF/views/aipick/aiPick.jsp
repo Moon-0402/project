@@ -10,7 +10,9 @@
 <meta charset="UTF-8">
 <title>PickEat - AI PICK</title>
 
-<script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=2a87f90deda3136d9524a194c121dcf1&libraries=services"></script>
+
+<script
+	src="//dapi.kakao.com/v2/maps/sdk.js?appkey=2a87f90deda3136d9524a194c121dcf1&libraries=services"></script>
 
 <style>
 * {
@@ -20,9 +22,11 @@
 
 body {
 	margin: 0;
-	background:
-		radial-gradient(circle at 15% 10%, rgba(94, 234, 212, 0.28), transparent 26%),
-		radial-gradient(circle at 85% 15%, rgba(96, 165, 250, 0.22), transparent 30%),
+
+	background: radial-gradient(circle at 15% 10%, rgba(94, 234, 212, 0.28),
+		transparent 26%),
+		radial-gradient(circle at 85% 15%, rgba(96, 165, 250, 0.22),
+		transparent 30%),
 		linear-gradient(135deg, #f0fdfa 0%, #eff6ff 45%, #fff7ed 100%);
 	color: #111827;
 }
@@ -57,8 +61,8 @@ body {
 	position: relative;
 	z-index: 1;
 	display: inline-block;
-	background: rgba(255,255,255,0.22);
-	border: 1px solid rgba(255,255,255,0.35);
+	background: rgba(255, 255, 255, 0.22);
+	border: 1px solid rgba(255, 255, 255, 0.35);
 	backdrop-filter: blur(8px);
 	padding: 8px 14px;
 	border-radius: 999px;
@@ -133,7 +137,7 @@ body {
 
 .location-input:focus {
 	border-color: #38bdf8;
-	box-shadow: 0 0 0 4px rgba(56,189,248,0.14);
+	box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.14);
 }
 
 .location-btn {
@@ -179,7 +183,7 @@ body {
 	background: white;
 	border-radius: 24px;
 	overflow: hidden;
-	box-shadow: 0 10px 30px rgba(0,0,0,0.07);
+	box-shadow: 0 10px 30px rgba(0, 0, 0, 0.07);
 	transition: all 0.25s ease;
 	position: relative;
 }
@@ -298,6 +302,72 @@ body {
 	color: #111827;
 }
 
+.score-visual-box {
+	margin: 16px 0;
+	background: #f8fafc;
+	border: 1px solid #e2e8f0;
+	border-radius: 16px;
+	padding: 14px;
+}
+
+.pick-card.new-taste .score-visual-box {
+	background: #fff7ed;
+	border: 1px solid #fed7aa;
+}
+
+.score-visual-title {
+	font-size: 13px;
+	font-weight: 900;
+	color: #334155;
+	margin-bottom: 12px;
+}
+
+.pick-card.new-taste .score-visual-title {
+	color: #9a3412;
+}
+
+.score-bar-row {
+	display: grid;
+	grid-template-columns: 66px 1fr 48px;
+	align-items: center;
+	gap: 8px;
+	margin-bottom: 9px;
+}
+
+.score-bar-row:last-child {
+	margin-bottom: 0;
+}
+
+.score-bar-label {
+	font-size: 12px;
+	font-weight: 900;
+	color: #475569;
+}
+
+.score-bar-track {
+	height: 9px;
+	background: #e5e7eb;
+	border-radius: 999px;
+	overflow: hidden;
+}
+
+.score-bar-fill {
+	height: 100%;
+	background: linear-gradient(135deg, #14b8a6, #38bdf8);
+	border-radius: 999px;
+}
+
+.pick-card.new-taste .score-bar-fill {
+	background: linear-gradient(135deg, #f97316, #facc15);
+}
+
+.score-bar-num {
+	font-size: 12px;
+	font-weight: 900;
+	color: #111827;
+	text-align: right;
+}
+
 .ai-reason {
 	background: #f8fafc;
 	border: 1px solid #e2e8f0;
@@ -353,21 +423,55 @@ body {
 	color: white;
 }
 
+.feedback-row {
+	display: flex;
+	gap: 8px;
+	margin-top: 10px;
+}
+
+.feedback-row form {
+	flex: 1;
+}
+
+.feedback-btn {
+	width: 100%;
+	border: none;
+	border-radius: 12px;
+	padding: 11px 10px;
+	font-weight: 900;
+	font-size: 14px;
+	cursor: pointer;
+	transition: 0.2s;
+}
+
+.feedback-btn:hover {
+	transform: translateY(-1px);
+}
+
+.like-btn {
+	background: #dcfce7;
+	color: #166534;
+}
+
+.dislike-btn {
+	background: #fee2e2;
+	color: #991b1b;
+}
+
 .empty-box {
 	background: white;
 	border-radius: 24px;
 	padding: 60px;
 	text-align: center;
-	box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+	box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
 	color: #6b7280;
 	font-weight: 800;
 }
 
-@media (max-width: 1000px) {
+@media ( max-width : 1000px) {
 	.card-grid {
 		grid-template-columns: 1fr;
 	}
-
 	.location-input {
 		width: 100%;
 	}
@@ -384,7 +488,7 @@ body {
 		<section class="hero">
 			<div class="hero-badge">AI PICK</div>
 			<h1>지금 나에게 딱 맞는 맛집 🍽️</h1>
-			<p>2곳은 점수 기반으로, 1곳은 사용자의 선호 카테고리를 분석해 아직 먹어보지 않은 맛집으로 추천해드려요.</p>
+			<p>2곳은 취향·거리·평점 점수 기반으로, 1곳은 선호 카테고리와 유사한 새로운 맛집으로 추천해드려요.</p>
 		</section>
 
 		<section class="location-box">
@@ -402,23 +506,18 @@ body {
 			</c:choose>
 
 			<div class="location-actions">
-				<button type="button" class="location-btn dark-btn" onclick="useCurrentLocation()">
-					현재 위치 사용
-				</button>
+				<button type="button" class="location-btn dark-btn"
+					onclick="useCurrentLocation()">현재 위치 사용</button>
 
-				<input type="text"
-					   id="locationKeyword"
-					   class="location-input"
-					   placeholder="예: 경민인터빌, 부산역, 강남역">
+				<input type="text" id="locationKeyword" class="location-input"
+					placeholder="예: 경민인터빌, 부산역, 강남역">
 
-				<button type="button" class="location-btn primary-btn" onclick="searchLocation()">
-					장소 검색
-				</button>
+				<button type="button" class="location-btn primary-btn"
+					onclick="searchLocation()">장소 검색</button>
 			</div>
 
-			<div class="location-help">
-				장소명을 입력하면 카카오 장소 검색으로 좌표를 찾아 AI PICK 추천을 다시 실행합니다.
-			</div>
+			<div class="location-help">장소명을 입력하면 카카오 장소 검색으로 좌표를 찾아 AI PICK
+				추천을 다시 실행합니다.</div>
 		</section>
 
 		<c:if test="${not needLocation}">
@@ -426,8 +525,8 @@ body {
 			<c:choose>
 				<c:when test="${empty aiPickList}">
 					<section class="empty-box">
-						추천할 맛집 데이터가 아직 없습니다.<br>
-						맛집을 즐겨찾기하거나 리뷰를 작성하면 더 정확한 AI PICK을 받을 수 있어요.
+						추천할 맛집 데이터가 아직 없습니다.<br> 맛집을 즐겨찾기하거나 리뷰를 작성하면 더 정확한 AI PICK을
+						받을 수 있어요.
 					</section>
 				</c:when>
 
@@ -436,38 +535,49 @@ body {
 
 						<c:forEach var="pick" items="${aiPickList}" varStatus="status">
 
-							<article class="pick-card ${pick.newTasteRecommendation ? 'new-taste' : ''}">
+							<article
+								class="pick-card ${pick.newTasteRecommendation ? 'new-taste' : ''}">
 
 								<div class="rank">${status.index + 1}</div>
 
 								<c:if test="${pick.newTasteRecommendation}">
-									<div class="new-badge">✨ 새로운 취향 추천</div>
+									<div class="new-badge">✨ 탐색 추천</div>
 								</c:if>
 
 								<c:choose>
 									<c:when test="${fn:contains(pick.categoryName, '한식')}">
-										<img class="food-img" src="${contextPath}/resources/images/category/korean.jpg">
+										<img class="food-img"
+											src="${contextPath}/resources/images/category/korean.jpg">
 									</c:when>
 									<c:when test="${fn:contains(pick.categoryName, '중식')}">
-										<img class="food-img" src="${contextPath}/resources/images/category/chinese.jpg">
+										<img class="food-img"
+											src="${contextPath}/resources/images/category/chinese.jpg">
 									</c:when>
 									<c:when test="${fn:contains(pick.categoryName, '일식')}">
-										<img class="food-img" src="${contextPath}/resources/images/category/japanese.jpg">
+										<img class="food-img"
+											src="${contextPath}/resources/images/category/japanese.jpg">
 									</c:when>
-									<c:when test="${fn:contains(pick.categoryName, '양식') or fn:contains(pick.categoryName, '샐러드')}">
-										<img class="food-img" src="${contextPath}/resources/images/category/western.jpg">
+									<c:when
+										test="${fn:contains(pick.categoryName, '양식') or fn:contains(pick.categoryName, '샐러드')}">
+										<img class="food-img"
+											src="${contextPath}/resources/images/category/western.jpg">
 									</c:when>
 									<c:when test="${fn:contains(pick.categoryName, '치킨')}">
-										<img class="food-img" src="${contextPath}/resources/images/category/chicken.jpg">
+										<img class="food-img"
+											src="${contextPath}/resources/images/category/chicken.jpg">
 									</c:when>
-									<c:when test="${fn:contains(pick.categoryName, '카페') or fn:contains(pick.categoryName, '디저트')}">
-										<img class="food-img" src="${contextPath}/resources/images/category/cafe.jpg">
+									<c:when
+										test="${fn:contains(pick.categoryName, '카페') or fn:contains(pick.categoryName, '디저트')}">
+										<img class="food-img"
+											src="${contextPath}/resources/images/category/cafe.jpg">
 									</c:when>
 									<c:when test="${fn:contains(pick.categoryName, '분식')}">
-										<img class="food-img" src="${contextPath}/resources/images/category/snack_food.jpg">
+										<img class="food-img"
+											src="${contextPath}/resources/images/category/snack_food.jpg">
 									</c:when>
 									<c:otherwise>
-										<img class="food-img" src="${contextPath}/resources/images/category/etc_food.png">
+										<img class="food-img"
+											src="${contextPath}/resources/images/category/etc_food.png">
 									</c:otherwise>
 								</c:choose>
 
@@ -475,12 +585,9 @@ body {
 									<h2 class="card-title">${pick.name}</h2>
 
 									<div class="category" title="${pick.kakaoCategoryName}">
-										${pick.categoryName}
-									</div>
+										${pick.categoryName}</div>
 
-									<div class="address">
-										${pick.address}
-									</div>
+									<div class="address">${pick.address}</div>
 
 									<div class="score-box">
 
@@ -499,7 +606,7 @@ body {
 											<div class="score-value">
 												<c:choose>
 													<c:when test="${pick.newTasteRecommendation}">
-														취향분석
+														탐색추천
 													</c:when>
 													<c:otherwise>
 														${pick.totalScore}점
@@ -522,7 +629,7 @@ body {
 											<div class="score-label">
 												<c:choose>
 													<c:when test="${pick.newTasteRecommendation}">
-														새 추천
+														신규성
 													</c:when>
 													<c:otherwise>
 														취향점수
@@ -544,10 +651,107 @@ body {
 
 									</div>
 
+									<c:choose>
+										<c:when test="${pick.newTasteRecommendation}">
+											<div class="score-visual-box">
+												<div class="score-visual-title">탐색 추천 기준</div>
+
+												<div class="score-bar-row">
+													<div class="score-bar-label">거리</div>
+													<div class="score-bar-track">
+														<div class="score-bar-fill"
+															style="width:${pick.distanceScore * 2 > 100 ? 100 : pick.distanceScore * 2}%"></div>
+													</div>
+													<div class="score-bar-num">${pick.distanceScore}점</div>
+												</div>
+
+												<div class="score-bar-row">
+													<div class="score-bar-label">평점</div>
+													<div class="score-bar-track">
+														<div class="score-bar-fill"
+															style="width:${pick.reviewScore > 100 ? 100 : pick.reviewScore}%"></div>
+													</div>
+													<div class="score-bar-num">${pick.reviewScore}점</div>
+												</div>
+
+												<div class="score-bar-row">
+													<div class="score-bar-label">신규성</div>
+													<div class="score-bar-track">
+														<div class="score-bar-fill" style="width: 60%"></div>
+													</div>
+													<div class="score-bar-num">NEW</div>
+												</div>
+											</div>
+										</c:when>
+
+										<c:otherwise>
+											<div class="score-visual-box">
+												<div class="score-visual-title">추천 점수 분석</div>
+
+												<div class="score-bar-row">
+													<div class="score-bar-label">취향</div>
+													<div class="score-bar-track">
+														<div class="score-bar-fill"
+															style="width:${pick.preferenceScore > 100 ? 100 : pick.preferenceScore}%"></div>
+													</div>
+													<div class="score-bar-num">${pick.preferenceScore}점</div>
+												</div>
+
+												<div class="score-bar-row">
+													<div class="score-bar-label">거리</div>
+													<div class="score-bar-track">
+														<div class="score-bar-fill"
+															style="width:${pick.distanceScore * 2 > 100 ? 100 : pick.distanceScore * 2}%"></div>
+													</div>
+													<div class="score-bar-num">${pick.distanceScore}점</div>
+												</div>
+
+												<div class="score-bar-row">
+													<div class="score-bar-label">리뷰</div>
+													<div class="score-bar-track">
+														<div class="score-bar-fill"
+															style="width:${pick.reviewScore > 100 ? 100 : pick.reviewScore}%"></div>
+													</div>
+													<div class="score-bar-num">${pick.reviewScore}점</div>
+												</div>
+
+												<div class="score-bar-row">
+													<div class="score-bar-label">즐겨찾기</div>
+													<div class="score-bar-track">
+														<div class="score-bar-fill"
+															style="width:${pick.bookmarkScore > 100 ? 100 : pick.bookmarkScore}%"></div>
+													</div>
+													<div class="score-bar-num">${pick.bookmarkScore}점</div>
+												</div>
+
+												<div class="score-bar-row">
+													<div class="score-bar-label">최근조회</div>
+													<div class="score-bar-track">
+														<div class="score-bar-fill"
+															style="width:${pick.recentViewScore * 2 > 100 ? 100 : pick.recentViewScore * 2}%"></div>
+													</div>
+													<div class="score-bar-num">${pick.recentViewScore}점</div>
+												</div>
+
+												<c:if test="${pick.duplicatePenalty > 0}">
+													<div class="score-bar-row">
+														<div class="score-bar-label">중복감점</div>
+														<div class="score-bar-track">
+															<div class="score-bar-fill"
+																style="width:${pick.duplicatePenalty * 2 > 100 ? 100 : pick.duplicatePenalty * 2}%"></div>
+														</div>
+														<div class="score-bar-num">-${pick.duplicatePenalty}점</div>
+													</div>
+												</c:if>
+											</div>
+										</c:otherwise>
+									</c:choose>
+
 									<div class="ai-reason">
 										<c:choose>
 											<c:when test="${pick.newTasteRecommendation}">
-												<div class="reason-title">✨ 사용자의 선호 카테고리 기반 추천</div>
+												<div class="reason-title">✨ 탐색 추천: 안 가봤지만 좋아할 가능성이 높은
+													맛집</div>
 												🤖 ${pick.aiReason}
 											</c:when>
 											<c:otherwise>
@@ -558,14 +762,44 @@ body {
 
 									<div class="btn-row">
 										<a class="btn detail-btn"
-										   href="${contextPath}/restaurants/${pick.restaurantId}">
-											상세보기
-										</a>
+											href="${contextPath}/restaurants/${pick.restaurantId}">
+											상세보기 </a> <a class="btn review-btn"
+											href="${contextPath}/review/list?restaurantId=${pick.restaurantId}">
+											리뷰보기 </a>
+									</div>
 
-										<a class="btn review-btn"
-										   href="${contextPath}/review/list?restaurantId=${pick.restaurantId}">
-											리뷰보기
-										</a>
+									<div class="feedback-row">
+
+										<form action="${contextPath}/aipick/feedback" method="post">
+
+											<!-- CSRF 토큰 -->
+											<input type="hidden" name="${_csrf.parameterName}"
+												value="${_csrf.token}"> <input type="hidden"
+												name="restaurantId" value="${pick.restaurantId}"> <input
+												type="hidden" name="feedbackType" value="LIKE"> <input
+												type="hidden" name="lat" value="${param.lat}"> <input
+												type="hidden" name="lng" value="${param.lng}">
+
+											<button type="submit" class="feedback-btn like-btn">
+												👍 좋아요</button>
+
+										</form>
+
+										<form action="${contextPath}/aipick/feedback" method="post">
+
+											<!-- CSRF 토큰 -->
+											<input type="hidden" name="${_csrf.parameterName}"
+												value="${_csrf.token}"> <input type="hidden"
+												name="restaurantId" value="${pick.restaurantId}"> <input
+												type="hidden" name="feedbackType" value="DISLIKE"> <input
+												type="hidden" name="lat" value="${param.lat}"> <input
+												type="hidden" name="lng" value="${param.lng}">
+
+											<button type="submit" class="feedback-btn dislike-btn">
+												👎 별로예요</button>
+
+										</form>
+
 									</div>
 								</div>
 
@@ -583,47 +817,52 @@ body {
 	<script>
 		function useCurrentLocation() {
 			if (navigator.geolocation) {
-				navigator.geolocation.getCurrentPosition(
-					function(position) {
-						const lat = position.coords.latitude;
-						const lng = position.coords.longitude;
+				navigator.geolocation.getCurrentPosition(function(position) {
+					const lat = position.coords.latitude;
+					const lng = position.coords.longitude;
 
-						location.href = "${contextPath}/aipick?lat=" + lat + "&lng=" + lng;
-					},
-					function() {
-						alert("현재 위치를 가져올 수 없습니다. 장소명을 직접 검색해주세요.");
-					}
-				);
+					location.href = "${contextPath}/aipick?lat=" + lat
+							+ "&lng=" + lng;
+				}, function() {
+					alert("현재 위치를 가져올 수 없습니다. 장소명을 직접 검색해주세요.");
+				});
 			} else {
 				alert("현재 브라우저에서는 위치 기능을 지원하지 않습니다. 장소명을 직접 검색해주세요.");
 			}
 		}
 
 		function searchLocation() {
-			const keyword = document.getElementById("locationKeyword").value.trim();
+			const keyword = document.getElementById("locationKeyword").value
+					.trim();
 
 			if (!keyword) {
 				alert("장소명이나 건물명을 입력해주세요.");
 				return;
 			}
 
-			if (typeof kakao === "undefined" || !kakao.maps || !kakao.maps.services) {
+			if (typeof kakao === "undefined" || !kakao.maps
+					|| !kakao.maps.services) {
 				alert("카카오 지도 서비스를 불러오지 못했습니다.");
 				return;
 			}
 
 			const ps = new kakao.maps.services.Places();
 
-			ps.keywordSearch(keyword, function(data, status) {
-				if (status === kakao.maps.services.Status.OK && data.length > 0) {
-					const lat = data[0].y;
-					const lng = data[0].x;
+			ps
+					.keywordSearch(
+							keyword,
+							function(data, status) {
+								if (status === kakao.maps.services.Status.OK
+										&& data.length > 0) {
+									const lat = data[0].y;
+									const lng = data[0].x;
 
-					location.href = "${contextPath}/aipick?lat=" + lat + "&lng=" + lng;
-				} else {
-					alert("입력한 위치를 찾을 수 없습니다. 예: 경민인터빌, 부산역처럼 다시 입력해주세요.");
-				}
-			});
+									location.href = "${contextPath}/aipick?lat="
+											+ lat + "&lng=" + lng;
+								} else {
+									alert("입력한 위치를 찾을 수 없습니다. 예: 경민인터빌, 부산역처럼 다시 입력해주세요.");
+								}
+							});
 		}
 	</script>
 

@@ -38,12 +38,13 @@ public class KakaoLocalService {
     public int importRestaurants(String query) {
         int savedCount = 0;
 
-        //                    .queryParam("category_group_code", "FD6")
         try {
             System.out.println("카카오 검색 시작: " + query);
 
             URI uri = UriComponentsBuilder.fromHttpUrl(KAKAO_LOCAL_URL)
                     .queryParam("query", query)
+                    .queryParam("category_group_code", "FD6")
+                    .queryParam("category_group_code", "CE7")
                     .queryParam("size", 15)
                     .queryParam("page", 1)
                     .build()
@@ -150,7 +151,7 @@ public class KakaoLocalService {
             return 8L;
         }
 
-        return 1L;
+        return null;
     }
     
     public int importRestaurants(String query, Double lat, Double lng) {
@@ -164,6 +165,7 @@ public class KakaoLocalService {
             URI uri = UriComponentsBuilder.fromHttpUrl(KAKAO_LOCAL_URL)
                     .queryParam("query", query)
                     .queryParam("category_group_code", "FD6")
+                    .queryParam("category_group_code", "CE7")
                     .queryParam("x", lng)
                     .queryParam("y", lat)
                     .queryParam("radius", 3000)

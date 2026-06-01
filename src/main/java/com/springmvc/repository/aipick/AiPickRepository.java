@@ -22,6 +22,10 @@ public interface AiPickRepository {
     // 최근 본 맛집 기반 카테고리 선호도
     Map<String, Integer> getRecentViewCategoryMap(Long memberId);
     
-    // 새로운 추천 1개
-    AiPickDTO getNewPickByFavoriteCategory(Long memberId, String categoryName, Double lat, Double lng);
+    // 탐색 추천 후보 맛집 조회
+    // 아직 사용자가 보지 않은 맛집 중 거리와 평점 조건을 만족하는 후보 조회
+    List<AiPickDTO> getExplorationCandidateList(Long memberId, Double lat, Double lng);
+    
+    // 선호 카테고리와 다른 카테고리들의 유사도 조회
+    Map<String, Double> getCategorySimilarityMap(String favoriteCategory);
 }

@@ -371,10 +371,11 @@ public class RestaurantRepositoryImpl implements RestaurantRepository {
 		// 수정
 		sql.append("COALESCE(r.kakao_category_name, c.category_name) AS category_name, ");
 		sql.append("r.address, ");
-		sql.append("0 AS rating, ");
+		sql.append("IFNULL(AVG(rv.rating), 0) AS rating, ");
 		sql.append("r.latitude, r.longitude ");
 		sql.append("FROM RESTAURANT r ");
 		sql.append("LEFT JOIN CATEGORY c ON r.category_id = c.category_id ");
+		sql.append("LEFT JOIN REVIEW rv ON r.restaurant_id = rv.restaurant_id ");
 		sql.append("WHERE r.status = 'ACTIVE' ");
 		sql.append("AND r.latitude IS NOT NULL ");
 		sql.append("AND r.longitude IS NOT NULL ");
@@ -408,7 +409,7 @@ public class RestaurantRepositoryImpl implements RestaurantRepository {
 			params.add(foodLike);
 			params.add(foodLike);
 		}
-
+		sql.append("GROUP BY r.restaurant_id, r.name, r.kakao_category_name, c.category_name, r.address, r.latitude, r.longitude ");
 		sql.append("ORDER BY r.restaurant_id DESC ");
 
 		return template.query(sql.toString(), new RestaurantMapDTORowMapper(), params.toArray());
