@@ -18,10 +18,12 @@ body {
 	margin: 0;
 	font-family: 'Noto Sans KR', Arial, sans-serif;
 	color: #111827;
-	background:
-		radial-gradient(circle at 12% 18%, rgba(255, 101, 0, 0.16), transparent 30%),
-		radial-gradient(circle at 86% 12%, rgba(255, 197, 98, 0.24), transparent 28%),
-		radial-gradient(circle at 50% 100%, rgba(255, 238, 213, 0.9), transparent 36%),
+	background: radial-gradient(circle at 12% 18%, rgba(255, 101, 0, 0.16),
+		transparent 30%),
+		radial-gradient(circle at 86% 12%, rgba(255, 197, 98, 0.24),
+		transparent 28%),
+		radial-gradient(circle at 50% 100%, rgba(255, 238, 213, 0.9),
+		transparent 36%),
 		linear-gradient(135deg, #fffaf4 0%, #fff2df 44%, #f8fbff 100%);
 	min-height: 100vh;
 }
@@ -137,7 +139,8 @@ a {
 	content: "";
 	position: absolute;
 	inset: 0;
-	background-image: radial-gradient(rgba(255, 101, 0, 0.13) 1px, transparent 1px);
+	background-image: radial-gradient(rgba(255, 101, 0, 0.13) 1px,
+		transparent 1px);
 	background-size: 26px 26px;
 	opacity: 0.32;
 	pointer-events: none;
@@ -195,8 +198,8 @@ a {
 	right: -160px;
 	bottom: -160px;
 	border-radius: 50%;
-	background:
-		radial-gradient(circle at 50% 52%, #ff7a00 0 16%, #fff 17% 29%, #ffd9aa 30% 58%, rgba(255, 217, 170, 0.25) 59% 100%);
+	background: radial-gradient(circle at 50% 52%, #ff7a00 0 16%, #fff 17% 29%, #ffd9aa
+		30% 58%, rgba(255, 217, 170, 0.25) 59% 100%);
 	opacity: 0.85;
 	z-index: -1;
 }
@@ -208,7 +211,8 @@ a {
 	align-items: center;
 	justify-content: center;
 	padding: 54px;
-	background: linear-gradient(135deg, rgba(255, 245, 235, 0.76), rgba(255, 255, 255, 0.38));
+	background: linear-gradient(135deg, rgba(255, 245, 235, 0.76),
+		rgba(255, 255, 255, 0.38));
 }
 
 .reset-card {
@@ -338,60 +342,49 @@ a {
 	font-weight: 950;
 }
 
-@media (max-width: 980px) {
+@media ( max-width : 980px) {
 	.nav {
 		display: none;
 	}
-
 	.reset-container {
 		grid-template-columns: 1fr;
 	}
-
 	.reset-visual {
 		padding: 48px 34px 28px;
 	}
-
 	.reset-visual h1 {
 		font-size: 36px;
 	}
-
 	.food-orbit {
 		width: 360px;
 		height: 360px;
 		right: -120px;
 		bottom: -140px;
 	}
-
 	.reset-form-area {
 		padding: 30px;
 	}
 }
 
-@media (max-width: 560px) {
+@media ( max-width : 560px) {
 	.header {
 		padding: 0 18px;
 	}
-
 	.header-actions {
 		display: none;
 	}
-
 	.reset-page {
 		padding: 24px 14px;
 	}
-
 	.reset-visual {
 		padding: 38px 24px 20px;
 	}
-
 	.reset-visual h1 {
 		font-size: 30px;
 	}
-
 	.reset-form-area {
 		padding: 22px;
 	}
-
 	.reset-card {
 		padding: 28px 22px;
 	}
@@ -401,80 +394,71 @@ a {
 
 <body>
 
-<%@ include file = "/WEB-INF/views/header.jsp" %>
+	<%@ include file="/WEB-INF/views/header.jsp"%>
 
-<main class="reset-page">
+	<main class="reset-page">
 
-	<section class="reset-container">
+		<section class="reset-container">
 
-		<div class="reset-visual">
-			<div class="visual-badge">
-				🔑 Reset PickEat Password
-			</div>
+			<div class="reset-visual">
+				<div class="visual-badge">🔑 Reset PickEat Password</div>
 
-			<h1>
-				새 비밀번호로<br>
-				계정을 다시<br>
-				<span>열어볼까요?</span>
-			</h1>
+				<h1>
+					새 비밀번호로<br> 계정을 다시<br> <span>열어볼까요?</span>
+				</h1>
 
-			<p>
-				새 비밀번호를 입력하면 기존 비밀번호가 변경됩니다.<br>
-				변경 후에는 다시 로그인해주세요.
-			</p>
-
-			<div class="food-orbit"></div>
-		</div>
-
-		<div class="reset-form-area">
-			<div class="reset-card">
-
-				<h2>비밀번호 재설정</h2>
-				<p class="reset-subtitle">
-					앞으로 사용할 새 비밀번호를 입력해주세요.
+				<p>
+					새 비밀번호를 입력하면 기존 비밀번호가 변경됩니다.<br> 변경 후에는 다시 로그인해주세요.
 				</p>
 
-				<c:if test="${not empty errorMessage}">
-					<div class="message error-message">
-						${errorMessage}
-					</div>
-				</c:if>
-
-				<form action="${contextPath}/member/changePw" method="post">
-					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-
-					<div class="form-group">
-						<label for="pw">새 비밀번호</label>
-						<div class="input-wrap">
-							<span class="input-icon">🔒</span>
-							<input type="password" id="pw" name="pw" placeholder="새 비밀번호를 입력해주세요" required>
-						</div>
-						<div class="helper-text">
-							영문, 숫자 조합을 권장합니다.
-						</div>
-					</div>
-
-					<div class="form-group">
-						<label for="pwCheck">새 비밀번호 확인</label>
-						<div class="input-wrap">
-							<span class="input-icon">✅</span>
-							<input type="password" id="pwCheck" name="pwCheck" placeholder="새 비밀번호를 다시 입력해주세요" required>
-						</div>
-					</div>
-
-					<button type="submit" class="reset-btn">비밀번호 변경</button>
-				</form>
-
-				<div class="link-row">
-					<a href="${contextPath}/member/login">로그인으로 돌아가기</a>
-				</div>
-
+				<div class="food-orbit"></div>
 			</div>
-		</div>
 
-	</section>
+			<div class="reset-form-area">
+				<div class="reset-card">
 
-</main>
-	<%@ include file = "/WEB-INF/views/footer.jsp" %>
+					<h2>비밀번호 재설정</h2>
+					<p class="reset-subtitle">앞으로 사용할 새 비밀번호를 입력해주세요.</p>
+
+					<c:if test="${not empty errorMessage}">
+						<div class="message error-message">${errorMessage}</div>
+					</c:if>
+
+					<form action="${contextPath}/member/changePw" method="post">
+						<input type="hidden" name="${_csrf.parameterName}"
+							value="${_csrf.token}" />
+
+						<div class="form-group">
+							<label for="pw">새 비밀번호</label>
+							<div class="input-wrap">
+								<span class="input-icon">🔒</span> <input type="password"
+									id="pw" name="pw" placeholder="새 비밀번호를 입력해주세요" required>
+							</div>
+							<div class="helper-text">영문, 숫자 조합을 권장합니다.</div>
+						</div>
+
+						<div class="form-group">
+							<label for="pwCheck">새 비밀번호 확인</label>
+							<div class="input-wrap">
+								<span class="input-icon">✅</span> <input type="password"
+									id="pwCheck" name="pwCheck" placeholder="새 비밀번호를 다시 입력해주세요"
+									required>
+							</div>
+						</div>
+
+						<button type="submit" class="reset-btn">비밀번호 변경</button>
+					</form>
+
+					<div class="link-row">
+						<a href="${contextPath}/member/login">로그인으로 돌아가기</a>
+					</div>
+
+				</div>
+			</div>
+
+		</section>
+
+	</main>
+	<%@ include file="/WEB-INF/views/footer.jsp"%>
 </body>
 </html>
