@@ -14,6 +14,7 @@ public class AiPickDTO {
     private int reviewScore;
     private int bookmarkScore;
     private int recentViewScore;
+    private int feedbackScore;
     // 최근 추천 이력에 존재하면 감점요소를 주어 다른 맛집이 올라갈 수 있도록 설정
     private int duplicatePenalty;
     private int totalScore;
@@ -25,8 +26,8 @@ public class AiPickDTO {
 	}
 	public AiPickDTO(Long restaurantId, String name, String categoryName, String kakaoCategoryName, String address,
 			String imageUrl, Double rating, Double distance, int preferenceScore, int distanceScore, int reviewScore,
-			int bookmarkScore, int recentViewScore, int duplicatePenalty, int totalScore, String aiReason,
-			boolean newTasteRecommendation) {
+			int bookmarkScore, int recentViewScore, int feedbackScore, int duplicatePenalty, int totalScore,
+			String aiReason, boolean newTasteRecommendation) {
 		super();
 		this.restaurantId = restaurantId;
 		this.name = name;
@@ -41,6 +42,7 @@ public class AiPickDTO {
 		this.reviewScore = reviewScore;
 		this.bookmarkScore = bookmarkScore;
 		this.recentViewScore = recentViewScore;
+		this.feedbackScore = feedbackScore;
 		this.duplicatePenalty = duplicatePenalty;
 		this.totalScore = totalScore;
 		this.aiReason = aiReason;
@@ -124,6 +126,12 @@ public class AiPickDTO {
 	public void setRecentViewScore(int recentViewScore) {
 		this.recentViewScore = recentViewScore;
 	}
+	public int getFeedbackScore() {
+		return feedbackScore;
+	}
+	public void setFeedbackScore(int feedbackScore) {
+		this.feedbackScore = feedbackScore;
+	}
 	public int getDuplicatePenalty() {
 		return duplicatePenalty;
 	}
@@ -148,4 +156,5 @@ public class AiPickDTO {
 	public void setNewTasteRecommendation(boolean newTasteRecommendation) {
 		this.newTasteRecommendation = newTasteRecommendation;
 	}
+	
 }

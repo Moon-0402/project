@@ -262,4 +262,57 @@ public class AiPickRepositoryImpl implements AiPickRepository {
             return map;
         }, favoriteCategory);
     }
+
+    @Override
+    public Map<String, Integer> getLikeFeedbackCategoryMap(Long memberId) {
+
+        String sql =
+                "SELECT c.category_name, COUNT(*) AS cnt "
+              + "FROM AIPICK_FEEDBACK af "
+              + "JOIN RESTAURANT r ON af.restaurant_id = r.restaurant_id "
+              + "JOIN CATEGORY c ON r.category_id = c.category_id "
+              + "WHERE af.member_id = ? "
+              + "AND af.feedback_type = 'LIKE' "
+              + "GROUP BY c.category_name";
+
+        return template.query(sql, rs -> {
+            Map<String, Integer> map = new java.util.HashMap<>();
+
+            while (rs.next()) {
+                map.put(
+                    rs.getString("category_name"),
+                    rs.getInt("cnt")
+                );
+            }
+
+            return map;
+        }, memberId);
+    }
+
+    @Override
+    public Map<String, Integer> getDislikeFeedbackCategoryMap(Long memberId) {
+
+        String sql =
+                "SELECT c.category_name, COUNT(*) AS cnt "
+              + "FROM AIPICK_FEEDBACK af "
+              + "JOIN RESTAURANT r ON af.restaurant_id = r.restaurant_id "
+              + "JOIN CATEGORY c ON r.category_id = c.category_id "
+              + "WHERE af.member_id = ? "
+              + "AND af.feedback_type = 'DISLIKE' "
+              + "GROUP BY c.category_name";
+
+        return template.query(sql, rs -> {
+            Map<String, Integer> map = new java.util.HashMap<>();
+
+            while (rs.next()) {
+                map.put(
+                    rs.getString("category_name"),
+                    rs.getInt("cnt")
+                );
+            }
+
+            return map;
+        }, memberId);
+    }
+    
 }

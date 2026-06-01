@@ -22,7 +22,6 @@
 
 body {
 	margin: 0;
-
 	background: radial-gradient(circle at 15% 10%, rgba(94, 234, 212, 0.28),
 		transparent 26%),
 		radial-gradient(circle at 85% 15%, rgba(96, 165, 250, 0.22),
@@ -698,6 +697,15 @@ body {
 												</div>
 
 												<div class="score-bar-row">
+													<div class="score-bar-label">피드백</div>
+													<div class="score-bar-track">
+														<div class="score-bar-fill"
+															style="width:${pick.feedbackScore > 100 ? 100 : pick.feedbackScore}%"></div>
+													</div>
+													<div class="score-bar-num">${pick.feedbackScore}점</div>
+												</div>
+
+												<div class="score-bar-row">
 													<div class="score-bar-label">거리</div>
 													<div class="score-bar-track">
 														<div class="score-bar-fill"
@@ -738,7 +746,7 @@ body {
 														<div class="score-bar-label">중복감점</div>
 														<div class="score-bar-track">
 															<div class="score-bar-fill"
-																style="width:${pick.duplicatePenalty * 2 > 100 ? 100 : pick.duplicatePenalty * 2}%"></div>
+																style="width:${pick.duplicatePenalty * 2 gt 100 > 100 : pick.duplicatePenalty * 2}%"></div>
 														</div>
 														<div class="score-bar-num">-${pick.duplicatePenalty}점</div>
 													</div>

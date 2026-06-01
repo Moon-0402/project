@@ -32,6 +32,12 @@ public class AiPickServiceImpl implements AiPickService {
 
         Map<String, Integer> recentViewMap =
                 aiPickRepository.getRecentViewCategoryMap(memberId);
+        
+        Map<String, Integer> likeFeedbackMap =
+                aiPickRepository.getLikeFeedbackCategoryMap(memberId);
+
+        Map<String, Integer> dislikeFeedbackMap =
+                aiPickRepository.getDislikeFeedbackCategoryMap(memberId);
 
         for (AiPickDTO aiPick : aiPickList) {
 
@@ -53,8 +59,16 @@ public class AiPickServiceImpl implements AiPickService {
                     50
             );
 
+            int feedbackScore =
+                    calculateFeedbackScore(
+                            likeFeedbackMap,
+                            dislikeFeedbackMap,
+                            categoryName,
+                            kakaoCategoryName
+                    );
+
             int preferenceScore =
-                    bookmarkScore + reviewScore + recentViewScore;
+                    bookmarkScore + reviewScore + recentViewScore + feedbackScore;
 
             int distanceScore =
                     calculateDistanceScore(aiPick.getDistance());
@@ -77,6 +91,7 @@ public class AiPickServiceImpl implements AiPickService {
             aiPick.setBookmarkScore(bookmarkScore);
             aiPick.setReviewScore(reviewScore);
             aiPick.setRecentViewScore(recentViewScore);
+            aiPick.setFeedbackScore(feedbackScore);
             aiPick.setPreferenceScore(preferenceScore);
             aiPick.setDistanceScore(distanceScore);
             aiPick.setDuplicatePenalty(duplicatePenalty);
@@ -94,7 +109,7 @@ public class AiPickServiceImpl implements AiPickService {
                 .limit(2)
                 .collect(Collectors.toList());
 
-        String favoriteCategory = findFavoriteCategory(bookmarkMap, reviewMap, recentViewMap);
+        String favoriteCategory = findFavoriteCategory(bookmarkMap, reviewMap, recentViewMap, likeFeedbackMap, dislikeFeedbackMap);
 
         if (favoriteCategory != null) {
 
@@ -158,18 +173,23 @@ public class AiPickServiceImpl implements AiPickService {
         return 0;
     }
     
-    // 선호 카테고리
+    // 선호 카테고리 -- Map을 이용하여 키 값 형태로 만든다음 stream으로 데이터를 하나씩 읽고 max로 가장 큰 점수를 가진 카테고리를 찾고
+    // getkey를 통해 방금 찾은 key만 꺼냄 만약 map이 비어있으면 null로 반환
 
     private String findFavoriteCategory(
             Map<String, Integer> bookmarkMap,
             Map<String, Integer> reviewMap,
-            Map<String, Integer> recentViewMap) {
+            Map<String, Integer> recentViewMap,
+            Map<String, Integer> likeFeedbackMap,
+            Map<String, Integer> dislikeFeedbackMap) {
 
         Map<String, Integer> totalMap = new java.util.HashMap<>();
 
         addCategoryScore(totalMap, bookmarkMap, 3);
         addCategoryScore(totalMap, reviewMap, 2);
+        addCategoryScore(totalMap, likeFeedbackMap, 2);
         addCategoryScore(totalMap, recentViewMap, 1);
+        subtractCategoryScore(totalMap, dislikeFeedbackMap, 2);
 
         return totalMap.entrySet()
                 .stream()
@@ -191,7 +211,15 @@ public class AiPickServiceImpl implements AiPickService {
             );
         }
     }
+    
+    private void subtractCategoryScore(Map<String, Integer> totalMap, Map<String, Integer> sourceMap, int weight) {
+    	
+    	for (Map.Entry<String, Integer> entry : sourceMap.entrySet()) {
+    		totalMap.put(entry.getKey(), totalMap.getOrDefault(entry.getKey(), 0) - entry.getValue() * weight);
+    	}
+    }
 
+    
     private int calculateCategoryScore(
             Map<String, Integer> map,
             String categoryName,
@@ -329,6 +357,14 @@ public class AiPickServiceImpl implements AiPickService {
         if (aiPick.getRecentViewScore() > 0) {
             reasons.add("최근 관심을 보인 음식");
         }
+        
+        if (aiPick.getFeedbackScore() > 0) {
+            reasons.add("좋아요를 누른 취향");
+        }
+
+        if (aiPick.getFeedbackScore() < 0) {
+            reasons.add("별로예요 피드백이 반영된 점수 조정");
+        }
 
         if (aiPick.getDistance() != null && aiPick.getDistance() <= 3) {
             reasons.add("현재 위치와 가까운 거리");
@@ -369,5 +405,21 @@ public class AiPickServiceImpl implements AiPickService {
         }
 
         return Math.min(penalty, 15);
+    }
+    
+    private int calculateFeedbackScore(
+            Map<String, Integer> likeFeedbackMap,
+            Map<String, Integer> dislikeFeedbackMap,
+            String categoryName,
+            String kakaoCategoryName) {
+
+        int score = 0;
+        // getOrDefault의 의미 Map에 key가 있으면 값을 가져오고, 없으면 기본값(default)을 반환하는 메서드
+        if (categoryName != null && !categoryName.isBlank()) {
+            score += likeFeedbackMap.getOrDefault(categoryName, 0) * 10;
+            score -= dislikeFeedbackMap.getOrDefault(categoryName, 0) * 10;
+        }
+
+        return score;
     }
 }
