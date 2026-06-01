@@ -1,0 +1,509 @@
+/* =========================================================
+   PickEat hard fix 20260519: dark-mode readability pass
+   This file is intentionally loaded last. Do not move upward.
+   ========================================================= */
+:root {
+    --pk-night: #0f172a;
+    --pk-night-2: #111827;
+    --pk-panel: #1f2937;
+    --pk-panel-2: #243244;
+    --pk-line: #3b4658;
+    --pk-text: #f8fafc;
+    --pk-sub: #d7dee9;
+    --pk-soft: #f5efe7;
+    --pk-ink: #111827;
+    --pk-orange: #fb923c;
+    --pk-orange-2: #ff914d;
+}
+
+body.dark-mode {
+    background:
+        radial-gradient(circle at 12% 8%, rgba(251, 146, 60, .11), transparent 24%),
+        radial-gradient(circle at 86% 2%, rgba(255, 145, 77, .08), transparent 28%),
+        linear-gradient(135deg, #101827 0%, #172233 48%, #0b1220 100%) !important;
+    color: var(--pk-text) !important;
+}
+
+/* ---------------- Home: keep the light-mode open layout feeling ---------------- */
+body.dark-mode .main > .hero {
+    background: transparent !important;
+    border: 0 !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+}
+
+body.dark-mode .main > .hero .hero-content,
+body.dark-mode .main > .hero .hero-buttons,
+body.dark-mode .main > .hero .hero-stats {
+    background: transparent !important;
+    border: 0 !important;
+    box-shadow: none !important;
+}
+
+body.dark-mode .main > .hero .hero-title,
+body.dark-mode .main > .hero .hero-title span {
+    color: var(--pk-text) !important;
+}
+body.dark-mode .main > .hero .hero-title span,
+body.dark-mode .section-kicker {
+    color: var(--pk-orange) !important;
+}
+body.dark-mode .main > .hero .hero-desc,
+body.dark-mode .section-desc {
+    color: var(--pk-sub) !important;
+}
+body.dark-mode .main > .hero .stat-card,
+body.dark-mode .main > .hero .weather-card,
+body.dark-mode .main > .hero .recommend-card,
+body.dark-mode .main > .hero .food-item,
+body.dark-mode .main > .hero .hero-panel {
+    background: rgba(31, 41, 55, .72) !important;
+    border: 1px solid rgba(148, 163, 184, .22) !important;
+    color: var(--pk-text) !important;
+    box-shadow: 0 16px 42px rgba(0, 0, 0, .22) !important;
+}
+body.dark-mode .main > .hero .map-card {
+    background: #1b2637 !important;
+    border-color: rgba(148, 163, 184, .22) !important;
+}
+
+/* ---------------- Admin shell ---------------- */
+body.dark-mode .admin-layout .main,
+body.dark-mode .admin-layout main.main {
+    background: transparent !important;
+    color: var(--pk-text) !important;
+}
+
+body.dark-mode .admin-layout .page-title h1,
+body.dark-mode .admin-layout .summary-title,
+body.dark-mode .admin-layout .section-title,
+body.dark-mode .admin-layout .panel-title,
+body.dark-mode .admin-layout .side-title,
+body.dark-mode .admin-layout .inquiry-title,
+body.dark-mode .admin-layout .restaurant-name,
+body.dark-mode .admin-layout .review-title,
+body.dark-mode .admin-layout .form-title,
+body.dark-mode .admin-layout .detail-title,
+body.dark-mode .admin-layout .name-cell,
+body.dark-mode .admin-layout .reply-admin,
+body.dark-mode .admin-layout .content-text,
+body.dark-mode .admin-layout .rating {
+    color: var(--pk-text) !important;
+    opacity: 1 !important;
+}
+
+body.dark-mode .admin-layout .page-title p,
+body.dark-mode .admin-layout .summary-text,
+body.dark-mode .admin-layout .side-desc,
+body.dark-mode .admin-layout .notice-box,
+body.dark-mode .admin-layout .search-info,
+body.dark-mode .admin-layout .page-info,
+body.dark-mode .admin-layout .reply-date,
+body.dark-mode .admin-layout .empty,
+body.dark-mode .admin-layout .no-image,
+body.dark-mode .admin-layout .help-text {
+    color: var(--pk-sub) !important;
+    opacity: 1 !important;
+}
+
+body.dark-mode .admin-layout .summary-card,
+body.dark-mode .admin-layout .search-area,
+body.dark-mode .admin-layout .content-card,
+body.dark-mode .admin-layout .card,
+body.dark-mode .admin-layout .side-card,
+body.dark-mode .admin-layout .panel,
+body.dark-mode .admin-layout .form-card,
+body.dark-mode .admin-layout .detail-card,
+body.dark-mode .admin-layout .table-card,
+body.dark-mode .admin-layout .image-box,
+body.dark-mode .admin-layout .review-content,
+body.dark-mode .admin-layout .reply-card,
+body.dark-mode .admin-layout .delete-card,
+body.dark-mode .admin-layout .info-section,
+body.dark-mode .admin-layout .guide-box {
+    background: rgba(31, 41, 55, .96) !important;
+    border: 1px solid var(--pk-line) !important;
+    color: var(--pk-text) !important;
+    box-shadow: 0 18px 42px rgba(0, 0, 0, .25) !important;
+}
+
+body.dark-mode .admin-layout .meta-item,
+body.dark-mode .admin-layout .info-card,
+body.dark-mode .admin-layout .content-box,
+body.dark-mode .admin-layout .reply,
+body.dark-mode .admin-layout .reply-box,
+body.dark-mode .admin-layout .empty-reply,
+body.dark-mode .admin-layout .notice-box,
+body.dark-mode .admin-layout .quick-link,
+body.dark-mode .admin-layout .readonly-box,
+body.dark-mode .admin-layout .form-group,
+body.dark-mode .admin-layout .no-image,
+body.dark-mode .admin-layout .preview-box {
+    background: #111827 !important;
+    border: 1px solid #4b5563 !important;
+    color: var(--pk-text) !important;
+    box-shadow: none !important;
+}
+
+body.dark-mode .admin-layout .meta-label,
+body.dark-mode .admin-layout .info-title,
+body.dark-mode .admin-layout .form-label,
+body.dark-mode .admin-layout .label,
+body.dark-mode .admin-layout .field-label {
+    color: #fed7aa !important;
+    opacity: 1 !important;
+}
+
+body.dark-mode .admin-layout .meta-value,
+body.dark-mode .admin-layout .info-value,
+body.dark-mode .admin-layout .reply-content,
+body.dark-mode .admin-layout .content-box,
+body.dark-mode .admin-layout .content-box *,
+body.dark-mode .admin-layout .content-text,
+body.dark-mode .admin-layout .content-text *,
+body.dark-mode .admin-layout .reply,
+body.dark-mode .admin-layout .reply *,
+body.dark-mode .admin-layout .empty-reply,
+body.dark-mode .admin-layout .empty-reply *,
+body.dark-mode .admin-layout .side-card *,
+body.dark-mode .admin-layout .notice-box *,
+body.dark-mode .admin-layout .quick-link,
+body.dark-mode .admin-layout .quick-link * {
+    color: var(--pk-text) !important;
+    opacity: 1 !important;
+}
+
+body.dark-mode .admin-layout .reply-head {
+    border-bottom-color: #4b5563 !important;
+}
+
+body.dark-mode .admin-layout .status-badge,
+body.dark-mode .admin-layout .category,
+body.dark-mode .admin-layout .admin-badge,
+body.dark-mode .admin-layout .role-badge,
+body.dark-mode .admin-layout .badge {
+    background: rgba(251, 146, 60, .18) !important;
+    border: 1px solid rgba(251, 146, 60, .46) !important;
+    color: #fed7aa !important;
+}
+
+/* Restaurant table: names were still brown because .name-cell had its own color. */
+body.dark-mode .admin-layout table,
+body.dark-mode .admin-layout thead,
+body.dark-mode .admin-layout tbody,
+body.dark-mode .admin-layout tr {
+    background: #1f2937 !important;
+    color: var(--pk-text) !important;
+}
+body.dark-mode .admin-layout thead th,
+body.dark-mode .admin-layout th {
+    background: #0f172a !important;
+    color: #ffffff !important;
+    border-bottom-color: #4b5563 !important;
+}
+body.dark-mode .admin-layout td,
+body.dark-mode .admin-layout td *,
+body.dark-mode .admin-layout .name-cell,
+body.dark-mode .admin-layout .id-cell,
+body.dark-mode .admin-layout .rating-cell {
+    color: var(--pk-text) !important;
+    opacity: 1 !important;
+}
+body.dark-mode .admin-layout tbody tr:hover {
+    background: rgba(251, 146, 60, .08) !important;
+}
+body.dark-mode .admin-layout .category {
+    color: #fed7aa !important;
+}
+
+/* Forms/buttons in admin detail pages */
+body.dark-mode .admin-layout input,
+body.dark-mode .admin-layout textarea,
+body.dark-mode .admin-layout select,
+body.dark-mode .admin-layout .search-input {
+    background: #0b1220 !important;
+    color: var(--pk-text) !important;
+    border-color: #4b5563 !important;
+}
+body.dark-mode .admin-layout input::placeholder,
+body.dark-mode .admin-layout textarea::placeholder {
+    color: #a8b3c2 !important;
+}
+body.dark-mode .admin-layout .search-btn,
+body.dark-mode .admin-layout .add-btn,
+body.dark-mode .admin-layout .btn-primary,
+body.dark-mode .admin-layout .btn-active,
+body.dark-mode .admin-layout .btn-save,
+body.dark-mode .admin-layout .btn-submit,
+body.dark-mode .admin-layout .answer-btn {
+    background: var(--pk-orange) !important;
+    border-color: var(--pk-orange) !important;
+    color: #111827 !important;
+}
+body.dark-mode .admin-layout .view-btn,
+body.dark-mode .admin-layout .edit-btn,
+body.dark-mode .admin-layout .delete-btn,
+body.dark-mode .admin-layout .reset-btn,
+body.dark-mode .admin-layout .btn-soft,
+body.dark-mode .admin-layout .btn-list,
+body.dark-mode .admin-layout .btn-blocked,
+body.dark-mode .admin-layout .action-btn {
+    background: #0b1220 !important;
+    border: 1px solid #536176 !important;
+    color: #ffffff !important;
+    box-shadow: none !important;
+}
+body.dark-mode .admin-layout .view-btn:hover,
+body.dark-mode .admin-layout .edit-btn:hover,
+body.dark-mode .admin-layout .delete-btn:hover,
+body.dark-mode .admin-layout .reset-btn:hover,
+body.dark-mode .admin-layout .btn-soft:hover,
+body.dark-mode .admin-layout .action-btn:hover {
+    background: var(--pk-orange) !important;
+    color: #111827 !important;
+    border-color: var(--pk-orange) !important;
+}
+
+/* ---------------- User pages, maps, overlays ---------------- */
+body.dark-mode .restaurant-name,
+body.dark-mode .map-title,
+body.dark-mode .result-title,
+body.dark-mode .review-title,
+body.dark-mode .bookmark-title,
+body.dark-mode .food-name,
+body.dark-mode .list-title,
+body.dark-mode .place-name,
+body.dark-mode .name,
+body.dark-mode .card-name {
+    color: var(--pk-text) !important;
+    opacity: 1 !important;
+}
+body.dark-mode .restaurant-card,
+body.dark-mode .bookmark-card,
+body.dark-mode .review-card,
+body.dark-mode .result-card,
+body.dark-mode .condition-card,
+body.dark-mode .history-card,
+body.dark-mode .filter-card,
+body.dark-mode .search-card,
+body.dark-mode .list-card {
+    background: rgba(31, 41, 55, .95) !important;
+    border-color: var(--pk-line) !important;
+    color: var(--pk-text) !important;
+}
+body.dark-mode .restaurant-card *,
+body.dark-mode .bookmark-card *,
+body.dark-mode .review-card *,
+body.dark-mode .result-card *,
+body.dark-mode .history-card * {
+    opacity: 1 !important;
+}
+
+/* Kakao map itself should stay readable, not inverted into the page palette. */
+body.dark-mode #map,
+body.dark-mode #locationMap,
+body.dark-mode .map:not(.map-card),
+body.dark-mode .map-box #map,
+body.dark-mode .map-wrap #map {
+    background: #eef2f7 !important;
+    color: #111827 !important;
+}
+
+/* Map overlay must always be light: it sits on top of the real Kakao map. */
+body.dark-mode .map-card,
+body.dark-mode .overlay-card,
+body.dark-mode .pke-map-overlay,
+body.dark-mode .infowindow,
+body.dark-mode .info-window,
+body.dark-mode .kakao-info-window,
+body.dark-mode .roughmap_maker_label,
+body.dark-mode .wrap_map {
+    background: #ffffff !important;
+    border: 1px solid #e5e7eb !important;
+    color: #111827 !important;
+    box-shadow: 0 14px 34px rgba(0, 0, 0, .26) !important;
+}
+body.dark-mode .map-card *,
+body.dark-mode .overlay-card *,
+body.dark-mode .pke-map-overlay *,
+body.dark-mode .infowindow *,
+body.dark-mode .info-window *,
+body.dark-mode .kakao-info-window *,
+body.dark-mode .roughmap_maker_label *,
+body.dark-mode .wrap_map * {
+    color: #111827 !important;
+}
+body.dark-mode .map-card .map-card-link,
+body.dark-mode .overlay-btn {
+    background: #ff6500 !important;
+    color: #ffffff !important;
+    border-color: #ff6500 !important;
+}
+body.dark-mode .map-card .map-card-close {
+    background: #111827 !important;
+    color: #ffffff !important;
+    border-color: #111827 !important;
+}
+
+/* But the fake decorative map card on the HOME hero is not a Kakao overlay. */
+body.dark-mode .main > .hero .map-card,
+body.dark-mode .main > .hero .map-card * {
+    color: inherit !important;
+}
+
+/* Footer/header safety */
+body.dark-mode .header,
+body.dark-mode header.header {
+    background: #0f172a !important;
+    border-bottom-color: #334155 !important;
+}
+body.dark-mode .footer,
+body.dark-mode footer.footer {
+    background: #0f172a !important;
+    color: #dbe4ef !important;
+    border-top-color: #334155 !important;
+}
+body.dark-mode .pke-map-label,
+.pke-map-label {
+    min-width: 240px !important;
+    max-width: 360px !important;
+    white-space: normal !important;
+    word-break: keep-all !important;
+    overflow-wrap: break-word !important;
+    line-height: 1.35 !important;
+    color: #111827 !important;
+    background: #ffffff !important;
+}
+body.dark-mode .map-card-title,
+body.dark-mode .map-card-category,
+body.dark-mode .map-card-rating {
+    color: #111827 !important;
+}
+body.dark-mode .restaurant-list-page .map-card,
+body.dark-mode .map-wrap .map-card,
+body.dark-mode #map .map-card {
+    width: 230px !important;
+    max-width: 260px !important;
+}
+body.dark-mode .recommend-wrap .map-card,
+body.dark-mode .recommend-wrap .map-card * {
+    background: #182234 !important;
+    border-color: rgba(148, 163, 184, .24) !important;
+    color: var(--pk-text) !important;
+}
+
+/* =========================================================
+   2026-05-19 member detail/update action area polish
+   회원 상세/수정 하단 버튼 영역 전용 보정
+   ========================================================= */
+body.dark-mode .admin-layout .info-card > .button-area,
+body.dark-mode .admin-layout .form-card form > .button-area {
+    margin-top: 34px !important;
+    padding: 18px 20px !important;
+    border: 1px solid rgba(148, 163, 184, .28) !important;
+    border-radius: 22px !important;
+    background: rgba(15, 23, 42, .62) !important;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.03), 0 12px 24px rgba(0,0,0,.14) !important;
+    display: flex !important;
+    justify-content: flex-end !important;
+    align-items: center !important;
+    gap: 10px !important;
+    flex-wrap: wrap !important;
+}
+
+body.dark-mode .admin-layout .form-card > .delete-area {
+    margin-top: 12px !important;
+    padding: 0 !important;
+    background: transparent !important;
+    border: 0 !important;
+    box-shadow: none !important;
+    display: flex !important;
+    justify-content: flex-end !important;
+}
+
+body.dark-mode .admin-layout .info-card > .button-area .delete-form {
+    display: inline-flex !important;
+    margin: 0 !important;
+}
+
+body.dark-mode .admin-layout .info-card > .button-area .btn,
+body.dark-mode .admin-layout .form-card .button-area .btn,
+body.dark-mode .admin-layout .form-card > .delete-area .btn {
+    min-width: 96px !important;
+    height: 44px !important;
+    padding: 0 18px !important;
+    border-radius: 14px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    font-size: 13px !important;
+    line-height: 1 !important;
+    letter-spacing: -.02em !important;
+    text-decoration: none !important;
+    box-shadow: none !important;
+}
+
+body.dark-mode .admin-layout .info-card > .button-area .btn-list,
+body.dark-mode .admin-layout .form-card .button-area .btn-list,
+body.dark-mode .admin-layout .form-card .button-area .btn-detail {
+    background: #111827 !important;
+    border: 1px solid rgba(148, 163, 184, .58) !important;
+    color: #f8fafc !important;
+}
+
+body.dark-mode .admin-layout .info-card > .button-area .btn-edit,
+body.dark-mode .admin-layout .form-card .button-area .btn-save {
+    background: #fb923c !important;
+    border: 1px solid #fb923c !important;
+    color: #111827 !important;
+    box-shadow: 0 10px 22px rgba(251, 146, 60, .22) !important;
+}
+
+body.dark-mode .admin-layout .info-card > .button-area .btn-delete,
+body.dark-mode .admin-layout .form-card > .delete-area .btn-delete {
+    background: rgba(127, 29, 29, .32) !important;
+    border: 1px solid rgba(248, 113, 113, .48) !important;
+    color: #fecaca !important;
+}
+
+body.dark-mode .admin-layout .info-card > .button-area .btn:hover,
+body.dark-mode .admin-layout .form-card .button-area .btn:hover,
+body.dark-mode .admin-layout .form-card > .delete-area .btn:hover {
+    transform: translateY(-1px) !important;
+    filter: brightness(1.08) !important;
+}
+
+body.dark-mode .admin-layout .info-card > .button-area .btn-list:hover,
+body.dark-mode .admin-layout .form-card .button-area .btn-list:hover,
+body.dark-mode .admin-layout .form-card .button-area .btn-detail:hover {
+    border-color: #fb923c !important;
+    color: #fed7aa !important;
+}
+
+body.dark-mode .admin-layout .info-card > .button-area .btn-delete:hover,
+body.dark-mode .admin-layout .form-card > .delete-area .btn-delete:hover {
+    background: rgba(185, 28, 28, .46) !important;
+    color: #ffffff !important;
+    border-color: rgba(252, 165, 165, .7) !important;
+}
+
+/* 라이트모드도 같은 위치가 너무 따로 노는 것을 정리 */
+body:not(.dark-mode) .admin-layout .info-card > .button-area,
+body:not(.dark-mode) .admin-layout .form-card form > .button-area {
+    margin-top: 34px !important;
+    padding: 18px 20px !important;
+    border: 1px solid rgba(255, 184, 107, .36) !important;
+    border-radius: 22px !important;
+    background: rgba(255, 250, 243, .78) !important;
+    display: flex !important;
+    justify-content: flex-end !important;
+    align-items: center !important;
+    gap: 10px !important;
+    flex-wrap: wrap !important;
+}
+
+body:not(.dark-mode) .admin-layout .form-card > .delete-area {
+    margin-top: 12px !important;
+    display: flex !important;
+    justify-content: flex-end !important;
+}

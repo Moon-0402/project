@@ -68,6 +68,7 @@ public class AiPickServiceImpl implements AiPickService {
 
             int duplicatePenalty = calculateDuplicatePenalty(aiPick, bookmarkMap, reviewMap, recentViewMap);
 
+
             int totalScore =
                     preferenceScore
                     + distanceScore
@@ -160,6 +161,7 @@ public class AiPickServiceImpl implements AiPickService {
     }
     
     // 선호 카테고리
+
     private String findFavoriteCategory(
             Map<String, Integer> bookmarkMap,
             Map<String, Integer> reviewMap,
@@ -343,7 +345,7 @@ public class AiPickServiceImpl implements AiPickService {
 
         return String.join(", ", reasons) + "를 종합하여 추천했어요.";
     }
-    
+
     //최근 본 맛집과 같은 카테고리 → -5점 리뷰 쓴 카테고리와 같음 → -5점 즐겨찾기한 카테고리와 같음 → -5점 --->사용자가 이미 자주 본 카테고리면 약간 감점 그래도 점수가 높으면 추천 가능 완전히 제외하지는 않음
     private int calculateDuplicatePenalty(AiPickDTO aiPick, Map<String, Integer> bookmarkMap, Map<String, Integer> reviewMap, Map<String, Integer> recentViewMap) {
 
@@ -369,4 +371,5 @@ public class AiPickServiceImpl implements AiPickService {
 
         return Math.min(penalty, 15);
     }
+
 }

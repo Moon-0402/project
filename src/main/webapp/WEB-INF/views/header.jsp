@@ -6,7 +6,8 @@
 
 <c:choose>
 	<c:when test="${not empty requestScope['jakarta.servlet.forward.request_uri']}">
-		<c:set var="currentURI" value="${requestScope['jakarta.servlet.forward.request_uri']}" />
+		<c:set var="currentURI"
+			value="${requestScope['jakarta.servlet.forward.request_uri']}" />
 	</c:when>
 	<c:otherwise>
 		<c:set var="currentURI" value="${pageContext.request.requestURI}" />
@@ -20,7 +21,7 @@
 <c:set var="bookmarkURI" value="${contextPath}/bookmark/list" />
 <c:set var="reviewURI" value="${contextPath}/review" />
 <c:set var="loginURI" value="${contextPath}/member/login" />
-<c:set var="restaurantsPath" value="${contextPath }/restaurants"/>
+
 <style>
 * {
 	box-sizing: border-box;
@@ -178,6 +179,9 @@ a {
 	border-color: #e5e7eb;
 }
 
+/* =========================
+   Header Buttons
+========================= */
 .header-btn {
 	height: 40px;
 	border-radius: 12px;
@@ -189,6 +193,8 @@ a {
 	align-items: center;
 	justify-content: center;
 	white-space: nowrap;
+	border: 1px solid transparent;
+	cursor: pointer;
 }
 
 .header-login {
@@ -197,10 +203,24 @@ a {
 	box-shadow: 0 10px 22px rgba(17, 24, 39, 0.13);
 }
 
+.header-login:hover {
+	transform: translateY(-1px);
+	background: #ff6500;
+	color: #ffffff;
+	box-shadow: 0 10px 22px rgba(255, 101, 0, 0.18);
+}
+
 .header-join {
 	background: #ff6500;
 	color: #ffffff;
 	box-shadow: 0 10px 22px rgba(255, 101, 0, 0.18);
+}
+
+.header-join:hover {
+	transform: translateY(-1px);
+	background: #111827;
+	color: #ffffff;
+	box-shadow: 0 10px 22px rgba(17, 24, 39, 0.16);
 }
 
 .header-admin {
@@ -210,8 +230,80 @@ a {
 	box-shadow: 0 10px 22px rgba(255, 101, 0, 0.10);
 }
 
-.header-btn:hover {
+.header-admin:hover {
 	transform: translateY(-1px);
+	background: #ff6500;
+	color: #ffffff;
+	box-shadow: 0 10px 22px rgba(255, 101, 0, 0.18);
+}
+
+/* 마이페이지 + 로그아웃 묶음 */
+.member-action-group {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	padding: 4px;
+	border-radius: 16px;
+	background: rgba(255, 255, 255, 0.72);
+	border: 1px solid rgba(229, 231, 235, 0.9);
+	box-shadow: 0 10px 24px rgba(17, 24, 39, 0.06);
+}
+
+.mypage-btn {
+	height: 36px;
+	border-radius: 11px;
+	padding: 0 15px;
+	background: #111827;
+	color: #ffffff;
+	font-size: 13px;
+	font-weight: 950;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	white-space: nowrap;
+	box-shadow: 0 8px 18px rgba(17, 24, 39, 0.14);
+	transition: 0.2s;
+}
+
+.mypage-btn:hover {
+	transform: translateY(-1px);
+	background: #242f44;
+	color: #ffffff;
+	box-shadow: 0 10px 22px rgba(17, 24, 39, 0.18);
+}
+
+.logout-form {
+	display: inline-flex;
+	align-items: center;
+	margin: 0;
+}
+
+.logout-btn {
+	height: 36px;
+	border: none;
+	border-radius: 11px;
+	padding: 0 15px;
+	background: #ff6500;
+	color: #ffffff;
+	border: 1px solid rgba(255, 101, 0, 0.35);
+	font-family: inherit;
+	font-size: 13px;
+	font-weight: 950;
+	cursor: pointer;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	white-space: nowrap;
+	box-shadow: 0 8px 18px rgba(255, 101, 0, 0.18);
+	transition: 0.2s;
+}
+
+.logout-btn:hover {
+	transform: translateY(-1px);
+	background: #e95c00;
+	color: #ffffff;
+	border-color: rgba(255, 101, 0, 0.55);
+	box-shadow: 0 10px 22px rgba(255, 101, 0, 0.24);
 }
 
 .main {
@@ -221,12 +313,13 @@ a {
 
 <header class="header">
 
-	<a href="${contextPath}/" class="logo"> PickEat <span
-		class="logo-icon"></span>
+	<a href="${contextPath}/" class="logo">
+		PickEat <span class="logo-icon"></span>
 	</a>
 
 	<nav class="nav">
 
+<<<<<<< HEAD
 	<a href="${contextPath}/"
 		class="${currentURI eq homeURI or currentURI eq contextPath ? 'active' : ''}">
 		홈
@@ -261,10 +354,46 @@ a {
 		<a href="${contextPath}/member/mypage?memberId=${sessionScope.loginMember.memberId}"
 			class="${fn:contains(currentURI, '/member/mypage') ? 'active' : ''}">
 			마이페이지
+=======
+		<a href="${contextPath}/"
+			class="${currentURI eq homeURI or currentURI eq contextPath ? 'active' : ''}">
+			홈
+>>>>>>> 93d2f287ff1744340e64fa3ea274c54ca45b899a
 		</a>
-	</c:if>
 
-</nav>
+		<a href="${not empty sessionScope.loginMember ? recommendURI : loginURI}"
+			class="${fn:contains(currentURI, '/recommend') ? 'active' : ''}">
+			Pick 룰렛
+		</a>
+
+		<a href="${not empty sessionScope.loginMember ? aipickURI : loginURI}"
+			class="${fn:contains(currentURI, '/aipick') ? 'active' : ''}">
+			AI PICK
+		</a>
+
+		<a href="${not empty sessionScope.loginMember ? restaurantsURI : loginURI}"
+			class="${currentURI eq contextPath.concat('/restaurants') ? 'active' : ''}">
+			맛집 리스트
+		</a>
+
+		<a href="${not empty sessionScope.loginMember ? bookmarkURI : loginURI}"
+			class="${fn:contains(currentURI, '/bookmark') ? 'active' : ''}">
+			즐겨찾기
+		</a>
+
+		<a href="${not empty sessionScope.loginMember ? reviewURI : loginURI}"
+			class="${fn:contains(currentURI, '/review') ? 'active' : ''}">
+			리뷰
+		</a>
+
+		<c:if test="${not empty sessionScope.loginMember and sessionScope.loginMember.role ne 'ADMIN'}">
+			<a href="${contextPath}/member/mypage?memberId=${sessionScope.loginMember.memberId}"
+				class="${fn:contains(currentURI, '/member/mypage') ? 'active' : ''}">
+				마이페이지
+			</a>
+		</c:if>
+
+	</nav>
 
 	<div class="header-actions">
 
@@ -273,43 +402,66 @@ a {
 			<c:when test="${not empty sessionScope.loginMember}">
 
 				<div class="user-box">
-					<span class="user-name"> ${sessionScope.loginMember.name}님 </span>
+					<span class="user-name">
+						${sessionScope.loginMember.name}님
+					</span>
 
 					<c:choose>
 						<c:when test="${sessionScope.loginMember.role eq 'ADMIN'}">
-							<span class="role-badge admin"> 관리자 </span>
+							<span class="role-badge admin">관리자</span>
 						</c:when>
 
 						<c:otherwise>
-							<span class="role-badge user"> 회원 </span>
+							<span class="role-badge user">회원</span>
 						</c:otherwise>
 					</c:choose>
 				</div>
 
-				<c:choose>
-					<c:when test="${sessionScope.loginMember.role eq 'ADMIN'}">
-						<a href="${contextPath}/admin" class="header-btn header-admin">
-							관리자 </a>
-					</c:when>
+				<div class="member-action-group">
 
-					<c:otherwise>
-						<a href="${contextPath}/member/mypage"
-							class="header-btn header-login"> 마이페이지 </a>
-					</c:otherwise>
-				</c:choose>
+					<c:choose>
+						<c:when test="${sessionScope.loginMember.role eq 'ADMIN'}">
+							<a href="${contextPath}/admin" class="mypage-btn">
+								관리자
+							</a>
+						</c:when>
 
-				<a href="${contextPath}/member/logout"
-					class="header-btn header-join"> 로그아웃 </a>
+						<c:otherwise>
+							<a href="${contextPath}/member/mypage?memberId=${sessionScope.loginMember.memberId}"
+								class="mypage-btn">
+								마이페이지
+							</a>
+						</c:otherwise>
+					</c:choose>
+
+					<form action="${contextPath}/member/logout"
+						method="post"
+						class="logout-form">
+
+						<input type="hidden"
+							name="${_csrf.parameterName}"
+							value="${_csrf.token}" />
+
+						<button type="submit" class="logout-btn">
+							로그아웃
+						</button>
+					</form>
+
+				</div>
 
 			</c:when>
 
 			<c:otherwise>
 
 				<a href="${contextPath}/member/login"
-					class="header-btn header-login"> 로그인 </a>
+					class="header-btn header-login">
+					로그인
+				</a>
 
 				<a href="${contextPath}/member/signup"
-					class="header-btn header-join"> 회원가입 </a>
+					class="header-btn header-join">
+					회원가입
+				</a>
 
 			</c:otherwise>
 

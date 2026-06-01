@@ -1,33 +1,87 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<beans:beans xmlns="http://www.springframework.org/schema/security"
-    		 xmlns:beans="http://www.springframework.org/schema/beans"
-    		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    		 xsi:schemaLocation="
-        	 http://www.springframework.org/schema/beans
-        	 http://www.springframework.org/schema/beans/spring-beans.xsd
-        	 http://www.springframework.org/schema/security
-        	 http://www.springframework.org/schema/security/spring-security.xsd">
-        	 
-	<http use-expressions="true">
-		<intercept-url pattern="/resources/**" access="permitAll"/>
-		<intercept-url pattern="/books/add" access="hasAuthority('ROLE_ADMIN')"/>
-		<intercept-url pattern="/**" access="permitAll"/>
-		<form-login login-page="/login"
-					default-target-url="/books/add"
-					authentication-failure-url="/loginfailed"
-					username-parameter="username"
-					password-parameter="password" />
-		<csrf/>
-		<logout/>
-	</http>
-	
-	<authentication-manager>
-		<authentication-provider>
-			<user-service>
-				<user name="Admin" password="{noop}Admin1234" authorities="ROLE_ADMIN"/>
-			</user-service>
-		</authentication-provider>
-	</authentication-manager>
-	 <beans:bean name="mvcHandlerMappingIntrospector" class="org.springframework.web.servlet.handler.HandlerMappingIntrospector" />
+<beans:beans
+    xmlns="http://www.springframework.org/schema/security"
+    xmlns:beans="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="
+        http://www.springframework.org/schema/security
+        http://www.springframework.org/schema/security/spring-security.xsd
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+  <http use-expressions="true">
+
+    <intercept-url pattern="/resources/**" access="permitAll" />
+    <intercept-url pattern="/upload/**" access="permitAll" />
+
+    <intercept-url pattern="/" access="permitAll" />
+    <intercept-url pattern="/member/login" access="permitAll" />
+    <intercept-url pattern="/member/signup" access="permitAll" />
+    <intercept-url pattern="/member/findId" access="permitAll" />
+    <intercept-url pattern="/member/findPw" access="permitAll" />
+    <intercept-url pattern="/member/changePw" access="permitAll" />
+    <intercept-url pattern="/member/kakao/**" access="permitAll" />
+
+    <intercept-url pattern="/restaurants/**" access="permitAll" />
+    <intercept-url pattern="/restaurant/**" access="permitAll" />
+    <intercept-url pattern="/recommend" access="permitAll" />
+
+    <intercept-url pattern="/admin/**" access="hasRole('ADMIN')" />
+
+    <intercept-url pattern="/bookmark/**" access="isAuthenticated()" />
+    <intercept-url pattern="/review/**" access="isAuthenticated()" />
+    <intercept-url pattern="/ai-pick/**" access="isAuthenticated()" />
+    <intercept-url pattern="/aipick/**" access="isAuthenticated()" />
+    <intercept-url pattern="/member/mypage/**" access="isAuthenticated()" />
+    <intercept-url pattern="/member/inquiries/**" access="isAuthenticated()" />
+
+    <intercept-url pattern="/**" access="permitAll" />
+
+    <form-login
+        login-page="/member/login"
+        login-processing-url="/member/login"
+        username-parameter="id"
+        password-parameter="pw"
+        authentication-success-handler-ref="loginSuccessHandler"
+        authentication-failure-url="/member/login?error=true" />
+
+    <logout
+        logout-url="/member/logout"
+        logout-success-url="/"
+        invalidate-session="true"
+        delete-cookies="JSESSIONID" />
+
+    <csrf />
+
+</http>
+
+    <!-- DB 기반 로그인 인증 -->
+    <authentication-manager>
+        <authentication-provider>
+            <password-encoder ref="passwordEncoder" />
+
+            <jdbc-user-service
+                data-source-ref="dataSource"
+                users-by-username-query="
+                    SELECT login_id, password, true
+                    FROM MEMBER
+                    WHERE login_id = ?"
+
+                authorities-by-username-query="
+                    SELECT login_id, CONCAT('ROLE_', role)
+                    FROM MEMBER
+                    WHERE login_id = ?" />
+        </authentication-provider>
+    </authentication-manager>
+
+    <!-- 현재 DB 비밀번호가 평문이면 임시로 사용 -->
+    <beans:bean id="passwordEncoder"
+        class="org.springframework.security.crypto.password.NoOpPasswordEncoder"
+        factory-method="getInstance" />
+
+    <!-- 로그인 성공 후 기존 sessionScope.loginMember 넣기 -->
+    <beans:bean id="loginSuccessHandler"
+    class="com.springmvc.controller.member.LoginSuccessHandler" />
+
 </beans:beans>

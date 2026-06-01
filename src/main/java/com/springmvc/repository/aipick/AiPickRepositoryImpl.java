@@ -219,6 +219,7 @@ public class AiPickRepositoryImpl implements AiPickRepository {
               + "AND r.latitude IS NOT NULL "
               + "AND r.longitude IS NOT NULL "
               // 제외 시켜야할 것들(즐겨찾기한 맛집, 리뷰 쓴 맛집)
+              + "AND c.category_name = ? "
               + "AND r.restaurant_id NOT IN ( "
               + "    SELECT restaurant_id FROM BOOKMARK WHERE member_id = ? "
               + "    UNION "
