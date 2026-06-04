@@ -409,6 +409,39 @@ body {
         text-align: center;
     }
 }
+
+
+/* footer 하단 정렬용 레이아웃 보정 */
+html,
+body {
+    min-height: 100%;
+}
+
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+main,
+.container,
+.admin-layout,
+.page-wrap,
+.page-container,
+.content,
+.main-content {
+    flex: 1 0 auto;
+}
+
+.admin-layout,
+.page-wrap {
+    min-height: 0;
+}
+
+.footer {
+    margin-top: auto;
+    flex-shrink: 0;
+}
 </style>
 </head>
 
@@ -596,5 +629,7 @@ body {
     </main>
 </div>
 
+
+	<%@ include file="/WEB-INF/views/footer.jsp" %>
 </body>
 </html>

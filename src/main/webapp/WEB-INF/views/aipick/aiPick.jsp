@@ -475,6 +475,39 @@ body {
 		width: 100%;
 	}
 }
+
+
+/* footer 하단 정렬용 레이아웃 보정 */
+html,
+body {
+    min-height: 100%;
+}
+
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+main,
+.container,
+.admin-layout,
+.page-wrap,
+.page-container,
+.content,
+.main-content {
+    flex: 1 0 auto;
+}
+
+.admin-layout,
+.page-wrap {
+    min-height: 0;
+}
+
+.footer {
+    margin-top: auto;
+    flex-shrink: 0;
+}
 </style>
 </head>
 
@@ -746,7 +779,7 @@ body {
 														<div class="score-bar-label">중복감점</div>
 														<div class="score-bar-track">
 															<div class="score-bar-fill"
-																style="width:${pick.duplicatePenalty * 2 gt 100 > 100 : pick.duplicatePenalty * 2}%"></div>
+																style="width:${pick.duplicatePenalty * 2 gt 100 ? 100 : pick.duplicatePenalty * 2}%"></div>
 														</div>
 														<div class="score-bar-num">-${pick.duplicatePenalty}점</div>
 													</div>
@@ -874,5 +907,7 @@ body {
 		}
 	</script>
 
+
+	<%@ include file="/WEB-INF/views/footer.jsp" %>
 </body>
 </html>
