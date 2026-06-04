@@ -10,11 +10,7 @@
         http://www.springframework.org/schema/context/spring-context.xsd">
 
 	<!-- Service 스캔 -->
-	<context:component-scan base-package="com.springmvc.service">
-    <context:exclude-filter
-        type="regex"
-        expression="com\.springmvc\.service\.kakao\.KakaoLocalService" />
-</context:component-scan>
+	<context:component-scan base-package="com.springmvc.service" />
 
 	<!-- Repository 스캔 -->
 	<context:component-scan

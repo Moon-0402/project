@@ -72,8 +72,8 @@ public class RestaurantRepositoryImpl implements RestaurantRepository {
 	@Override
 	public void insertRestaurant(Restaurant restaurant) {
 		String sql = "INSERT IGNORE INTO RESTAURANT "
-				+ "(api_place_id, category_id, kakao_category_name, name, address, latitude, longitude, phone, opening_hours, price_range, description, place_url) "
-				+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+				+ "(api_place_id, category_id, kakao_category_name, name, address, latitude, longitude, phone, opening_hours, price_range, description, status, place_url) "
+				+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
 		template.update(sql,
 				restaurant.getApiPlaceId(),
@@ -87,6 +87,7 @@ public class RestaurantRepositoryImpl implements RestaurantRepository {
 				restaurant.getOpeningHours(),
 				restaurant.getPriceRange(),
 				restaurant.getDescription(),
+				restaurant.getStatus(),
 				restaurant.getPlaceUrl());
 	}
 
@@ -326,8 +327,12 @@ public class RestaurantRepositoryImpl implements RestaurantRepository {
 			sql.append("AND ( ");
 			sql.append("r.name LIKE ? ");
 			sql.append("OR r.address LIKE ? ");
+			// 카카오 API 검색어를 description에 저장하므로
+			// '구미대학교 치킨'처럼 실제 주소에 없는 지역명도 재조회 가능하게 함
+			sql.append("OR r.description LIKE ? ");
 			sql.append(") ");
 
+			params.add(regionLike);
 			params.add(regionLike);
 			params.add(regionLike);
 		}
@@ -335,17 +340,18 @@ public class RestaurantRepositoryImpl implements RestaurantRepository {
 		if (foodKeyword != null && !foodKeyword.trim().isEmpty()) {
 			String foodLike = "%" + foodKeyword.trim() + "%";
 
+			/*
+			 * 음식 키워드는 description으로 검색하지 않는다.
+			 * 예전에 description에 "구미대 피자 관련 맛집"처럼 검색어를 저장했기 때문에
+			 * 카페도 피자 검색 결과에 섞이는 문제가 생겼다.
+			 */
 			sql.append("AND ( ");
 			sql.append("r.name LIKE ? ");
 			sql.append("OR c.category_name LIKE ? ");
-			// 수정: 카카오 원본 카테고리도 검색
 			sql.append("OR r.kakao_category_name LIKE ? ");
-			sql.append("OR r.description LIKE ? ");
 			sql.append(") ");
 
 			params.add(foodLike);
-			params.add(foodLike);
-			// 수정: r.kakao_category_name LIKE ? 파라미터 추가
 			params.add(foodLike);
 			params.add(foodLike);
 		}
@@ -386,8 +392,12 @@ public class RestaurantRepositoryImpl implements RestaurantRepository {
 			sql.append("AND ( ");
 			sql.append("r.name LIKE ? ");
 			sql.append("OR r.address LIKE ? ");
+			// 카카오 API 검색어를 description에 저장하므로
+			// '구미대학교 치킨'처럼 실제 주소에 없는 지역명도 재조회 가능하게 함
+			sql.append("OR r.description LIKE ? ");
 			sql.append(") ");
 
+			params.add(regionLike);
 			params.add(regionLike);
 			params.add(regionLike);
 		}
@@ -395,17 +405,18 @@ public class RestaurantRepositoryImpl implements RestaurantRepository {
 		if (foodKeyword != null && !foodKeyword.trim().isEmpty()) {
 			String foodLike = "%" + foodKeyword.trim() + "%";
 
+			/*
+			 * 음식 키워드는 description으로 검색하지 않는다.
+			 * 예전에 description에 "구미대 피자 관련 맛집"처럼 검색어를 저장했기 때문에
+			 * 카페도 피자 검색 결과에 섞이는 문제가 생겼다.
+			 */
 			sql.append("AND ( ");
 			sql.append("r.name LIKE ? ");
 			sql.append("OR c.category_name LIKE ? ");
-			// 수정
 			sql.append("OR r.kakao_category_name LIKE ? ");
-			sql.append("OR r.description LIKE ? ");
 			sql.append(") ");
 
 			params.add(foodLike);
-			params.add(foodLike);
-			// 수정
 			params.add(foodLike);
 			params.add(foodLike);
 		}
@@ -432,8 +443,12 @@ public class RestaurantRepositoryImpl implements RestaurantRepository {
 			sql.append("AND ( ");
 			sql.append("r.name LIKE ? ");
 			sql.append("OR r.address LIKE ? ");
+			// 카카오 API 검색어를 description에 저장하므로
+			// '구미대학교 치킨'처럼 실제 주소에 없는 지역명도 재조회 가능하게 함
+			sql.append("OR r.description LIKE ? ");
 			sql.append(") ");
 
+			params.add(regionLike);
 			params.add(regionLike);
 			params.add(regionLike);
 		}
@@ -441,17 +456,18 @@ public class RestaurantRepositoryImpl implements RestaurantRepository {
 		if (foodKeyword != null && !foodKeyword.trim().isEmpty()) {
 			String foodLike = "%" + foodKeyword.trim() + "%";
 
+			/*
+			 * 음식 키워드는 description으로 검색하지 않는다.
+			 * 예전에 description에 "구미대 피자 관련 맛집"처럼 검색어를 저장했기 때문에
+			 * 카페도 피자 검색 결과에 섞이는 문제가 생겼다.
+			 */
 			sql.append("AND ( ");
 			sql.append("r.name LIKE ? ");
 			sql.append("OR c.category_name LIKE ? ");
-			// 수정
 			sql.append("OR r.kakao_category_name LIKE ? ");
-			sql.append("OR r.description LIKE ? ");
 			sql.append(") ");
 
 			params.add(foodLike);
-			params.add(foodLike);
-			// 수정
 			params.add(foodLike);
 			params.add(foodLike);
 		}

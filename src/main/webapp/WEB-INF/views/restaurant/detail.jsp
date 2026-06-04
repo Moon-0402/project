@@ -353,7 +353,25 @@ main,
 
 				<div class="rating">★ 0.0</div>
 
-				<div class="desc">${restaurant.description}</div>
+				<div class="desc">
+					<c:choose>
+						<c:when test="${not empty restaurant.description and not fn:contains(restaurant.description, '관련 맛집')}">
+							${restaurant.description}
+						</c:when>
+						<c:when test="${fn:contains(restaurant.kakaoCategoryName, '카페') or fn:contains(restaurant.kakaoCategoryName, '커피') or fn:contains(restaurant.kakaoCategoryName, '디저트')}">
+							카페 · 디저트
+						</c:when>
+						<c:when test="${fn:contains(restaurant.kakaoCategoryName, '피자')}">
+							피자 맛집
+						</c:when>
+						<c:when test="${fn:contains(restaurant.kakaoCategoryName, '치킨')}">
+							치킨 맛집
+						</c:when>
+						<c:otherwise>
+							카카오맵 기반 맛집 정보
+						</c:otherwise>
+					</c:choose>
+				</div>
 
 				<div class="info-list">
 

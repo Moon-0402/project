@@ -27,10 +27,6 @@
 		<context:include-filter type="annotation"
 			expression="org.springframework.stereotype.Controller" />
 	</context:component-scan>
-	<beans:bean id="kakaoLocalService"
-		class="com.springmvc.service.kakao.KakaoLocalService">
-		<beans:constructor-arg ref="bookmarkController" />
-	</beans:bean>
 	<!-- JSP ViewResolver -->
 	<beans:bean
 		class="org.springframework.web.servlet.view.InternalResourceViewResolver">

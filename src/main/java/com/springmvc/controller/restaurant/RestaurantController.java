@@ -63,31 +63,17 @@ public class RestaurantController {
 
 	        if (restaurantList == null || restaurantList.isEmpty()) {
 
-	            String kakaoQuery = "";
+	            String kakaoQuery = makeKakaoRestaurantQuery(regionKeyword, foodKeyword);
 
-	            if (hasRegion) {
-	                kakaoQuery += regionKeyword.trim();
-	            }
-
-	            if (hasFood) {
-	                if (!kakaoQuery.isEmpty()) {
-	                    kakaoQuery += " ";
-	                }
-
-	                kakaoQuery += foodKeyword.trim();
-	            }
+	            System.out.println("DB 검색 결과 없음. 카카오 API 검색어 = " + kakaoQuery);
 
 	            kakaoLocalService.importRestaurants(kakaoQuery);
 
-	            if (hasFood) {
-	                restaurantList = restaurantService.searchRestaurantList(null, foodKeyword, offset, size);
-	                totalCount = restaurantService.countSearchRestaurantList(null, foodKeyword);
-	                mapList = restaurantService.getSearchRestaurantMapList(null, foodKeyword);
-	            } else {
-	                restaurantList = restaurantService.searchRestaurantList(regionKeyword, null, offset, size);
-	                totalCount = restaurantService.countSearchRestaurantList(regionKeyword, null);
-	                mapList = restaurantService.getSearchRestaurantMapList(regionKeyword, null);
-	            }
+	            // API로 저장한 뒤에는 반드시 사용자가 입력한 원래 조건으로 다시 조회해야 함.
+	            // 기존 코드는 음식 키워드가 있으면 지역 조건을 빼고 재조회해서 지역 검색 결과가 흔들릴 수 있었음.
+	            restaurantList = restaurantService.searchRestaurantList(regionKeyword, foodKeyword, offset, size);
+	            totalCount = restaurantService.countSearchRestaurantList(regionKeyword, foodKeyword);
+	            mapList = restaurantService.getSearchRestaurantMapList(regionKeyword, foodKeyword);
 	        }
 
 	    } else {
@@ -119,6 +105,23 @@ public class RestaurantController {
 
 	    return "restaurant/list";
 	}
+
+    private String makeKakaoRestaurantQuery(String regionKeyword, String foodKeyword) {
+
+        String region = regionKeyword == null ? "" : regionKeyword.trim();
+        String food = foodKeyword == null ? "" : foodKeyword.trim();
+
+        if (!region.isEmpty() && !food.isEmpty()) {
+            return region + " " + food;
+        }
+
+        if (!region.isEmpty()) {
+            return region + " 맛집";
+        }
+
+        return food;
+    }
+
 
     // 맛집 상세 페이지
     @GetMapping("/restaurants/{restaurantId}")
