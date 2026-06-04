@@ -10,7 +10,6 @@
 <meta charset="UTF-8">
 <title>PickEat - AI PICK</title>
 
-
 <script
 	src="//dapi.kakao.com/v2/maps/sdk.js?appkey=2a87f90deda3136d9524a194c121dcf1&libraries=services"></script>
 
@@ -84,6 +83,26 @@ body {
 	font-size: 17px;
 	font-weight: 700;
 	opacity: 0.95;
+	line-height: 1.6;
+}
+
+.recommend-guide-box {
+	background: rgba(255, 255, 255, 0.9);
+	border: 1px solid rgba(125, 211, 252, 0.55);
+	border-radius: 24px;
+	padding: 22px 26px;
+	margin-bottom: 30px;
+	box-shadow: 0 12px 30px rgba(15, 23, 42, 0.07);
+	color: #334155;
+	font-weight: 800;
+	line-height: 1.7;
+}
+
+.recommend-guide-title {
+	font-size: 18px;
+	font-weight: 900;
+	color: #0891b2;
+	margin-bottom: 8px;
 }
 
 .location-box {
@@ -487,7 +506,19 @@ body {
 		<section class="hero">
 			<div class="hero-badge">AI PICK</div>
 			<h1>지금 나에게 딱 맞는 맛집 🍽️</h1>
-			<p>2곳은 취향·거리·평점 점수 기반으로, 1곳은 선호 카테고리와 유사한 새로운 맛집으로 추천해드려요.</p>
+			<p>
+				2곳은 취향·거리·평점 점수 기반으로, 1곳은 새로운 취향 탐색 맛집으로 추천해드려요.
+				같은 맛집이 자주 보인다면 좋아요/별로예요를 눌러 추천 점수를 조정할 수 있어요.
+			</p>
+		</section>
+
+		<section class="recommend-guide-box">
+			<div class="recommend-guide-title">추천 결과를 더 다양하게 바꾸는 방법</div>
+			<div>
+				👍 좋아요를 누르면 비슷한 취향의 맛집이 더 자주 추천되고,
+				👎 별로예요를 누르면 해당 맛집의 점수가 낮아져 다른 선택지를 볼 가능성이 높아져요.
+				추천이 반복될 때는 피드백을 눌러 나에게 맞는 추천으로 조정해보세요.
+			</div>
 		</section>
 
 		<section class="location-box">
@@ -515,8 +546,9 @@ body {
 					onclick="searchLocation()">장소 검색</button>
 			</div>
 
-			<div class="location-help">장소명을 입력하면 카카오 장소 검색으로 좌표를 찾아 AI PICK
-				추천을 다시 실행합니다.</div>
+			<div class="location-help">
+				장소명을 입력하면 카카오 장소 검색으로 좌표를 찾아 AI PICK 추천을 다시 실행합니다.
+			</div>
 		</section>
 
 		<c:if test="${not needLocation}">
@@ -524,8 +556,8 @@ body {
 			<c:choose>
 				<c:when test="${empty aiPickList}">
 					<section class="empty-box">
-						추천할 맛집 데이터가 아직 없습니다.<br> 맛집을 즐겨찾기하거나 리뷰를 작성하면 더 정확한 AI PICK을
-						받을 수 있어요.
+						추천할 맛집 데이터가 아직 없습니다.<br>
+						맛집을 즐겨찾기하거나 리뷰를 작성하면 더 정확한 AI PICK을 받을 수 있어요.
 					</section>
 				</c:when>
 
@@ -534,8 +566,7 @@ body {
 
 						<c:forEach var="pick" items="${aiPickList}" varStatus="status">
 
-							<article
-								class="pick-card ${pick.newTasteRecommendation ? 'new-taste' : ''}">
+							<article class="pick-card ${pick.newTasteRecommendation ? 'new-taste' : ''}">
 
 								<div class="rank">${status.index + 1}</div>
 
@@ -545,38 +576,28 @@ body {
 
 								<c:choose>
 									<c:when test="${fn:contains(pick.categoryName, '한식')}">
-										<img class="food-img"
-											src="${contextPath}/resources/images/category/korean.jpg">
+										<img class="food-img" src="${contextPath}/resources/images/category/korean.jpg">
 									</c:when>
 									<c:when test="${fn:contains(pick.categoryName, '중식')}">
-										<img class="food-img"
-											src="${contextPath}/resources/images/category/chinese.jpg">
+										<img class="food-img" src="${contextPath}/resources/images/category/chinese.jpg">
 									</c:when>
 									<c:when test="${fn:contains(pick.categoryName, '일식')}">
-										<img class="food-img"
-											src="${contextPath}/resources/images/category/japanese.jpg">
+										<img class="food-img" src="${contextPath}/resources/images/category/japanese.jpg">
 									</c:when>
-									<c:when
-										test="${fn:contains(pick.categoryName, '양식') or fn:contains(pick.categoryName, '샐러드')}">
-										<img class="food-img"
-											src="${contextPath}/resources/images/category/western.jpg">
+									<c:when test="${fn:contains(pick.categoryName, '양식') or fn:contains(pick.categoryName, '샐러드')}">
+										<img class="food-img" src="${contextPath}/resources/images/category/western.jpg">
 									</c:when>
 									<c:when test="${fn:contains(pick.categoryName, '치킨')}">
-										<img class="food-img"
-											src="${contextPath}/resources/images/category/chicken.jpg">
+										<img class="food-img" src="${contextPath}/resources/images/category/chicken.jpg">
 									</c:when>
-									<c:when
-										test="${fn:contains(pick.categoryName, '카페') or fn:contains(pick.categoryName, '디저트')}">
-										<img class="food-img"
-											src="${contextPath}/resources/images/category/cafe.jpg">
+									<c:when test="${fn:contains(pick.categoryName, '카페') or fn:contains(pick.categoryName, '디저트')}">
+										<img class="food-img" src="${contextPath}/resources/images/category/cafe.jpg">
 									</c:when>
 									<c:when test="${fn:contains(pick.categoryName, '분식')}">
-										<img class="food-img"
-											src="${contextPath}/resources/images/category/snack_food.jpg">
+										<img class="food-img" src="${contextPath}/resources/images/category/snack_food.jpg">
 									</c:when>
 									<c:otherwise>
-										<img class="food-img"
-											src="${contextPath}/resources/images/category/etc_food.png">
+										<img class="food-img" src="${contextPath}/resources/images/category/etc_food.png">
 									</c:otherwise>
 								</c:choose>
 
@@ -584,7 +605,8 @@ body {
 									<h2 class="card-title">${pick.name}</h2>
 
 									<div class="category" title="${pick.kakaoCategoryName}">
-										${pick.categoryName}</div>
+										${pick.categoryName}
+									</div>
 
 									<div class="address">${pick.address}</div>
 
@@ -668,9 +690,9 @@ body {
 													<div class="score-bar-label">평점</div>
 													<div class="score-bar-track">
 														<div class="score-bar-fill"
-															style="width:${pick.reviewScore > 100 ? 100 : pick.reviewScore}%"></div>
+															style="width:${pick.popularityScore * 2 > 100 ? 100 : pick.popularityScore * 2}%"></div>
 													</div>
-													<div class="score-bar-num">${pick.reviewScore}점</div>
+													<div class="score-bar-num">${pick.popularityScore}점</div>
 												</div>
 
 												<div class="score-bar-row">
@@ -746,7 +768,7 @@ body {
 														<div class="score-bar-label">중복감점</div>
 														<div class="score-bar-track">
 															<div class="score-bar-fill"
-																style="width:${pick.duplicatePenalty * 2 gt 100 > 100 : pick.duplicatePenalty * 2}%"></div>
+																style="width:${pick.duplicatePenalty * 2 > 100 ? 100 : pick.duplicatePenalty * 2}%"></div>
 														</div>
 														<div class="score-bar-num">-${pick.duplicatePenalty}점</div>
 													</div>
@@ -758,8 +780,9 @@ body {
 									<div class="ai-reason">
 										<c:choose>
 											<c:when test="${pick.newTasteRecommendation}">
-												<div class="reason-title">✨ 탐색 추천: 안 가봤지만 좋아할 가능성이 높은
-													맛집</div>
+												<div class="reason-title">
+													✨ 탐색 추천: 안 가봤지만 좋아할 가능성이 높은 맛집
+												</div>
 												🤖 ${pick.aiReason}
 											</c:when>
 											<c:otherwise>
@@ -771,41 +794,38 @@ body {
 									<div class="btn-row">
 										<a class="btn detail-btn"
 											href="${contextPath}/restaurants/${pick.restaurantId}">
-											상세보기 </a> <a class="btn review-btn"
+											상세보기
+										</a>
+										<a class="btn review-btn"
 											href="${contextPath}/review/list?restaurantId=${pick.restaurantId}">
-											리뷰보기 </a>
+											리뷰보기
+										</a>
 									</div>
 
 									<div class="feedback-row">
 
 										<form action="${contextPath}/aipick/feedback" method="post">
-
-											<!-- CSRF 토큰 -->
-											<input type="hidden" name="${_csrf.parameterName}"
-												value="${_csrf.token}"> <input type="hidden"
-												name="restaurantId" value="${pick.restaurantId}"> <input
-												type="hidden" name="feedbackType" value="LIKE"> <input
-												type="hidden" name="lat" value="${param.lat}"> <input
-												type="hidden" name="lng" value="${param.lng}">
+											<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
+											<input type="hidden" name="restaurantId" value="${pick.restaurantId}">
+											<input type="hidden" name="feedbackType" value="LIKE">
+											<input type="hidden" name="lat" value="${param.lat}">
+											<input type="hidden" name="lng" value="${param.lng}">
 
 											<button type="submit" class="feedback-btn like-btn">
-												👍 좋아요</button>
-
+												👍 좋아요
+											</button>
 										</form>
 
 										<form action="${contextPath}/aipick/feedback" method="post">
-
-											<!-- CSRF 토큰 -->
-											<input type="hidden" name="${_csrf.parameterName}"
-												value="${_csrf.token}"> <input type="hidden"
-												name="restaurantId" value="${pick.restaurantId}"> <input
-												type="hidden" name="feedbackType" value="DISLIKE"> <input
-												type="hidden" name="lat" value="${param.lat}"> <input
-												type="hidden" name="lng" value="${param.lng}">
+											<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
+											<input type="hidden" name="restaurantId" value="${pick.restaurantId}">
+											<input type="hidden" name="feedbackType" value="DISLIKE">
+											<input type="hidden" name="lat" value="${param.lat}">
+											<input type="hidden" name="lng" value="${param.lng}">
 
 											<button type="submit" class="feedback-btn dislike-btn">
-												👎 별로예요</button>
-
+												👎 별로예요
+											</button>
 										</form>
 
 									</div>
@@ -840,37 +860,30 @@ body {
 		}
 
 		function searchLocation() {
-			const keyword = document.getElementById("locationKeyword").value
-					.trim();
+			const keyword = document.getElementById("locationKeyword").value.trim();
 
 			if (!keyword) {
 				alert("장소명이나 건물명을 입력해주세요.");
 				return;
 			}
 
-			if (typeof kakao === "undefined" || !kakao.maps
-					|| !kakao.maps.services) {
+			if (typeof kakao === "undefined" || !kakao.maps || !kakao.maps.services) {
 				alert("카카오 지도 서비스를 불러오지 못했습니다.");
 				return;
 			}
 
 			const ps = new kakao.maps.services.Places();
 
-			ps
-					.keywordSearch(
-							keyword,
-							function(data, status) {
-								if (status === kakao.maps.services.Status.OK
-										&& data.length > 0) {
-									const lat = data[0].y;
-									const lng = data[0].x;
+			ps.keywordSearch(keyword, function(data, status) {
+				if (status === kakao.maps.services.Status.OK && data.length > 0) {
+					const lat = data[0].y;
+					const lng = data[0].x;
 
-									location.href = "${contextPath}/aipick?lat="
-											+ lat + "&lng=" + lng;
-								} else {
-									alert("입력한 위치를 찾을 수 없습니다. 예: 경민인터빌, 부산역처럼 다시 입력해주세요.");
-								}
-							});
+					location.href = "${contextPath}/aipick?lat=" + lat + "&lng=" + lng;
+				} else {
+					alert("입력한 위치를 찾을 수 없습니다. 예: 경민인터빌, 부산역처럼 다시 입력해주세요.");
+				}
+			});
 		}
 	</script>
 

@@ -30,8 +30,8 @@ public interface AiPickRepository {
     Map<String, Double> getCategorySimilarityMap(String favoriteCategory);
     
     // 좋아요 기반 카테고리 선호도
-    Map<String, Integer> getLikeFeedbackCategoryMap(Long memberId);
+    Map<Long, Integer> getLikeFeedbackRestaurantMap(Long memberId);
     
     // 싫어요 기반 카테고리 선호도
-    Map<String, Integer> getDislikeFeedbackCategoryMap(Long memberId);
+    Map<Long, Integer> getDislikeFeedbackRestaurantMap(Long memberId);
 }

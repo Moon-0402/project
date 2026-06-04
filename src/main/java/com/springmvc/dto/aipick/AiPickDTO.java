@@ -20,6 +20,7 @@ public class AiPickDTO {
     private int totalScore;
     private String aiReason;
 	private boolean newTasteRecommendation;
+	private int popularityScore;
 	public AiPickDTO() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -27,7 +28,7 @@ public class AiPickDTO {
 	public AiPickDTO(Long restaurantId, String name, String categoryName, String kakaoCategoryName, String address,
 			String imageUrl, Double rating, Double distance, int preferenceScore, int distanceScore, int reviewScore,
 			int bookmarkScore, int recentViewScore, int feedbackScore, int duplicatePenalty, int totalScore,
-			String aiReason, boolean newTasteRecommendation) {
+			String aiReason, boolean newTasteRecommendation, int popularityScore) {
 		super();
 		this.restaurantId = restaurantId;
 		this.name = name;
@@ -47,6 +48,7 @@ public class AiPickDTO {
 		this.totalScore = totalScore;
 		this.aiReason = aiReason;
 		this.newTasteRecommendation = newTasteRecommendation;
+		this.popularityScore = popularityScore;
 	}
 	public Long getRestaurantId() {
 		return restaurantId;
@@ -155,6 +157,12 @@ public class AiPickDTO {
 	}
 	public void setNewTasteRecommendation(boolean newTasteRecommendation) {
 		this.newTasteRecommendation = newTasteRecommendation;
+	}
+	public int getPopularityScore() {
+		return popularityScore;
+	}
+	public void setPopularityScore(int popularityScore) {
+		this.popularityScore = popularityScore;
 	}
 	
 }
