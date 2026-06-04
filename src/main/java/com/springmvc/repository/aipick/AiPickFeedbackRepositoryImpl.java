@@ -14,15 +14,16 @@ public class AiPickFeedbackRepositoryImpl implements AiPickFeedbackRepository {
     public void saveFeedback(Long memberId, Long restaurantId, String feedbackType) {
 
         String sql =
-                "INSERT INTO AIPICK_FEEDBACK(member_id, restaurant_id, feedback_type) "
-              + "VALUES (?, ?, ?) "
+                "INSERT INTO AIPICK_FEEDBACK(member_id, restaurant_id, feedback_type, feedback_count) "
+              + "VALUES (?, ?, ?, 1) "
               + "ON DUPLICATE KEY UPDATE "
               + "feedback_type = VALUES(feedback_type), "
+              + "feedback_count = feedback_count + 1, "
               + "created_at = CURRENT_TIMESTAMP";
 
         template.update(sql, memberId, restaurantId, feedbackType);
     }
-
+    
     @Override
     public String getFeedback(Long memberId, Long restaurantId) {
 

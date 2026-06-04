@@ -264,23 +264,21 @@ public class AiPickRepositoryImpl implements AiPickRepository {
     }
 
     @Override
-    public Map<String, Integer> getLikeFeedbackCategoryMap(Long memberId) {
+    public Map<Long, Integer> getLikeFeedbackRestaurantMap(Long memberId) {
 
-        String sql =
-                "SELECT c.category_name, COUNT(*) AS cnt "
-              + "FROM AIPICK_FEEDBACK af "
-              + "JOIN RESTAURANT r ON af.restaurant_id = r.restaurant_id "
-              + "JOIN CATEGORY c ON r.category_id = c.category_id "
-              + "WHERE af.member_id = ? "
-              + "AND af.feedback_type = 'LIKE' "
-              + "GROUP BY c.category_name";
+    	String sql =
+    	        "SELECT restaurant_id, SUM(feedback_count) AS cnt "
+    	      + "FROM AIPICK_FEEDBACK "
+    	      + "WHERE member_id = ? "
+    	      + "AND feedback_type = 'LIKE' "
+    	      + "GROUP BY restaurant_id";
 
         return template.query(sql, rs -> {
-            Map<String, Integer> map = new java.util.HashMap<>();
+            Map<Long, Integer> map = new java.util.HashMap<>();
 
             while (rs.next()) {
                 map.put(
-                    rs.getString("category_name"),
+                    rs.getLong("restaurant_id"),
                     rs.getInt("cnt")
                 );
             }
@@ -290,23 +288,21 @@ public class AiPickRepositoryImpl implements AiPickRepository {
     }
 
     @Override
-    public Map<String, Integer> getDislikeFeedbackCategoryMap(Long memberId) {
+    public Map<Long, Integer> getDislikeFeedbackRestaurantMap(Long memberId) {
 
-        String sql =
-                "SELECT c.category_name, COUNT(*) AS cnt "
-              + "FROM AIPICK_FEEDBACK af "
-              + "JOIN RESTAURANT r ON af.restaurant_id = r.restaurant_id "
-              + "JOIN CATEGORY c ON r.category_id = c.category_id "
-              + "WHERE af.member_id = ? "
-              + "AND af.feedback_type = 'DISLIKE' "
-              + "GROUP BY c.category_name";
+    	String sql =
+    	        "SELECT restaurant_id, SUM(feedback_count) AS cnt "
+    	      + "FROM AIPICK_FEEDBACK "
+    	      + "WHERE member_id = ? "
+    	      + "AND feedback_type = 'DISLIKE' "
+    	      + "GROUP BY restaurant_id";
 
         return template.query(sql, rs -> {
-            Map<String, Integer> map = new java.util.HashMap<>();
+            Map<Long, Integer> map = new java.util.HashMap<>();
 
             while (rs.next()) {
                 map.put(
-                    rs.getString("category_name"),
+                    rs.getLong("restaurant_id"),
                     rs.getInt("cnt")
                 );
             }

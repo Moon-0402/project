@@ -33,11 +33,11 @@ public class AiPickServiceImpl implements AiPickService {
         Map<String, Integer> recentViewMap =
                 aiPickRepository.getRecentViewCategoryMap(memberId);
         
-        Map<String, Integer> likeFeedbackMap =
-                aiPickRepository.getLikeFeedbackCategoryMap(memberId);
+        Map<Long, Integer> likeFeedbackMap =
+                aiPickRepository.getLikeFeedbackRestaurantMap(memberId);
 
-        Map<String, Integer> dislikeFeedbackMap =
-                aiPickRepository.getDislikeFeedbackCategoryMap(memberId);
+        Map<Long, Integer> dislikeFeedbackMap =
+                aiPickRepository.getDislikeFeedbackRestaurantMap(memberId);
 
         for (AiPickDTO aiPick : aiPickList) {
 
@@ -63,8 +63,7 @@ public class AiPickServiceImpl implements AiPickService {
                     calculateFeedbackScore(
                             likeFeedbackMap,
                             dislikeFeedbackMap,
-                            categoryName,
-                            kakaoCategoryName
+                            aiPick.getRestaurantId()
                     );
 
             int preferenceScore =
@@ -105,11 +104,17 @@ public class AiPickServiceImpl implements AiPickService {
                 .sorted(Comparator.comparingInt(AiPickDTO::getTotalScore).reversed())
                 .collect(Collectors.toList());
 
-        List<AiPickDTO> result = scoreBasedList.stream()
+        List<AiPickDTO> topCandidateList = scoreBasedList.stream()
+                .limit(8)
+                .collect(Collectors.toList());
+
+        java.util.Collections.shuffle(topCandidateList);
+
+        List<AiPickDTO> result = topCandidateList.stream()
                 .limit(2)
                 .collect(Collectors.toList());
 
-        String favoriteCategory = findFavoriteCategory(bookmarkMap, reviewMap, recentViewMap, likeFeedbackMap, dislikeFeedbackMap);
+        String favoriteCategory = findFavoriteCategory(bookmarkMap, reviewMap, recentViewMap);
 
         if (favoriteCategory != null) {
 
@@ -163,11 +168,11 @@ public class AiPickServiceImpl implements AiPickService {
         }
 
         if (rating >= 4.5) {
-            return 30;
+            return 50;
         } else if (rating >= 4.0) {
-            return 20;
+            return 40;
         } else if (rating >= 3.5) {
-            return 10;
+            return 30;
         }
 
         return 0;
@@ -179,17 +184,14 @@ public class AiPickServiceImpl implements AiPickService {
     private String findFavoriteCategory(
             Map<String, Integer> bookmarkMap,
             Map<String, Integer> reviewMap,
-            Map<String, Integer> recentViewMap,
-            Map<String, Integer> likeFeedbackMap,
-            Map<String, Integer> dislikeFeedbackMap) {
+            Map<String, Integer> recentViewMap
+            ) {
 
         Map<String, Integer> totalMap = new java.util.HashMap<>();
 
         addCategoryScore(totalMap, bookmarkMap, 3);
         addCategoryScore(totalMap, reviewMap, 2);
-        addCategoryScore(totalMap, likeFeedbackMap, 2);
         addCategoryScore(totalMap, recentViewMap, 1);
-        subtractCategoryScore(totalMap, dislikeFeedbackMap, 2);
 
         return totalMap.entrySet()
                 .stream()
@@ -285,6 +287,8 @@ public class AiPickServiceImpl implements AiPickService {
 
             int popularityScore =
                     calculatePopularityScore(pick.getRating());
+            
+            pick.setPopularityScore(popularityScore);
 
             int noveltyScore = 30;
 
@@ -408,16 +412,15 @@ public class AiPickServiceImpl implements AiPickService {
     }
     
     private int calculateFeedbackScore(
-            Map<String, Integer> likeFeedbackMap,
-            Map<String, Integer> dislikeFeedbackMap,
-            String categoryName,
-            String kakaoCategoryName) {
+            Map<Long, Integer> likeFeedbackMap,
+            Map<Long, Integer> dislikeFeedbackMap,
+            Long restaurantId) {
 
         int score = 0;
         // getOrDefault의 의미 Map에 key가 있으면 값을 가져오고, 없으면 기본값(default)을 반환하는 메서드
-        if (categoryName != null && !categoryName.isBlank()) {
-            score += likeFeedbackMap.getOrDefault(categoryName, 0) * 10;
-            score -= dislikeFeedbackMap.getOrDefault(categoryName, 0) * 10;
+        if (restaurantId != null) {
+            score += likeFeedbackMap.getOrDefault(restaurantId, 0) * 10;
+            score -= dislikeFeedbackMap.getOrDefault(restaurantId, 0) * 10;
         }
 
         return score;
