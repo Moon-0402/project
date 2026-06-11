@@ -19,7 +19,7 @@
 
 	<!-- 정적 리소스 -->
 	<resources mapping="/resources/**" location="/resources/" />
-	<resources mapping="/upload/**" location="file:///C:/upload/" />
+	<resources mapping="/upload/**" location="file:///opt/upload" />
 
 	<!-- Controller만 스캔 -->
 	<context:component-scan

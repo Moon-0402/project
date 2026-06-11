@@ -299,7 +299,7 @@ public class ReviewController {
 	private String saveReviewImage(MultipartFile imageFile, HttpSession session) throws IOException {
 
 		// 실제 파일 저장 위치
-		String uploadPath = "C:/upload/review/";
+		String uploadPath = "/opt/upload";
 
 		File dir = new File(uploadPath);
 

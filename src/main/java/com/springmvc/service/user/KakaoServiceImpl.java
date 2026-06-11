@@ -18,7 +18,7 @@ import com.springmvc.dto.user.KakaoUserDTO;
 public class KakaoServiceImpl implements KakaoService {
 
     private final String REST_API_KEY = "bb90d370055218fddaec7cd1d7044494";
-    private final String REDIRECT_URI = "http://localhost:8080/AppProject01/member/kakao/callback";
+    private final String REDIRECT_URI = "http://3.37.130.240:8080/AppProject01/member/kakao/callback";
     private final String CLIENT_SECRET = "IQceBe7icxQl3J6HVQVXVKlXhvp3q8EX";
 
     @Override
