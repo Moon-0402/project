@@ -27,7 +27,10 @@
     <ul class="menu-list admin-menu-list">
         <li><a href="${contextPath}/">서비스 홈</a></li>
         <li><button type="button" class="admin-side-theme-toggle" data-theme-toggle>🌙 다크모드</button></li>
-        <li><a href="${contextPath}/member/logout">로그아웃</a></li>
+        <li><form action="${pageContext.request.contextPath}/member/logout" method="post" class="sidebar-logout-form">
+                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
+                    <button type="submit" class="sidebar-logout-btn">로그아웃</button>
+                </form></li>
     </ul>
 </aside>
 

@@ -1,0 +1,409 @@
+/* PickEat mobile responsive overrides */
+*, *::before, *::after { box-sizing: border-box; }
+html, body { width: 100%; max-width: 100%; overflow-x: hidden; }
+img, video, iframe, canvas { max-width: 100%; }
+button, input, select, textarea { font: inherit; }
+
+/* Spring Security logout: POST + CSRF, visually matching sidebar links. */
+.sidebar-logout-form {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+.sidebar-logout-btn {
+  display: block;
+  width: 100%;
+  margin: 0;
+  padding: 12px 14px;
+  border: 0;
+  border-radius: 10px;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  line-height: 1.4;
+  text-align: left;
+  cursor: pointer;
+}
+.sidebar-logout-btn:hover,
+.sidebar-logout-btn:focus-visible {
+  background: #ff7a1a;
+  color: #fff;
+  outline: none;
+}
+
+@media (max-width: 1024px) {
+  .container, .page-wrap, .main, main, .content, .content-wrap,
+  .recommend-wrap, .result-wrap, .history-wrap, .bookmark-wrap,
+  .review-wrap, .detail-wrap, .form-wrap {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding-left: 24px !important;
+    padding-right: 24px !important;
+  }
+
+  .grid, .card-grid, .content-grid, .restaurant-grid, .result-grid,
+  .recommend-grid, .quick-grid, .stats-grid, .summary-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+}
+
+@media (max-width: 768px) {
+  body { min-width: 0 !important; }
+
+  .container, .page-wrap, .main, main, .content, .content-wrap,
+  .recommend-wrap, .result-wrap, .history-wrap, .bookmark-wrap,
+  .review-wrap, .detail-wrap, .form-wrap {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+  }
+
+  /* shared header */
+  .header {
+    height: auto !important;
+    min-height: 60px;
+    padding: 10px 14px !important;
+    flex-wrap: wrap !important;
+    gap: 8px 10px !important;
+  }
+  .logo { font-size: 23px !important; flex: 0 0 auto; }
+  .logo-icon { width: 20px !important; height: 25px !important; }
+  .nav {
+    order: 3;
+    width: 100%;
+    flex: 0 0 100% !important;
+    justify-content: flex-start !important;
+    gap: 8px !important;
+    overflow-x: auto;
+    overflow-y: hidden;
+    white-space: nowrap;
+    padding: 2px 0 4px;
+    scrollbar-width: none;
+  }
+  .nav::-webkit-scrollbar { display: none; }
+  .nav a {
+    flex: 0 0 auto;
+    padding: 9px 12px !important;
+    border-radius: 999px;
+    background: rgba(255,255,255,.75);
+    border: 1px solid rgba(229,231,235,.9);
+  }
+  .nav a.active { background: #ff6500; color: #fff !important; }
+  .nav a.active::after { display: none !important; }
+  .header-actions {
+    min-width: 0 !important;
+    margin-left: auto;
+    gap: 6px !important;
+  }
+  .header-btn { height: 36px !important; padding: 0 10px !important; font-size: 12px !important; }
+  .user-box { max-width: 160px; min-width: 0; padding-left: 9px !important; }
+  .user-name { max-width: 78px; overflow: hidden; text-overflow: ellipsis; }
+
+  /* page headings */
+  .page-title, .section-title, .title, h1 { overflow-wrap: anywhere; }
+  .page-title { font-size: clamp(26px, 8vw, 36px) !important; line-height: 1.2 !important; }
+  .hero, .hero-section, .title-box, .page-header {
+    padding: 24px 18px !important;
+    border-radius: 20px !important;
+  }
+
+  /* cards and grids */
+  .grid, .card-grid, .content-grid, .restaurant-grid, .result-grid,
+  .recommend-grid, .quick-grid, .stats-grid, .summary-grid,
+  .info-grid, .form-grid {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 14px !important;
+  }
+  .card, .content-card, .summary-card, .quick-card, .stat-card,
+  .info-card, .panel, .restaurant-card, .review-card, .result-card,
+  .form-card, .search-box {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    padding: 18px !important;
+    border-radius: 18px !important;
+  }
+
+  /* forms */
+  .search-form, .search-row, .filter-row, .button-area, .action-row,
+  .input-row, .location-row, .form-actions {
+    width: 100% !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 10px !important;
+  }
+  .search-form > *, .search-row > *, .filter-row > *, .input-row > *,
+  .form-actions > *, .button-area > * {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+  }
+  input, select, textarea { width: 100%; max-width: 100%; font-size: 16px !important; }
+  textarea { min-height: 130px; }
+  button, .btn, [class*="btn-"] { min-height: 44px; touch-action: manipulation; }
+
+  /* maps and media */
+  #map, .map, .map-box, .map-container {
+    width: 100% !important;
+    max-width: 100% !important;
+    height: 56vh !important;
+    min-height: 350px;
+    border-radius: 16px !important;
+  }
+  .food-img, .review-image, .restaurant-image { width: 100% !important; object-fit: cover; }
+
+  /* tables */
+  .table-wrap, .table-container, .list-table-wrap {
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch;
+  }
+  table { min-width: 680px; }
+
+  /* admin layout */
+  .admin-layout { display: block !important; min-height: auto !important; }
+  .sidebar {
+    position: static !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    height: auto !important;
+    padding: 16px !important;
+  }
+  .sidebar .menu-list {
+    display: flex !important;
+    gap: 8px !important;
+    overflow-x: auto;
+    white-space: nowrap;
+    padding-bottom: 4px;
+    scrollbar-width: none;
+  }
+  .sidebar .menu-list::-webkit-scrollbar { display: none; }
+  .sidebar .menu-list a, .sidebar .menu-list li { flex: 0 0 auto; }
+  .top-bar { padding: 12px 16px !important; gap: 10px !important; flex-wrap: wrap !important; }
+  .admin-layout > .main, .admin-layout .main { margin-left: 0 !important; width: 100% !important; }
+
+  .pagination-wrap { flex-wrap: wrap !important; gap: 6px !important; }
+  .footer { padding-left: 16px !important; padding-right: 16px !important; text-align: center; }
+}
+
+@media (max-width: 480px) {
+  .container, .page-wrap, .main, main, .content, .content-wrap,
+  .recommend-wrap, .result-wrap, .history-wrap, .bookmark-wrap,
+  .review-wrap, .detail-wrap, .form-wrap {
+    padding-left: 12px !important;
+    padding-right: 12px !important;
+  }
+  .header { padding: 9px 12px !important; }
+  .role-badge { display: none !important; }
+  .header-actions .header-btn { padding: 0 9px !important; }
+  .card, .content-card, .summary-card, .quick-card, .stat-card,
+  .info-card, .panel, .restaurant-card, .review-card, .result-card,
+  .form-card, .search-box { padding: 15px !important; }
+  #map, .map, .map-box, .map-container { min-height: 320px; }
+}
+
+/* =========================================================
+   2026-06-12 mobile clipping fix
+   Page-specific layouts that were wider than the viewport
+   ========================================================= */
+@media (max-width: 900px) {
+  html { overflow-x: clip; }
+  body { overflow-x: clip !important; }
+
+  /* Every direct grid/flex child must be allowed to shrink. */
+  main > *, .main > *, .container > *, .page-wrap > *,
+  .content > *, .content-grid > *, .recommend-wrap > *,
+  .admin-layout > *, .form-grid > *, .info-grid > * {
+    min-width: 0 !important;
+    max-width: 100%;
+  }
+
+  /* Restaurant list: desktop list + sticky map caused horizontal clipping. */
+  .content {
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 16px !important;
+  }
+  .content > .list,
+  .content > .map {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+  }
+  .content > .map,
+  .map {
+    position: static !important;
+    top: auto !important;
+  }
+  .list .card {
+    min-width: 0 !important;
+    max-width: 100% !important;
+  }
+  .list .card .info {
+    min-width: 0 !important;
+    flex: 1 1 auto !important;
+  }
+  .category-text {
+    max-width: 100% !important;
+  }
+
+  /* Restaurant map page: left result panel + map becomes one column. */
+  .map-layout,
+  .restaurant-map-wrap,
+  .map-page-wrap {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+
+  /* Recommendation page: three columns and fixed 420px wheel. */
+  .recommend-wrap {
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 18px !important;
+  }
+  .wheel-area,
+  .wheel-box {
+    max-width: 100% !important;
+  }
+  .wheel-box {
+    width: min(82vw, 420px) !important;
+    height: min(82vw, 420px) !important;
+  }
+  .wheel {
+    width: 100% !important;
+    height: 100% !important;
+  }
+  .wheel-label {
+    width: 96px !important;
+    margin-left: -48px !important;
+    transform-origin: 48px 0 !important;
+    font-size: clamp(12px, 3.5vw, 17px) !important;
+  }
+  .center {
+    width: clamp(82px, 25vw, 130px) !important;
+    height: clamp(82px, 25vw, 130px) !important;
+    font-size: clamp(19px, 6vw, 28px) !important;
+  }
+  .spin-btn {
+    width: min(100%, 320px) !important;
+  }
+
+  /* Member pages: remove desktop minimum column widths. */
+  .mypage-wrap,
+  .inquiry-wrap,
+  .inquiry-layout,
+  .detail-layout,
+  .write-layout,
+  .login-wrap,
+  .signup-wrap,
+  .find-wrap,
+  .change-wrap {
+    grid-template-columns: minmax(0, 1fr) !important;
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  /* Admin pages: sidebar above content and safe scrolling tables. */
+  .admin-layout {
+    grid-template-columns: minmax(0, 1fr) !important;
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+  .admin-layout .main,
+  .admin-layout > .main {
+    min-width: 0 !important;
+    max-width: 100% !important;
+    overflow: visible !important;
+  }
+  .table-card,
+  .table-wrap,
+  .table-container,
+  .list-table-wrap,
+  .content-card:has(table) {
+    display: block !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow-x: auto !important;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Long values, links and filenames must wrap instead of widening cards. */
+  p, a, span, td, th, label, .message, .info-value,
+  .meta-value, .restaurant-name, .review-content {
+    overflow-wrap: anywhere;
+    word-break: break-word;
+  }
+}
+
+@media (max-width: 600px) {
+  .container,
+  .page-wrap,
+  main,
+  .main {
+    padding-left: 12px !important;
+    padding-right: 12px !important;
+  }
+
+  /* Restaurant cards become vertical on narrow phones. */
+  .list .card,
+  .restaurant-card {
+    flex-direction: column !important;
+    align-items: stretch !important;
+  }
+  .list .card img,
+  .restaurant-card img,
+  .food-img {
+    width: 100% !important;
+    max-width: 100% !important;
+    height: 190px !important;
+  }
+
+  #map, .map, .map-box, .map-container {
+    height: 52vh !important;
+    min-height: 300px !important;
+  }
+
+  .result-food {
+    font-size: clamp(30px, 10vw, 42px) !important;
+  }
+
+  /* Forms and action buttons remain inside the card. */
+  .btn-area,
+  .action-area,
+  .actions,
+  .button-area,
+  .form-actions {
+    flex-wrap: wrap !important;
+  }
+  .btn-area > *,
+  .action-area > *,
+  .actions > *,
+  .button-area > *,
+  .form-actions > * {
+    max-width: 100% !important;
+  }
+}
+
+/* Restaurant list map owns its height through .restaurant-map-shell. */
+@media (max-width: 900px) {
+  .restaurant-map-shell {
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow: hidden !important;
+  }
+
+  #map.restaurant-list-map,
+  .map.restaurant-list-map {
+    width: 100% !important;
+    height: 100% !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    position: relative !important;
+    top: auto !important;
+    overflow: hidden !important;
+  }
+}

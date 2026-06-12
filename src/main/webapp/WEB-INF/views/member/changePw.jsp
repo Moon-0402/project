@@ -423,6 +423,10 @@ main,
     flex-shrink: 0;
 }
 </style>
+
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
+	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/pickeat-mobile.css?v=20260612-4">
 </head>
 
 <body>

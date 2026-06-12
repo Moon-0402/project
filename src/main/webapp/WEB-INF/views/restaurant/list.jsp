@@ -162,13 +162,23 @@ body {
 	margin-top: 4px;
 }
 
-.map {
-	background: #ddd;
-	border-radius: 16px;
-	height: 100%;
-	min-height: 700px;
+.restaurant-map-shell {
+	width: 100%;
+	height: 700px;
+	min-width: 0;
 	position: sticky;
 	top: 40px;
+	border-radius: 16px;
+	overflow: hidden;
+	background: #e5e7eb;
+}
+
+.restaurant-list-map {
+	width: 100%;
+	height: 100%;
+	min-height: 0;
+	position: relative;
+	border-radius: inherit;
 }
 
 .map-card {
@@ -317,6 +327,41 @@ body {
 }
 
 
+@media (max-width: 900px) {
+	.restaurant-list-content {
+		display: grid;
+		grid-template-columns: minmax(0, 1fr);
+		gap: 18px;
+		padding-left: 0 !important;
+		padding-right: 0 !important;
+	}
+
+	.restaurant-map-shell {
+		position: relative;
+		top: auto;
+		height: clamp(340px, 58vh, 520px);
+		min-height: 340px;
+		border-radius: 14px;
+	}
+
+	.restaurant-list-map {
+		height: 100% !important;
+		min-height: 0 !important;
+	}
+}
+
+@media (max-width: 480px) {
+	.restaurant-map-shell {
+		height: 380px;
+		min-height: 320px;
+	}
+
+	.map-card {
+		width: min(230px, calc(100vw - 48px));
+	}
+}
+
+
 /* footer 하단 정렬용 레이아웃 보정 */
 html,
 body {
@@ -349,6 +394,10 @@ main,
     flex-shrink: 0;
 }
 </style>
+
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
+	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/pickeat-mobile.css?v=20260612-4">
 </head>
 
 <body>
@@ -372,7 +421,7 @@ main,
 			</form>
 		</div>
 
-		<div class="content">
+		<div class="content restaurant-list-content">
 
 			<div class="list">
 
@@ -478,7 +527,9 @@ main,
 
 			</div>
 
-			<div id="map" class="map"></div>
+			<div class="restaurant-map-shell">
+				<div id="map" class="map restaurant-list-map" aria-label="맛집 위치 지도"></div>
+			</div>
 
 		</div>
 
@@ -496,6 +547,22 @@ main,
 	};
 
 	var map = new kakao.maps.Map(mapContainer, mapOption);
+	var hasRestaurantBounds = false;
+	var relayoutTimer = null;
+
+	function refreshRestaurantMap(keepBounds) {
+		if (!map || !mapContainer) return;
+
+		window.clearTimeout(relayoutTimer);
+		relayoutTimer = window.setTimeout(function() {
+			kakao.maps.event.trigger(map, 'resize');
+			map.relayout();
+
+			if (keepBounds && hasRestaurantBounds) {
+				map.setBounds(bounds, 36, 36, 36, 36);
+			}
+		}, 120);
+	}
 
 	var bounds = new kakao.maps.LatLngBounds();
 
@@ -533,6 +600,7 @@ main,
 			});
 
 			bounds.extend(markerPosition${status.index});
+			hasRestaurantBounds = true;
 
 			var overlayContent${status.index} = `
 				<div class="map-card">
@@ -581,8 +649,27 @@ main,
 	</c:forEach>
 
 	<c:if test="${not empty mapList}">
-		map.setBounds(bounds);
+		refreshRestaurantMap(true);
 	</c:if>
+
+	window.addEventListener('load', function() {
+		refreshRestaurantMap(true);
+	});
+
+	window.addEventListener('resize', function() {
+		refreshRestaurantMap(false);
+	});
+
+	window.addEventListener('orientationchange', function() {
+		refreshRestaurantMap(true);
+	});
+
+	if (window.ResizeObserver) {
+		var mapResizeObserver = new ResizeObserver(function() {
+			refreshRestaurantMap(false);
+		});
+		mapResizeObserver.observe(mapContainer);
+	}
 
 	function closeOverlay() {
 		if (overlay != null) {

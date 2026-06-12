@@ -522,6 +522,10 @@ main,
     flex-shrink: 0;
 }
 </style>
+
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
+	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/pickeat-mobile.css?v=20260612-4">
 </head>
 
 <body>
@@ -555,9 +559,10 @@ main,
                 <a href="${pageContext.request.contextPath}/admin/reviewList">리뷰 관리</a>
             </li>
 			 <li>
-                <a href="${pageContext.request.contextPath}/member/logout">
-                    로그아웃
-                </a>
+                <form action="${pageContext.request.contextPath}/member/logout" method="post" class="sidebar-logout-form">
+                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
+                    <button type="submit" class="sidebar-logout-btn">로그아웃</button>
+                </form>
             </li>
         </ul>
     </aside>
