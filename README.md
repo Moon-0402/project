@@ -1,183 +1,196 @@
-# PickEat - JW 브랜치 설명
+## 1. 담당 범위
 
-## 브랜치 역할
+PickEat은 **로그인 사용자의 활동 데이터(찜 · 리뷰 · 최근 본 맛집)** 를 근거로 추천을 만드는 서비스입니다.
+즉 "지금 요청한 사람이 누구인가"가 확정되지 않으면 서비스의 핵심 기능인 AI Pick 자체가 동작하지 않습니다.
 
-`JW` 브랜치는 PickEat 프로젝트에서 가장 많이 개선된 최종 작업 브랜치에 가깝습니다.  
-`main`보다 36커밋 앞서 있고, `update`보다도 5커밋 더 앞서 있습니다.
+| 구분 | 구현 내용 |
+| --- | --- |
+| 회원 | 회원가입, 아이디 중복 확인, 로그인 / 로그아웃 |
+| 소셜 로그인 | Kakao OAuth 2.0 인증, 최초 로그인 시 자동 회원 등록 |
+| 인가 | `ROLE_USER` / `ROLE_ADMIN` 분리, URL 기반 접근 제어 |
+| 보안 | CSRF 토큰 적용, 로그아웃 시 세션 무효화, 비인가 접근 처리 |
+| 마이페이지 | 내 정보 수정, 비밀번호 변경 |
 
-따라서 포트폴리오나 면접 설명에서는 `JW` 브랜치를 기준으로 프로젝트를 설명하는 것이 가장 적합합니다.
+---
 
-## 브랜치 상태
+## 2. 설계 원칙
 
-- Repository: `Moon-0402/project`
-- Branch: `JW`
-- `main` 대비: 36커밋 앞섬
-- `update` 대비: 5커밋 앞섬
-- 최종 설명 추천 브랜치: 예
+### 원칙 1 — 인증 상태의 단일 기준은 `SecurityContext`
 
-## main 대비 핵심 변화
+로그인 경로는 두 가지(폼 로그인 / 카카오 로그인)지만, **인증 이후의 상태는 한 곳에만 둔다**는 것을 전제로 잡았습니다.
 
-`JW` 브랜치에는 다음 기능과 개선 사항이 포함되어 있습니다.
+- 인증 정보의 **원본**: `SecurityContext` (세션에 저장)
+  → 권한 판단, URL 접근 제어, 컨트롤러의 인가 처리는 전부 여기서만 읽음
+- 세션의 `loginMember`: **화면 표시용 보조 데이터**
+  → 헤더의 닉네임 노출, JSP 분기 등 뷰 편의를 위한 값
 
-- AI-Pick 추천 기능 추가 및 개선
-- 리뷰 작성, 수정, 목록, 내 리뷰 기능 추가
-- 관리자 리뷰 목록 및 상세 관리 기능 추가
-- Kakao 로그인 처리 개선
-- Kakao Local API 검색 및 장소 저장 로직 개선
-- 맛집 검색, 상세, 리스트 처리 개선
-- 관리자 화면 UI 개선
-- 공통 Header / Footer 개선
-- 다크 모드 및 모바일 CSS 개선
-- Spring Security 설정 개선
-- Controller, Service, Repository 계층 확장
-- 사용자/관리자 화면 전반 JSP 개선
+두 저장소를 병행하되 **역할을 명확히 나눈 것**이 핵심입니다.
+"세션에는 로그인 정보가 있는데 권한 체크는 실패한다"는 상황은 이 둘의 역할이 섞일 때 발생하기 때문에, 인증 여부의 판단 기준을 `SecurityContext` 하나로 고정했습니다.
 
-## update 대비 추가 변화
+### 원칙 2 — 소셜 로그인도 폼 로그인과 같은 형태로 수렴시킨다
 
-`JW`는 `update`보다 5커밋 더 앞서며, 특히 다음 영역에서 추가 개선이 있습니다.
+카카오 로그인은 인증 주체가 외부(Kakao)이지만, 인증이 끝난 뒤에는 **폼 로그인과 완전히 동일한 상태**가 되도록 설계했습니다.
 
-### 1. Kakao 로그인 및 인증 흐름 개선
-
-수정된 대표 파일:
-
-```text
-src/main/java/com/springmvc/controller/member/KakaoController.java
-src/main/java/com/springmvc/service/user/KakaoServiceImpl.java
+```
+폼 로그인    ──┐
+               ├──▶ Authentication 객체 ──▶ SecurityContext ──▶ 이후 로직은 동일
+Kakao 로그인 ──┘
 ```
 
-카카오 로그인 이후 일반 로그인 사용자와 동일하게 권한과 세션을 처리할 수 있도록 인증 흐름을 개선한 브랜치입니다.
+덕분에 서비스 · 컨트롤러 계층은 **사용자가 어떤 경로로 로그인했는지 몰라도 됩니다.**
+AI Pick, 찜, 리뷰 기능은 로그인 방식과 무관하게 같은 코드로 동작합니다.
 
-### 2. Kakao Local API 및 맛집 검색 개선
+### 원칙 3 — 인가 규칙은 코드가 아니라 설정에 모은다
 
-수정된 대표 파일:
+권한 체크를 각 컨트롤러에 흩어 두면 규칙을 한눈에 볼 수 없습니다.
+URL 단위 접근 제어를 `security-context.xml` 한 파일에 모아, **"누가 어디에 접근 가능한가"를 한 화면에서 검토**할 수 있게 했습니다.
 
-```text
-src/main/java/com/springmvc/service/kakao/KakaoLocalService.java
-src/main/java/com/springmvc/controller/restaurant/RestaurantController.java
-src/main/java/com/springmvc/repository/restaurant/RestaurantRepositoryImpl.java
+---
+
+## 3. 인증 흐름
+
+### 3-1. 폼 로그인
+
+```
+사용자 (login.jsp)
+   │  login_id / password
+   ▼
+MemberController
+   │
+   ▼
+MemberService          ── 계정 조회 및 비밀번호 검증
+   │
+   ▼
+MemberRepository       ── MEMBER 테이블 조회
+   │
+   ▼
+Authentication 생성 → SecurityContext 저장 (세션)
+   │
+   ▼
+role 값에 따라 분기 → USER: 메인 / ADMIN: 관리자 대시보드
 ```
 
-검색 키워드, 카테고리, 장소 저장, 맛집 리스트 출력 관련 로직이 추가로 개선되었습니다.
+### 3-2. 카카오 로그인
 
-### 3. AI-Pick 화면 및 추천 UI 개선
-
-수정된 대표 파일:
-
-```text
-src/main/webapp/WEB-INF/views/aipick/aiPick.jsp
+```
+사용자 → [카카오 인증 서버]  로그인 및 동의
+   │
+   │  인가 코드(code) 리다이렉트
+   ▼
+KakaoController
+   │  ① code → Access Token 요청
+   ▼
+KakaoService
+   │  ② Access Token으로 사용자 정보 조회
+   ▼
+   ③ 기존 회원인가?
+        ├─ 예   → 해당 회원 정보 사용
+        └─ 아니오 → MEMBER 테이블에 자동 등록 (ROLE_USER)
+   │
+   ▼
+   ④ UsernamePasswordAuthenticationToken 생성
+      + SimpleGrantedAuthority("ROLE_" + role)
+   ▼
+   ⑤ SecurityContext에 인증 객체 저장 → 세션에 반영
+   ▼
+   ⑥ 메인 페이지로 리다이렉트
 ```
 
-AI-Pick 화면의 UI와 추천 결과 표시 영역이 강화되었습니다.
+**설계 의도** — 4~5단계가 이 파트의 핵심입니다.
+외부에서 받아온 사용자 정보를 그대로 세션에 얹고 끝내면, 세션에는 사용자가 있는데 Spring Security 입장에서는 익명 사용자인 불일치 상태가 됩니다.
+그래서 카카오 인증 결과를 **Spring Security가 이해하는 `Authentication` 객체로 변환하는 단계**를 명시적으로 두었습니다.
+이 변환 지점 하나로, 이후의 모든 권한 처리가 폼 로그인과 동일한 경로를 타게 됩니다.
 
-### 4. 관리자 화면 개선
+---
 
-수정된 대표 파일:
+## 4. 권한 설계
 
-```text
-src/main/webapp/WEB-INF/views/admin/admin.jsp
-src/main/webapp/WEB-INF/views/admin/adminSidebar.jsp
-src/main/webapp/WEB-INF/views/admin/inquiryDetail.jsp
-src/main/webapp/WEB-INF/views/admin/memberList.jsp
-src/main/webapp/WEB-INF/views/admin/reviewList.jsp
-src/main/webapp/WEB-INF/views/admin/reviewDetail.jsp
+### 권한 모델
+
+| 권한 | 대상 | 부여 시점 |
+| --- | --- | --- |
+| `ROLE_USER` | 일반 회원 | 회원가입 시 / 카카오 최초 로그인 시 자동 |
+| `ROLE_ADMIN` | 운영자 | DB에서 직접 지정 |
+
+`MEMBER.role` 컬럼(`ENUM('USER','ADMIN')`)을 기준으로, 인증 시점에 `ROLE_` 접두사를 붙여 권한 객체로 변환합니다.
+
+### URL 접근 정책
+
+| 경로 | 접근 권한 | 설명 |
+| --- | --- | --- |
+| `/css/**`, `/js/**`, `/images/**` | permitAll | 정적 리소스 |
+| `/`, `/member/login`, `/member/join`, `/kakao/**` | permitAll | 로그인 전 진입 경로 |
+| `/restaurants/**` | permitAll | 맛집 조회는 비회원도 가능 |
+| `/aipick/**`, `/bookmark/**`, `/review/write`, `/mypage/**` | `ROLE_USER` 이상 | 개인 활동 데이터 기반 기능 |
+| `/admin/**` | `ROLE_ADMIN` | 관리자 전용 |
+
+**설계 시 주의한 점**
+
+- `intercept-url`은 **위에서부터 순서대로 매칭**되므로, 좁은 패턴(`/admin/**`)을 넓은 패턴보다 먼저 선언
+- 비회원도 서비스 가치를 먼저 체감할 수 있도록, **맛집 조회는 열고 개인화 기능만 잠그는** 방식으로 경계를 설정
+
+---
+
+## 5. 보안 설계
+
+| 항목 | 처리 방식 | 목적 |
+| --- | --- | --- |
+| CSRF | 모든 POST form에 `_csrf` hidden input 적용 | 위조 요청 차단 |
+| 세션 | 로그아웃 시 세션 무효화 및 인증 객체 제거 | 로그아웃 후 재사용 방지 |
+| 인가 실패 | 권한 부족 시 접근 거부 처리 후 안내 페이지로 이동 | 관리자 URL 노출 방지 |
+| 화면 분기 | 로그인 여부 · 권한에 따라 `header.jsp` 메뉴 분기 | 접근 불가 메뉴 미노출 |
+
+---
+
+## 6. 설정 파일 구조
+
+Spring 컨테이너를 두 개로 나누고, 스캔 대상을 명확히 분리했습니다.
+
+| 파일 | 등록 대상 | 역할 |
+| --- | --- | --- |
+| `servlet-context.xml` | Controller | 웹 계층 — 요청 매핑, 뷰 리졸버 |
+| `root-context.xml` | Service, Repository, DataSource | 서비스 · 데이터 계층 |
+| `security-context.xml` | 인증 · 인가 설정 | 필터 체인, URL 정책, 로그인/로그아웃 핸들러 |
+
+- Controller와 Service/Repository의 스캔 범위가 겹치면 Bean이 중복 생성되거나 주입에 실패하므로, `include-filter` / `exclude-filter`로 **한쪽에만 등록되도록** 제한
+- 보안 설정을 별도 파일로 분리해, 인가 정책 변경 시 웹 설정을 건드리지 않도록 구성
+
+---
+
+## 7. 클래스 구성
+
+| 계층 | 클래스 / 파일 | 역할 |
+| --- | --- | --- |
+| Controller | `MemberController` | 회원가입, 로그인, 로그아웃, 마이페이지 요청 처리 |
+| Controller | `KakaoController` | 인가 코드 수신, 인증 객체 생성 및 SecurityContext 저장 |
+| Service | `MemberServiceImpl` | 계정 검증, 중복 확인, 회원 정보 수정 |
+| Service | `KakaoServiceImpl` | Access Token 요청, 카카오 사용자 정보 조회, 자동 가입 |
+| Repository | `MemberRepositoryImpl` | `MEMBER` 테이블 CRUD (Spring JDBC) |
+| View | `login.jsp`, `join.jsp`, `mypage/*.jsp` | 인증 관련 화면 |
+| Config | `security-context.xml` | 인증 · 인가 정책 |
+
+---
+
+## 8. 관련 테이블
+
+```sql
+MEMBER
+  member_id   BIGINT       PK
+  login_id    VARCHAR(50)  UNIQUE   -- 카카오 회원은 카카오 식별자 기반으로 생성
+  password    VARCHAR(255)
+  name        VARCHAR(50)
+  email       VARCHAR(100) UNIQUE
+  phone       VARCHAR(20)
+  role        ENUM('USER','ADMIN')  -- 인가의 기준값
+  created_at  DATETIME
 ```
 
-관리자 대시보드, 회원 관리, 리뷰 관리, 문의 관리 화면이 개선되었습니다.
+`role` 하나로 인가 정책 전체가 결정되도록 설계해, 권한 추가가 필요해지면 ENUM 값과 `intercept-url` 한 줄만 늘리면 되도록 했습니다.
 
-### 5. Footer, 모바일, 공통 UI 개선
+---
 
-수정 또는 추가된 대표 파일:
+## 9. 이 설계로 얻은 것
 
-```text
-src/main/webapp/WEB-INF/views/footer.jsp
-src/main/webapp/resources/css/pickeat-mobile.css
-src/main/webapp/resources/css/pickeat-final-fix.css
-src/main/webapp/resources/css/pickeat-hard-fix.css
-src/main/webapp/resources/js/pickeat-theme-fix.js
-```
-
-모바일 화면 대응, Footer 위치 문제, 다크 모드 가독성, 화면 레이아웃 보완이 반영되었습니다.
-
-## JW 브랜치 기준 프로젝트 소개
-
-PickEat은 사용자가 맛집을 단순 검색하는 데서 끝나지 않고,  
-즐겨찾기, 리뷰, 최근 본 맛집 데이터를 활용해 개인화 추천을 제공하는 Spring MVC 기반 웹 서비스입니다.
-
-사용자는 맛집 검색, 지도 조회, 상세 조회, 즐겨찾기, 리뷰 작성, 문의 작성, AI-Pick 추천 기능을 사용할 수 있습니다.  
-관리자는 회원, 맛집, 리뷰, 문의를 관리할 수 있으며, Spring Security를 통해 사용자와 관리자 권한을 분리했습니다.
-
-## 담당 기능 요약
-
-- 회원가입, 로그인, 로그아웃
-- 카카오 OAuth 로그인
-- Spring Security 인증 및 권한 처리
-- 마이페이지, 회원정보 수정, 비밀번호 변경
-- 맛집 목록, 상세, 지도 조회
-- Kakao Local API 기반 장소 검색
-- 즐겨찾기와 최근 본 맛집
-- 리뷰 작성, 수정, 목록 조회
-- 관리자 리뷰 관리
-- 사용자 문의 및 관리자 답변 관리
-- AI-Pick 개인화 추천
-- JSP 화면 및 CSS 개선
-- 모바일 UI 보완
-- Maven WAR 빌드 및 Tomcat 배포 테스트
-
-## AI-Pick 추천 로직
-
-AI-Pick은 머신러닝 모델을 직접 학습시키는 방식이 아니라,  
-사용자의 행동 데이터를 분석하는 규칙 기반 추천 기능입니다.
-
-활용 데이터:
-
-```text
-BOOKMARK
-REVIEW
-RECENTLY_RESTAURANT
-RESTAURANT_TAG
-USER_TASTE_PROFILE
-```
-
-추천 흐름:
-
-```text
-사용자 활동 데이터 수집
-        │
-        ▼
-restaurant_id 추출
-        │
-        ▼
-RESTAURANT_TAG에서 태그 추출
-        │
-        ▼
-사용자별 선호 태그 생성
-        │
-        ▼
-태그가 일치하는 맛집 후보 조회
-        │
-        ▼
-위치 정보와 랜덤 요소 반영
-        │
-        ▼
-AI-Pick 추천 결과 출력
-```
-
-## 면접에서 설명할 때
-
-`JW` 브랜치는 다음처럼 설명하면 좋습니다.
-
-> JW 브랜치는 PickEat 프로젝트의 최종 작업 브랜치에 가깝습니다. main 브랜치 이후 AI-Pick 추천, 리뷰 기능, 관리자 리뷰 관리, 카카오 로그인 개선, 카카오 장소 검색 개선, 화면 UI와 모바일 대응까지 반영했습니다. 특히 사용자 행동 데이터를 맛집 태그와 연결해 개인화 추천을 구현했고, Spring Security를 통해 사용자와 관리자 권한을 분리했습니다.
-
-## 포트폴리오 제출 추천
-
-면접관에게 GitHub 링크를 보낼 때는 `JW` 브랜치를 기준으로 안내하는 것이 좋습니다.
-
-```text
-https://github.com/Moon-0402/project/tree/JW
-```
-
-만약 GitHub 기본 화면에서 바로 보이게 하고 싶다면, 나중에 `JW` 브랜치를 `main`에 merge하거나 GitHub 기본 브랜치를 `JW`로 변경하는 방법도 있습니다.
-
-## 주의할 점
-
-현재 ChatGPT 연동에서는 README.md를 직접 커밋하는 권한이 막혀 있으므로, 이 md 내용을 GitHub에서 직접 업로드하는 방식이 가장 확실합니다.
+- 로그인 경로가 늘어나도 **서비스 · 컨트롤러 코드는 수정되지 않음** (인증 객체 변환 지점만 추가)
+- 권한 정책이 한 파일에 모여 있어 **접근 제어 검토가 빠름**
+- 인증 상태의 기준이 하나이므로, 화면과 권한 판단이 어긋나지 않음
