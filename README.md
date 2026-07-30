@@ -1,3 +1,9 @@
+# PickEat
+
+> 날씨 · 위치 · 취향을 반영해 "오늘 뭐 먹지?"를 대신 골라주는 개인화 맛집 추천 웹 서비스
+
+---
+
 ## 1. 주제 선정 이유
 
 기존 맛집 서비스는 **인기순 · 거리순 · 별점순** 정렬이 중심입니다.
@@ -100,6 +106,8 @@ ssh -i <key>.pem ubuntu@<서버주소>
 # 4. WAR 배치 후 톰캣 기동
 sudo mv AppProject01.war /opt/apache-tomcat/webapps/
 cd /opt/apache-tomcat/bin && sudo ./startup.sh
+```
+
 ---
 
 ## 4. 트러블 슈팅
@@ -230,3 +238,11 @@ sudo ./startup.sh
 - **위치** — `JW` / `update` 브랜치, `pom.xml`, Java·JSP 파일
 
 </details>
+
+---
+
+## 5. 향후 개선 방향
+
+- **추천 고도화** — 날씨, 시간대, 거리, 사용자 평가를 가중치로 반영하고 유사 취향 사용자 데이터 활용
+- **데이터 품질** — Kakao 카테고리와 자체 태그 매핑 정확도 개선, 맛집 신뢰도 지표 설계
+- **서비스 확장** — 반응형 UI 적용, AWS 배포 안정화, 도메인 및 HTTPS 적용
