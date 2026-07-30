@@ -55,9 +55,56 @@
 
 ---
 
-## 3. 트러블 슈팅
+## 3. 배포 (AWS)
 
-### 3-1. 인증 / 권한
+> 배포 담당: 문재웅
+
+로컬 실행에서 끝내지 않고, **AWS EC2에 WAR를 올려 외부 접속까지 검증**했습니다.
+
+### 배포 구성
+
+```
+[사용자 브라우저]
+      │  HTTP
+      ▼
+[AWS EC2 · Ubuntu]
+      │
+      ├── Apache Tomcat        ── PickEat WAR 실행
+      │
+      └── MySQL                ── 서비스 데이터
+      
+[Kakao Developers]            ── 배포 도메인 등록 (Map / Login)
+```
+
+### 배포 절차
+
+| 단계 | 작업 | 비고 |
+| --- | --- | --- |
+| 1 | EC2 인스턴스 생성 및 키 페어 발급 | Ubuntu, 보안 그룹에서 SSH·서비스 포트 개방 |
+| 2 | 서버에 JDK, Tomcat, MySQL 설치 | 로컬과 동일한 Java 버전으로 맞춤 |
+| 3 | 로컬에서 `mvn package`로 WAR 빌드 | 배포 산출물 생성 |
+| 4 | `scp`로 WAR 전송 | 키 파일 기반 접속 |
+| 5 | Tomcat `webapps`에 배포 후 재기동 | `bin/startup.sh` 실행 |
+| 6 | 외부 접속 및 기능 검증 | 로그인, 지도, 추천 흐름 확인 |
+
+```bash
+# 1. WAR 빌드 (로컬)
+mvn clean package
+
+# 2. 서버로 전송
+scp -i <key>.pem target/AppProject01.war ubuntu@<서버주소>:/home/ubuntu
+
+# 3. 서버 접속
+ssh -i <key>.pem ubuntu@<서버주소>
+
+# 4. WAR 배치 후 톰캣 기동
+sudo mv AppProject01.war /opt/apache-tomcat/webapps/
+cd /opt/apache-tomcat/bin && sudo ./startup.sh
+---
+
+## 4. 트러블 슈팅
+
+### 4-1. 인증 / 권한
 
 <details>
 <summary><b>Kakao Login 후 세션이 끊기고 권한이 인식되지 않음</b></summary>
@@ -88,7 +135,7 @@
 
 </details>
 
-### 3-2. Spring 설정
+### 4-2. Spring 설정
 
 <details>
 <summary><b>Controller Bean이 생성되지 않음 (컴포넌트 스캔 분리)</b></summary>
@@ -108,7 +155,7 @@
 
 </details>
 
-### 3-3. 데이터 / 추천 로직
+### 4-3. 데이터 / 추천 로직
 
 <details>
 <summary><b>BadSqlGrammarException</b></summary>
@@ -146,7 +193,7 @@
 
 </details>
 
-### 3-4. 외부 API / 배포
+### 4-4. 외부 API / 배포
 
 <details>
 <summary><b>Kakao Map이 표시되지 않음</b></summary>
